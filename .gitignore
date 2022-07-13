@@ -31,3 +31,5 @@
 *.out
 *.app
 51richeng/.vs/
+.vs/
+51richeng/x64/

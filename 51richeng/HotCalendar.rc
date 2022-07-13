@@ -1,0 +1,104 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(简体，中国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// UI
+//
+IDR_UI1                 UI                      "UI\\BodyDay.rml"
+
+IDR_UI2                 UI                      "UI\\BodyList.rml"
+
+IDR_UI3                 UI                      "UI\\BodyMonth.rml"
+
+IDR_UI4                 UI                      "UI\\BodyWeek.rml"
+
+IDR_UI5                 UI                      "UI\\BodyYear.rml"
+
+IDR_UI6                 UI                      "UI\\DialogCycle.rml"
+
+IDR_UI7                 UI                      "UI\\DialogDelete.rml"
+
+IDR_UI8                 UI                      "UI\\DialogDonate.rml"
+
+IDR_UI9                 UI                      "UI\\DialogForm.rml"
+
+IDR_UI10                 UI                      "UI\\DialogSetting.rml"
+
+IDR_UI11                 UI                      "UI\\DialogTop.rml"
+
+IDR_UI12                 UI                      "UI\\iconfont.ttf"
+
+IDR_UI13                 UI                      "UI\\TopBar.rml"
+
+IDR_UI14                 UI                      "UI\\weixin.png"
+
+IDR_UI15                 UI                      "UI\\zhifubao.png"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+
+
+#endif    // 中文(简体，中国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

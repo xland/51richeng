@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "better-sqlite3": "^7.5.3",
+    "electget": "^0.1.2",
     "knex": "^2.1.0"
   }
 }

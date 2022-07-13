@@ -298,6 +298,18 @@ static LRESULT CALLBACK WindowProcedureHandler(HWND window_handle, UINT message,
 		return windowHitTest(window_handle, l_param);
 		break;
 	}
+	case WM_WINDOWPOSCHANGING:
+	{
+		WINDOWPOS* pos = (WINDOWPOS*)l_param;
+		// Show desktop (Windows + D) results in the window moved to -32000, -32000 and size changed
+		if (pos->x == -32000) {
+			// Set the flags to prevent this and "survive" to the desktop toggle
+			pos->flags |= SWP_NOMOVE | SWP_NOSIZE;
+		}
+		// Also force the z order to ensure the window is always on bottom
+		pos->hwndInsertAfter = HWND_BOTTOM;
+		return 0;
+	}
 	case WM_GETMINMAXINFO: {
 		MINMAXINFO* mminfo;
 		mminfo = (PMINMAXINFO)l_param;
@@ -390,16 +402,17 @@ static HWND InitializeWindow(HINSTANCE instance_handle, const std::wstring& name
 	window_class.hbrBackground = nullptr;
 	window_class.lpszMenuName = nullptr;
 	window_class.lpszClassName = name.data();
+
 	if (!RegisterClassW(&window_class))
 	{
 		DisplayError(NULL, "Could not register window class.");
 		return nullptr;
 	}
-	auto borderlessStyle = WS_POPUP | WS_THICKFRAME | WS_CAPTION | WS_SYSMENU | WS_MAXIMIZEBOX | WS_MINIMIZEBOX;
+
 	HWND window_handle = CreateWindowExW(WS_EX_APPWINDOW | WS_EX_WINDOWEDGE,
 		name.data(),                                                                // Window class name.
 		name.data(), WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_OVERLAPPEDWINDOW, 0, 0, // Window position.
-		inout_width, inout_height,                                                                       // Window size.
+		0, 0,                                                                       // Window size.
 		nullptr, nullptr, instance_handle, nullptr);
 
 	if (!window_handle)
@@ -429,13 +442,9 @@ static HWND InitializeWindow(HINSTANCE instance_handle, const std::wstring& name
 	SetWindowLong(window_handle, GWL_EXSTYLE, extended_style);
 	SetWindowLong(window_handle, GWL_STYLE, style);
 
-	::SetWindowLongPtrW(window_handle, GWL_STYLE, borderlessStyle);
-	static const MARGINS shadow_state{ 1,1,1,1 };
-	::DwmExtendFrameIntoClientArea(window_handle, &shadow_state);
-	RECT rect;
-	SystemParametersInfo(SPI_GETWORKAREA, 0, &rect, 0);
 	// Resize the window.
-	SetWindowPos(window_handle, HWND_TOP, (rect.right - inout_width) / 2, (rect.bottom - inout_height) / 2, inout_width, inout_height, SWP_FRAMECHANGED | SWP_NOSIZE);
+	SetWindowPos(window_handle, HWND_BOTTOM, 0, 0, window_rect.right - window_rect.left, window_rect.bottom - window_rect.top, SWP_NOZORDER|SWP_NOACTIVATE);
+
 	return window_handle;
 }
 

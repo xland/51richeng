@@ -1,4 +1,5 @@
-import { BrowserWindow, ipcMain, app } from "electron";
+import { BrowserWindow, ipcMain, app, screen } from "electron";
+import electget from "electget";
 
 export class CommonWindowEvent {
   /**
@@ -29,7 +30,20 @@ export class CommonWindowEvent {
     ipcMain.handle("hideWindow", (e) => {
       this.getWin(e)?.hide();
     });
-
+    ipcMain.handle("pinWindow", (e) => {
+      let win = this.getWin(e) as BrowserWindow;
+      win.show();
+      let display = screen.getPrimaryDisplay();
+      let x = display.workAreaSize.width - 808;
+      let y = 8;
+      win.setPosition(x, y);
+      win.setSize(800, 600);
+      win.setHasShadow(false); //todo 没用
+      // electget.alwaysOnBottom(win); //todo issue
+      electget.preventFromAeroPeek(win);
+      electget.preventFromShowDesktop(win);
+      electget.moveToBottom(win);
+    });
     ipcMain.handle("showWindow", (e) => {
       this.getWin(e)?.show();
     });

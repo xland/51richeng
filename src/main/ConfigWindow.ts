@@ -20,6 +20,8 @@ export class ConfigWindow implements BrowserWindowConstructorOptions {
   parent?: any;
   movable = true;
   thickFrame = true;
+  hasShadow = false;
+  opacity = 1;
   minHeight = 600;
   minWidth = 800;
 }

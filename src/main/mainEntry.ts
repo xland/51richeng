@@ -1,13 +1,13 @@
 import { app, BrowserWindow, protocol, ProtocolResponse, session } from "electron";
+import electget from "electget";
 import { CommonWindowEvent } from "./CommonWindowEvent";
 import { ConfigWindow } from "./ConfigWindow";
-// import busboy from "busboy";
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = "true";
 app.commandLine.appendSwitch("--disable-site-isolation-trials");
 let schemeConfig = { standard: true, supportFetchAPI: true, bypassCSP: true, corsEnabled: true, stream: true };
 protocol.registerSchemesAsPrivileged([{ scheme: "rrs", privileges: schemeConfig }]);
 
-let mainWindow;
+let mainWindow: BrowserWindow;
 
 app.whenReady().then(() => {
   let config = new ConfigWindow();
@@ -16,7 +16,10 @@ app.whenReady().then(() => {
   mainWindow.webContents.openDevTools();
   CommonWindowEvent.listen();
   CommonWindowEvent.windowMaximizeChange(mainWindow);
-
+  electget.preventFromShowDesktop(mainWindow);
+  app.on("browser-window-focus", () => {
+    electget.moveToBottom(mainWindow);
+  });
   protocol.registerHttpProtocol("rrs", async (request, callback) => {
     if (request.method === "POST") {
       for (let i = 0; i < request.uploadData.length; i++) {

@@ -9,17 +9,10 @@ class SettingStore {
     this.store = writable<SettingModel>(setting);
     this.subscribe = this.store.subscribe;
   }
-  updateLeftBoxWidth = async (leftBoxWidth: number) => {
+  changeView(viewType) {
     let setting = get(this.store);
-    setting.leftBoxWidth = leftBoxWidth;
-    await db("setting").update({ leftBoxWidth }).where({ id: setting.id });
+    setting.viewSelected = viewType;
     this.store.set(setting);
-  };
-  updateMaximizeState = async (windowIsMaximized: boolean, windowWidth: number, windowHeight: number) => {
-    let setting = get(this.store);
-    setting.windowIsMaximized = windowIsMaximized;
-    await db("setting").update({ windowIsMaximized, windowWidth, windowHeight }).where({ id: setting.id });
-    this.store.set(setting);
-  };
+  }
 }
 export let settingStore = new SettingStore();

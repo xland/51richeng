@@ -1,104 +1,80 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import { settingStore } from "./Store/SettingStore";
+  import type { SettingModel } from "../model/SettingModel";
 
-  let isMaximized = true;
-  let closeWindow = () => {
-    let { ipcRenderer } = require("electron");
-    if (location.href.includes("/main")) {
-      // ipcRenderer.invoke("hideWindow");
-      //todo
-      ipcRenderer.invoke("closeWindow");
-    } else {
-      ipcRenderer.invoke("closeWindow");
+  import { settingStore } from "./Store/SettingStore";
+  let setting: SettingModel;
+  let curView: string;
+  settingStore.subscribe((v: SettingModel) => {
+    setting = v;
+    curView = setting.viewSelected;
+    if (setting.viewSelected === "lastSelected") {
+      curView = setting.viewLastSelected;
     }
-  };
-  let maxmizeMainWin = () => {
-    let { ipcRenderer } = require("electron");
-    ipcRenderer.invoke("maxmizeWindow");
-  };
-  let minimizeMainWindow = () => {
-    let { ipcRenderer } = require("electron");
-    ipcRenderer.invoke("minimizeWindow");
-  };
-  let unmaximizeMainWindow = () => {
-    let { ipcRenderer } = require("electron");
-    ipcRenderer.invoke("unmaximizeWindow");
-  };
-  onMount(() => {
-    let { ipcRenderer } = require("electron");
-    ipcRenderer.on("windowMaximized", () => {
-      isMaximized = true;
-      settingStore.updateMaximizeState(isMaximized, window.outerWidth, window.outerHeight);
-    });
-    ipcRenderer.on("windowUnmaximized", () => {
-      isMaximized = false;
-      settingStore.updateMaximizeState(isMaximized, window.outerWidth, window.outerHeight);
-    });
   });
 </script>
 
-<div class="topBar" style="left: 300px;">
+<div class="topBar">
   <div class="winTitle" />
-  <div class="winTool">
-    <div on:click={minimizeMainWindow}>
-      <i class="icon iconminimize" />
-    </div>
-    {#if isMaximized}
-      <div on:click={unmaximizeMainWindow}>
-        <i class="icon iconrestore" />
-      </div>
-    {:else}
-      <div on:click={maxmizeMainWin}>
-        <i class="icon iconmaximize" />
-      </div>
-    {/if}
-    <div on:click={closeWindow}>
-      <i class="icon iconclose" />
-    </div>
+  <div class="today">今日：2022-07-14</div>
+  <div class={`viewBtn ${curView === "Day" ? "viewBtnSelected" : ""}`}>日</div>
+  <div class={`viewBtn ${curView === "Week" ? "viewBtnSelected" : ""}`}>周</div>
+  <div class={`viewBtn ${curView === "Month" ? "viewBtnSelected" : ""}`}>月</div>
+  <div class={`viewBtn ${curView === "Year" ? "viewBtnSelected" : ""}`}>年</div>
+  <div class="toolBtn">
+    <i class="iconfont icon-sousuo" />
+  </div>
+  <div class="toolBtn">
+    <i class="iconfont icon-setting" />
   </div>
 </div>
 
 <style lang="scss">
   .topBar {
+    left: 0px;
     position: absolute;
     right: 0px;
     top: 0px;
     display: flex;
-    height: 30px;
-    line-height: 30px;
-    -webkit-app-region: drag;
-    z-index: 2;
+    height: 46px;
+    line-height: 46px;
+    font-size: 14px;
   }
   .winTitle {
     flex: 1;
     padding-left: 12px;
     font-size: 14px;
+    -webkit-app-region: drag;
   }
-  .winTool {
-    height: 100%;
-    display: flex;
-    -webkit-app-region: no-drag;
-  }
-  .winTool div {
-    height: 100%;
-    width: 36px;
-    text-align: center;
-    color: #666666;
+  .today {
+    padding-left: 12px;
+    padding-right: 12px;
     cursor: pointer;
-    line-height: 30px;
+    &:hover {
+      text-decoration: underline;
+    }
   }
-  .winTool .icon {
-    font-size: 12px;
-    color: #666666;
+  .viewBtn {
+    width: 38px;
+    height: 24px;
+    border: 1px solid #dadce0;
+    line-height: 22px;
+    margin-top: 10px;
+    text-align: center;
+    margin-left: 6px;
+    margin-right: 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    &:hover {
+      background: #f1f3f4;
+    }
   }
-  .winTool div:hover {
-    background: #efefef;
+  .viewBtnSelected {
+    background: #f1f3f4;
   }
-  .winTool div:last-child:hover {
-    background: #ff7875;
-  }
-  .winTool div:last-child:hover i {
-    color: #fff !important;
+  .toolBtn {
+    width: 40px;
+    text-align: center;
+    line-height: 46px;
+    cursor: pointer;
   }
 </style>

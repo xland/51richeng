@@ -1,0 +1,97 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 3518340 */
+  src: url('iconfont.ttf?t=1657766821488') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-youjiantou:before {
+  content: "\e638";
+}
+
+.icon-zuojiantou:before {
+  content: "\e60e";
+}
+
+.icon-duanluo:before {
+  content: "\e655";
+}
+
+.icon-sousuo:before {
+  content: "\e6a6";
+}
+
+.icon-xunhuan:before {
+  content: "\e863";
+}
+
+.icon-juanzeng:before {
+  content: "\e65a";
+}
+
+.icon-shijian:before {
+  content: "\e651";
+}
+
+.icon-shanchu:before {
+  content: "\e7f4";
+}
+
+.icon-zuijin:before {
+  content: "\e605";
+}
+
+.icon-kefu:before {
+  content: "\e603";
+}
+
+.icon-check:before {
+  content: "\e60d";
+}
+
+.icon-uncheck:before {
+  content: "\e606";
+}
+
+.icon-edit:before {
+  content: "\e652";
+}
+
+.icon-tag:before {
+  content: "\e72c";
+}
+
+.icon-saving:before {
+  content: "\e6e6";
+}
+
+.icon-calendar:before {
+  content: "\e685";
+}
+
+.icon-setting:before {
+  content: "\e68b";
+}
+
+.icon-minimize:before {
+  content: "\e6e8";
+}
+
+.icon-restore:before {
+  content: "\e6e9";
+}
+
+.icon-maximize:before {
+  content: "\e6e5";
+}
+
+.icon-close:before {
+  content: "\e6e7";
+}
+

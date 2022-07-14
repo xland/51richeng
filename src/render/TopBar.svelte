@@ -11,12 +11,13 @@
       curView = setting.viewLastSelected;
     }
   });
+  let changeView = (viewType) => {};
 </script>
 
 <div class="topBar">
   <div class="winTitle" />
   <div class="today">今日：2022-07-14</div>
-  <div class={`viewBtn ${curView === "Day" ? "viewBtnSelected" : ""}`}>日</div>
+  <div on:click={() => settingStore.changeView("Day")} class={`viewBtn ${curView === "Day" ? "viewBtnSelected" : ""}`}>日</div>
   <div class={`viewBtn ${curView === "Week" ? "viewBtnSelected" : ""}`}>周</div>
   <div class={`viewBtn ${curView === "Month" ? "viewBtnSelected" : ""}`}>月</div>
   <div class={`viewBtn ${curView === "Year" ? "viewBtnSelected" : ""}`}>年</div>

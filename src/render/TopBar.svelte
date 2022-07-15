@@ -11,22 +11,21 @@
       curView = setting.viewLastSelected;
     }
   });
-  let changeView = (viewType) => {};
 </script>
 
 <div class="topBar">
   <div class="winTitle" />
-  <div class="today">今日：2022-07-14</div>
   <div on:click={() => settingStore.changeView("Day")} class={`viewBtn ${curView === "Day" ? "viewBtnSelected" : ""}`}>日</div>
-  <div class={`viewBtn ${curView === "Week" ? "viewBtnSelected" : ""}`}>周</div>
-  <div class={`viewBtn ${curView === "Month" ? "viewBtnSelected" : ""}`}>月</div>
-  <div class={`viewBtn ${curView === "Year" ? "viewBtnSelected" : ""}`}>年</div>
-  <div class="toolBtn">
-    <i class="iconfont icon-sousuo" />
+  <div on:click={() => settingStore.changeView("Week")} class={`viewBtn ${curView === "Week" ? "viewBtnSelected" : ""}`}>周</div>
+  <div on:click={() => settingStore.changeView("Month")} class={`viewBtn ${curView === "Month" ? "viewBtnSelected" : ""}`}>月</div>
+  <div on:click={() => settingStore.changeView("Year")} class={`viewBtn ${curView === "Year" ? "viewBtnSelected" : ""}`}>年</div>
+  <div on:click={() => settingStore.changeView("List")} class={`viewBtn ${curView === "List" ? "viewBtnSelected" : ""}`}>
+    <i style="font-size: 13px;" class="iconfont icon-sousuo" />
   </div>
-  <div class="toolBtn">
+  <div on:click={() => settingStore.changeView("Setting")} class={`viewBtn ${curView === "Setting" ? "viewBtnSelected" : ""}`}>
     <i class="iconfont icon-setting" />
   </div>
+  <div class="span" />
 </div>
 
 <style lang="scss">
@@ -36,46 +35,46 @@
     right: 0px;
     top: 0px;
     display: flex;
-    height: 46px;
-    line-height: 46px;
+    height: 38px;
+    line-height: 38px;
     font-size: 14px;
+    background: #f1f3f4;
   }
   .winTitle {
     flex: 1;
     padding-left: 12px;
     font-size: 14px;
     -webkit-app-region: drag;
-  }
-  .today {
-    padding-left: 12px;
-    padding-right: 12px;
-    cursor: pointer;
-    &:hover {
-      text-decoration: underline;
-    }
+    border-bottom: 1px solid #dadce0;
   }
   .viewBtn {
-    width: 38px;
-    height: 24px;
-    border: 1px solid #dadce0;
-    line-height: 22px;
-    margin-top: 10px;
+    height: 34px;
+    line-height: 30px;
+    margin-top: 4px;
+    width: 60px;
     text-align: center;
-    margin-left: 6px;
-    margin-right: 6px;
-    border-radius: 3px;
     cursor: pointer;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid #dadce0;
+    box-sizing: border-box;
     &:hover {
       background: #f1f3f4;
     }
   }
   .viewBtnSelected {
-    background: #f1f3f4;
+    background: #ffffff;
+    border-bottom: 1px solid #fff;
+    border-left: 1px solid #dadce0;
+    border-right: 1px solid #dadce0;
+    border-top: 1px solid #dadce0;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    &:hover {
+      background: #fff;
+    }
   }
-  .toolBtn {
-    width: 40px;
-    text-align: center;
-    line-height: 46px;
-    cursor: pointer;
+  .span {
+    border-bottom: 1px solid #dadce0;
+    width: 8px;
   }
 </style>

@@ -18,4 +18,10 @@ export class SettingModel extends BaseModel {
    * 事件发生前多久开始提醒，单位分钟
    */
   scheduleAlertTimeBefore = 20;
+
+  showIconInTaskbar = false;
+
+  pinToDesktop = true;
+
+  showLunar = true;
 }

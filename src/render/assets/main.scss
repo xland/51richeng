@@ -45,44 +45,10 @@ input {
 ::-webkit-scrollbar-corner {
     background-color: transparent;
   }
-
-.codex-editor__redactor{
-    cursor: text;
-  }
-.ce-block__content, .ce-toolbar__content{
-    max-width: calc(100% - 120px) !important;
-  }
-.ce-toolbar{
-    right: inherit !important;
-    left: 36px !important;
-  }
-.ce-toolbar__actions{
-    right: -22px !important;
-  }
-.ce-toolbox{
-    left: 236px !important;
-  }
-.cdx-block{
-    max-width: 100% !important;
-  }
-.tc-cell:first-child{
-    border-left: 1px solid #ddd;
-  }
-.tc-row::after{
-    border-right: 1px solid #ddd;
-  }
-  .EditorImg{
-    position: relative;
-    display: inline-block;
-    cursor:default;
-  }
-  .EditorImgDragger{
-    width: 8px;
-    height: 8px;
-    background: #00000055;
+  .viewBox {
     position: absolute;
-    z-index: 1;
+    top: 38px;
+    bottom: 0px;
+    left: 0px;
     right: 0px;
-    bottom: 4px;
-    cursor:nwse-resize
   }

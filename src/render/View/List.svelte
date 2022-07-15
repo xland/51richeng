@@ -1,5 +1,5 @@
 <script lang="ts"></script>
 
-<div>Day</div>
+<div>List</div>
 
 <style lang="scss"></style>

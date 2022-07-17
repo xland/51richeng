@@ -15,6 +15,7 @@
   import List from "./View/List.svelte";
   let setting: SettingModel;
   let component;
+  let viewName: string;
   let subscribe = () => {
     settingStore.subscribe((v: SettingModel) => {
       setting = v;
@@ -22,16 +23,17 @@
     });
   };
   let initView = async () => {
-    let componentName = setting.viewSelected;
     if (setting.viewSelected === "lastSelected") {
-      componentName = setting.viewLastSelected;
+      viewName = setting.viewLastSelected;
+    } else {
+      viewName = setting.viewSelected;
     }
-    if (componentName === "Month") component = Month;
-    else if (componentName === "Day") component = Day;
-    else if (componentName === "Week") component = Week;
-    else if (componentName === "Year") component = Year;
-    else if (componentName === "Setting") component = Setting;
-    else if (componentName === "List") component = List;
+    if (viewName === "Month") component = Month;
+    else if (viewName === "Day") component = Day;
+    else if (viewName === "Week") component = Week;
+    else if (viewName === "Year") component = Year;
+    else if (viewName === "Setting") component = Setting;
+    else if (viewName === "List") component = List;
     await tick();
     let { ipcRenderer } = require("electron");
     ipcRenderer.invoke("pinWindow");
@@ -43,7 +45,7 @@
 </script>
 
 {#if component}
-  <TopBar />
+  <TopBar {viewName} />
 {/if}
 
 <svelte:component this={component} />

@@ -1,28 +1,22 @@
 <script lang="ts">
-  import type { SettingModel } from "../model/SettingModel";
-
   import { settingStore } from "./Store/SettingStore";
-  let setting: SettingModel;
-  let curView: string;
-  settingStore.subscribe((v: SettingModel) => {
-    setting = v;
-    curView = setting.viewSelected;
-    if (setting.viewSelected === "lastSelected") {
-      curView = setting.viewLastSelected;
-    }
-  });
+  export let viewName: string;
+  let updateSelectedView = (name) => {
+    viewName = name;
+    settingStore.changeView(name);
+  };
 </script>
 
 <div class="topBar">
   <div class="winTitle" />
-  <div on:click={() => settingStore.changeView("Day")} class={`viewBtn ${curView === "Day" ? "viewBtnSelected" : ""}`}>日</div>
-  <div on:click={() => settingStore.changeView("Week")} class={`viewBtn ${curView === "Week" ? "viewBtnSelected" : ""}`}>周</div>
-  <div on:click={() => settingStore.changeView("Month")} class={`viewBtn ${curView === "Month" ? "viewBtnSelected" : ""}`}>月</div>
-  <div on:click={() => settingStore.changeView("Year")} class={`viewBtn ${curView === "Year" ? "viewBtnSelected" : ""}`}>年</div>
-  <div on:click={() => settingStore.changeView("List")} class={`viewBtn ${curView === "List" ? "viewBtnSelected" : ""}`}>
+  <div on:click={() => updateSelectedView("Day")} class="viewBtn {`${viewName === 'Day' ? 'viewBtnSelected' : ''}`}">日</div>
+  <div on:click={() => updateSelectedView("Week")} class="viewBtn {`${viewName === 'Week' ? 'viewBtnSelected' : ''}`}">周</div>
+  <div on:click={() => updateSelectedView("Month")} class="viewBtn {`${viewName === 'Month' ? 'viewBtnSelected' : ''}`}">月</div>
+  <div on:click={() => updateSelectedView("Year")} class="viewBtn {`${viewName === 'Year' ? 'viewBtnSelected' : ''}`}">年</div>
+  <div on:click={() => updateSelectedView("List")} class="viewBtn {`${viewName === 'List' ? 'viewBtnSelected' : ''}`}">
     <i style="font-size: 13px;" class="iconfont icon-sousuo" />
   </div>
-  <div on:click={() => settingStore.changeView("Setting")} class={`viewBtn ${curView === "Setting" ? "viewBtnSelected" : ""}`}>
+  <div on:click={() => settingStore.changeView("Setting")} class={`viewBtn ${viewName === "Setting" ? "viewBtnSelected" : ""}`}>
     <i class="iconfont icon-setting" />
   </div>
   <div class="span" />
@@ -30,10 +24,6 @@
 
 <style lang="scss">
   .topBar {
-    left: 0px;
-    position: absolute;
-    right: 0px;
-    top: 0px;
     display: flex;
     height: 38px;
     line-height: 38px;

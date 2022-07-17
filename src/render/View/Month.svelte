@@ -42,7 +42,7 @@
           isShowMonth: isShowMonth(firstDay),
         };
         if (item.isCurDate) {
-          chineseName = lunarObj.toString();
+          chineseName = lunarObj.getMonthInChinese() + "月" + lunarObj.getDayInChinese();
         }
         firstDay.setDate(firstDay.getDate() + 1);
         arr.push(item);
@@ -98,7 +98,7 @@
     line-height: 42px;
     padding-left: 12px;
     padding-right: 8px;
-    font-size: 14px;
+    font-size: 12px;
     border-bottom: 1px solid #e1e2e3;
     .monthTitle {
       flex: 1;
@@ -118,7 +118,7 @@
         background: #e1e2e3;
       }
       i {
-        font-size: 13px;
+        font-size: 12px;
       }
     }
   }

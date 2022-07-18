@@ -2,11 +2,8 @@
   import type { SettingModel } from "../model/SettingModel";
 
   import { onMount, tick } from "svelte";
-
-  import "./assets/iconfont.css";
-  import "./assets/main.scss";
   import { settingStore } from "./Store/SettingStore";
-  import TopBar from "./TopBar.svelte";
+  import ViewTopBar from "./View/ViewTopBar.svelte";
   import Day from "./View/Day.svelte";
   import Month from "./View/Month.svelte";
   import Week from "./View/Week.svelte";
@@ -45,7 +42,7 @@
 </script>
 
 {#if component}
-  <TopBar {viewName} />
+  <ViewTopBar {viewName} />
 {/if}
 
 <svelte:component this={component} />

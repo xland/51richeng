@@ -22,6 +22,6 @@ export class ConfigWindow implements BrowserWindowConstructorOptions {
   thickFrame = true;
   hasShadow = false;
   opacity = 1;
-  minHeight = 600;
-  minWidth = 800;
+  minHeight?: number;
+  minWidth?: number;
 }

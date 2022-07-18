@@ -51,6 +51,10 @@
     }
     dateList = dateList;
   };
+  let addSchedule = () => {
+    let { ipcRenderer } = require("electron");
+    ipcRenderer.invoke("showDialog", "Schedule");
+  };
   onMount(() => {
     initDateList();
   });
@@ -79,7 +83,7 @@
   {#each dateList as arr, index (index)}
     <div class="dayRow">
       {#each arr as item (item.date)}
-        <div class={item.isShowMonth ? "" : "notShowMonth"}>
+        <div on:click={addSchedule} class={item.isShowMonth ? "" : "notShowMonth"}>
           <div class={`dateTitle ${item.isCurDate ? "curDate" : ""}`}>{`${item.date.getDate()}（${item.chineseDate}）`}</div>
         </div>
       {/each}

@@ -54,9 +54,10 @@ export class CommonWindowEvent {
     ipcMain.handle("resizable", (e) => {
       return this.getWin(e)?.isResizable();
     });
-    ipcMain.handle("resize", (e, width: number, height: number) => {
+    ipcMain.handle("sizeWindow", (e, param: { w: number; h: number; minW: number; minH: number }) => {
       let win = this.getWin(e);
-      win.setSize(width, height);
+      win.setSize(param.w, param.h);
+      win.setMinimumSize(param.minW, param.minH);
       win.center();
       win.show();
     });
@@ -67,19 +68,6 @@ export class CommonWindowEvent {
     });
     ipcMain.handle("getPath", (e, name: any) => {
       return app.getPath(name);
-    });
-  }
-  /**
-   * 监听某个窗口的最大化状态变化事件
-   * 事件发生后向对应窗口的页面发送相应的消息 以使该页面有机会改变标题栏的相应图标
-   * @param win
-   */
-  public static windowMaximizeChange(win: BrowserWindow) {
-    win.on("maximize", () => {
-      win.webContents.send("windowMaximized");
-    });
-    win.on("unmaximize", () => {
-      win.webContents.send("windowUnmaximized");
     });
   }
 }

@@ -1,5 +1,6 @@
-import { BrowserWindow, ipcMain, app, screen } from "electron";
+import { BrowserWindow, ipcMain, app, screen, BrowserWindowConstructorOptions } from "electron";
 import electget from "electget";
+import { ConfigWindow } from "src/model/ConfigWindow";
 
 export class CommonWindowEvent {
   /**

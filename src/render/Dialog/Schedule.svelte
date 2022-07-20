@@ -10,10 +10,17 @@
       minW: 600,
       minH: 330,
     });
+    let msg = { msgName: window["__dialogId"] };
+    window.parent.postMessage(JSON.stringify(msg));
+    window.addEventListener("message", function (e) {
+      console.log(e);
+    });
   });
 </script>
 
 <DialogTopBar />
+<!-- <webview id="webview" src="https://www.oschina.net/" style="height: 100%;width:100%;" allowpopups /> -->
+
 <div class="Schedule">
   <div class="row title">
     <div class="iconBox">

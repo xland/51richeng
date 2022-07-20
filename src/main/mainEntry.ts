@@ -1,7 +1,7 @@
 import { app, BrowserWindow, protocol, ProtocolResponse, session } from "electron";
 import electget from "electget";
 import { CommonWindowEvent } from "./CommonWindowEvent";
-import { ConfigWindow } from "./ConfigWindow";
+import { ConfigWindow } from "../model/ConfigWindow";
 import { dialogPool } from "./dialogPool";
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = "true";
 app.commandLine.appendSwitch("--disable-site-isolation-trials");
@@ -22,9 +22,17 @@ app.whenReady().then(() => {
     if (win.id != mainWindow.id) return;
     electget.moveToBottom(mainWindow);
   });
-  mainWindow.once("show", () => {
-    dialogPool.init();
+  mainWindow.webContents.setWindowOpenHandler((param) => {
+    console.log(param.url);
+    let config = new ConfigWindow();
+    config.momodalable = true;
+    config.modal = true;
+    config.parent = mainWindow;
+    return { action: "allow", overrideBrowserWindowOptions: config };
   });
+  // mainWindow.once("show", () => {
+  //   dialogPool.init();
+  // });
   // protocol.registerHttpProtocol("rrs", async (request, callback) => {
   //   if (request.method === "POST") {
   //     for (let i = 0; i < request.uploadData.length; i++) {

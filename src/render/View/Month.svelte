@@ -51,9 +51,31 @@
     }
     dateList = dateList;
   };
-  let addSchedule = () => {
-    let { ipcRenderer } = require("electron");
-    ipcRenderer.invoke("showDialog", "Schedule");
+  let addSchedule = async () => {
+    let openWindow = (url): Promise<Window> => {
+      return new Promise((resolve, reject) => {
+        let dialog = window.open(url);
+        dialog.window.parent = window;
+        let dialogId = require("crypto").randomUUID();
+        dialog.window["__dialogId"] = dialogId;
+        let readyHandler = (e) => {
+          let msg = JSON.parse(e.data);
+          if (msg["msgName"] === dialogId) {
+            window.removeEventListener("message", readyHandler);
+            resolve(dialog);
+          }
+        };
+        window.addEventListener("message", readyHandler);
+      });
+    };
+    let dialog = await openWindow("http://localhost:3000/?dialog=Schedule");
+    setInterval(() => {
+      console.log("post");
+      dialog.postMessage({
+        name: "allen",
+        value: { a: 123, b: "asdfasdfasd测试测试" },
+      });
+    }, 3000);
   };
   onMount(() => {
     initDateList();

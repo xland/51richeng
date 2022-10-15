@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
-import { ConfigWindow } from "../model/ConfigWindow";
+import { ConfigWindow } from "./ConfigWindow";
 
 export class DialogItem {
   dialog: BrowserWindow;

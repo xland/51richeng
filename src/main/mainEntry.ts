@@ -1,8 +1,7 @@
 import { app, BrowserWindow, protocol, ProtocolResponse, session } from "electron";
 import electget from "electget";
 import { CommonWindowEvent } from "./CommonWindowEvent";
-import { ConfigWindow } from "../model/ConfigWindow";
-import { dialogPool } from "./dialogPool";
+import { ConfigWindow } from "./ConfigWindow";
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = "true";
 app.commandLine.appendSwitch("--disable-site-isolation-trials");
 let schemeConfig = { standard: true, supportFetchAPI: true, bypassCSP: true, corsEnabled: true, stream: true };

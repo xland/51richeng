@@ -19,6 +19,7 @@ app.whenReady().then(() => {
   CommonWindowEvent.listen();
   app.on("browser-window-focus", (e, win: BrowserWindow) => {
     if (win.id != mainWindow.id) return;
+    console.log(123);
     electget.moveToBottom(mainWindow);
   });
   mainWindow.webContents.setWindowOpenHandler((param) => {

@@ -30,8 +30,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Rml::Debugger::Initialise(context);
 	Shell::LoadFonts();
 	auto docStr = R"(<rml><head><title>Demo</title>
-<style>body{background:#fff;font-family: "Microsoft YaHei";font-size: 20dp;width: 100%;height:100%;color: #000;}</style></head>
-<body>Hello World</body></rml>)";
+<style>body{background:#fff;font-family: "Microsoft YaHei";font-size: 20dp;width: 100%;height:100%;color: #000;padding:100px;}
+#btn{background:blue;color:#fff;border-radius:12px;padding:28px;}
+</style></head>
+<body><div id="btn">asdfasdfasdfasdfasf</div></body></rml>)";
 	if (Rml::ElementDocument* document = context->LoadDocumentFromMemory(docStr))
 	{
 		document->Show();

@@ -56,19 +56,14 @@ void Shell::LoadFonts()
 	systemFontPath.append(L"Fonts\\msyh.ttc");
 	Rml::LoadFontFace(systemFontPath.string(), true);
 }
-
 void Shell::Shutdown()
 {
 	file_interface.reset();
 }
-
-
-
 bool Shell::ProcessKeyDownShortcuts(Rml::Context* context, Rml::Input::KeyIdentifier key, int key_modifier, float native_dp_ratio, bool priority)
 {
 	if (!context)
 		return true;
-
 	// Result should return true to allow the event to propagate to the next handler.
 	bool result = false;
 

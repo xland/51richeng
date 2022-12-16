@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RiCheng", "RiCheng\RiCheng.vcxproj", "{A654270B-CC78-4318-B975-BB8AFCFCFCE9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Backend", "Backend\Backend.vcxitems", "{A81F1DC6-5FEB-4292-9073-EAB51460714C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Shell", "Shell\Shell.vcxitems", "{815F305D-0BCC-4795-AFD4-9ADBF4898CDA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A654270B-CC78-4318-B975-BB8AFCFCFCE9}.Debug|x64.ActiveCfg = Debug|x64
+		{A654270B-CC78-4318-B975-BB8AFCFCFCE9}.Debug|x64.Build.0 = Debug|x64
+		{A654270B-CC78-4318-B975-BB8AFCFCFCE9}.Debug|x86.ActiveCfg = Debug|Win32
+		{A654270B-CC78-4318-B975-BB8AFCFCFCE9}.Debug|x86.Build.0 = Debug|Win32
+		{A654270B-CC78-4318-B975-BB8AFCFCFCE9}.Release|x64.ActiveCfg = Release|x64
+		{A654270B-CC78-4318-B975-BB8AFCFCFCE9}.Release|x64.Build.0 = Release|x64
+		{A654270B-CC78-4318-B975-BB8AFCFCFCE9}.Release|x86.ActiveCfg = Release|Win32
+		{A654270B-CC78-4318-B975-BB8AFCFCFCE9}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07C19CEB-353B-4ED4-94D1-3FE24249BF7D}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Shell\Shell.vcxitems*{815f305d-0bcc-4795-afd4-9adbf4898cda}*SharedItemsImports = 9
+		Backend\Backend.vcxitems*{a654270b-cc78-4318-b975-bb8afcfcfce9}*SharedItemsImports = 4
+		Shell\Shell.vcxitems*{a654270b-cc78-4318-b975-bb8afcfcfce9}*SharedItemsImports = 4
+		Backend\Backend.vcxitems*{a81f1dc6-5feb-4292-9073-eab51460714c}*SharedItemsImports = 9
+	EndGlobalSection
+EndGlobal

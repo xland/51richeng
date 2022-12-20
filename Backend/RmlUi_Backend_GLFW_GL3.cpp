@@ -1,31 +1,4 @@
-/*
- * This source file is part of RmlUi, the HTML/CSS Interface Middleware
- *
- * For the latest information, see http://github.com/mikke89/RmlUi
- *
- * Copyright (c) 2008-2010 CodePoint Ltd, Shift Technology Ltd
- * Copyright (c) 2019 The RmlUi Team, and contributors
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- */
-
+#include <Windows.h>
 #include "RmlUi_Backend.h"
 #include "RmlUi_Platform_GLFW.h"
 #include "RmlUi_Renderer_GL3.h"
@@ -33,6 +6,11 @@
 #include <RmlUi/Core/Input.h>
 #include <RmlUi/Core/Profiling.h>
 #include <GLFW/glfw3.h>
+#include <Windows.h>
+#include <windowsx.h>
+#include <dwmapi.h>
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <GLFW/glfw3native.h>
 
 static void SetupCallbacks(GLFWwindow* window);
 
@@ -59,6 +37,76 @@ struct BackendData {
 };
 static Rml::UniquePtr<BackendData> data;
 
+namespace FramelessHelper {
+
+	WNDPROC OldProc;
+	static LRESULT HitTest(HWND hwnd, LPARAM lParam) {
+		POINT absoluteCursor = POINT{ GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
+		RECT winRect;
+		::GetWindowRect(hwnd, &winRect);
+		POINT cursor = POINT{ absoluteCursor.x - winRect.left,absoluteCursor.y - winRect.top };
+		if (absoluteCursor.x > winRect.left && absoluteCursor.y > winRect.top && absoluteCursor.x < winRect.right && absoluteCursor.y < winRect.bottom) {
+			int borderWidth = 4;
+			if (absoluteCursor.x < winRect.left + borderWidth && absoluteCursor.y < winRect.top + borderWidth) return HTTOPLEFT;
+			else if (absoluteCursor.x < winRect.left + borderWidth && absoluteCursor.y > winRect.bottom - borderWidth) return HTBOTTOMLEFT;
+			else if (absoluteCursor.x > winRect.right - borderWidth && absoluteCursor.y > winRect.bottom - borderWidth) return HTBOTTOMRIGHT;
+			else if (absoluteCursor.x > winRect.right - borderWidth && absoluteCursor.y < winRect.top + borderWidth) return HTTOPRIGHT;
+			else if (absoluteCursor.x < winRect.left + borderWidth) return HTLEFT;
+			else if (absoluteCursor.x > winRect.right - borderWidth) return HTRIGHT;
+			else if (absoluteCursor.y < winRect.top + borderWidth) return HTTOP;
+			else if (absoluteCursor.y > winRect.bottom - borderWidth) return HTBOTTOM;
+			if (cursor.x > 0 && cursor.y > 0 && cursor.x < winRect.right - 160 && cursor.y < 50) {
+				return HTCAPTION;
+			}
+			return HTCLIENT;
+		}
+		else
+		{
+			return HTNOWHERE;
+		}
+	}
+
+	LRESULT CALLBACK WindowHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+		switch (msg) {
+			case WM_NCCALCSIZE: {
+				return 0;
+			}
+			case WM_NCHITTEST: {
+				return HitTest(hwnd, lParam);
+			}
+			case WM_SIZE: {
+				if (data && data->context) {
+					const int width = LOWORD(lParam);
+					const int height = HIWORD(lParam);
+					data->context->SetDimensions({width,height});
+					data->context->Update();
+					Backend::BeginFrame();
+					data->context->Render();
+					Backend::PresentFrame();
+				}
+			}
+		}
+		return CallWindowProc(OldProc, hwnd, msg, wParam, lParam); //窗口消息处理权力交给原有的窗口处理逻辑
+	}
+
+	void CustomWindowHandler(GLFWwindow* window)
+	{
+		HWND hwnd = glfwGetWin32Window((GLFWwindow*)window);
+		SetWindowText(hwnd, L"日历");
+		auto borderlessStyle = WS_POPUP | WS_THICKFRAME | WS_CAPTION | WS_SYSMENU | WS_VISIBLE;
+		::SetWindowLongPtr(hwnd, GWL_STYLE, borderlessStyle);
+		static const MARGINS shadow_state{ 1,1,1,1 };
+		::DwmExtendFrameIntoClientArea(hwnd, &shadow_state);
+		::SetWindowPos(hwnd, nullptr, 110, 110, 0, 0, SWP_FRAMECHANGED | SWP_NOSIZE);
+		OldProc = (WNDPROC)SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG_PTR)WindowHandler);
+		RECT screenRect, winRect;
+		SystemParametersInfo(SPI_GETWORKAREA, 0, &screenRect, 0);
+		GetWindowRect(hwnd, &winRect);
+		SetWindowPos(hwnd, HWND_TOP, (screenRect.right - winRect.right) / 2, (screenRect.bottom - winRect.bottom) / 2, winRect.right, winRect.bottom, SWP_FRAMECHANGED | SWP_NOSIZE);
+	}
+}
+
+
 bool Backend::Initialize(const char* name, int width, int height, bool allow_resize)
 {
 	RMLUI_ASSERT(!data);
@@ -78,16 +126,15 @@ bool Backend::Initialize(const char* name, int width, int height, bool allow_res
 	glfwWindowHint(GLFW_STENCIL_BITS, 8);
 
 	// Enable MSAA for better-looking visuals, especially when transforms are applied.
-	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_SAMPLES, 8);
 
 	// Apply window properties and create it.
 	glfwWindowHint(GLFW_RESIZABLE, allow_resize ? GLFW_TRUE : GLFW_FALSE);
 	glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
-
-	GLFWwindow* window = glfwCreateWindow(width, height, name, nullptr, nullptr);
+	GLFWwindow* window = glfwCreateWindow(width, height, name, nullptr, nullptr);	
 	if (!window)
 		return false;
-
+	FramelessHelper::CustomWindowHandler(window);
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);
 
@@ -109,9 +156,10 @@ bool Backend::Initialize(const char* name, int width, int height, bool allow_res
 	glfwGetFramebufferSize(window, &width, &height);
 	data->render_interface.SetViewport(width, height);
 
+	
+
 	// Receive num lock and caps lock modifiers for proper handling of numpad inputs in text fields.
 	glfwSetInputMode(window, GLFW_LOCK_KEY_MODS, GLFW_TRUE);
-
 	// Setup the input and window event callback functions.
 	SetupCallbacks(window);
 
@@ -147,7 +195,6 @@ bool Backend::ProcessEvents(Rml::Context* context, KeyDownCallback key_down_call
 	if (data->context_dimensions_dirty)
 	{
 		data->context_dimensions_dirty = false;
-
 		Rml::Vector2i window_size;
 		float dp_ratio = 1.f;
 		glfwGetFramebufferSize(data->window, &window_size.x, &window_size.y);

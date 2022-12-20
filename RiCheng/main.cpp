@@ -2,7 +2,11 @@
 #include <RmlUi/Core.h>
 #include <RmlUi/Debugger.h>
 #include "RmlUi_Backend.h"
-#include "include/Shell.h"
+#include "Shell.h"
+#include "WindowMain.h"
+#include <string>
+#include <cwchar>
+#include <stdexcept>
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPTSTR lpCmdLine, _In_ int nCmdShow) {
@@ -11,7 +15,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	if (!Shell::Initialize()) {
 		return -1;
 	}
-	if (!Backend::Initialize("test", width, height, true))
+	if (!Backend::Initialize("", width, height, true))
 	{
 		Shell::Shutdown();
 		return -1;
@@ -29,15 +33,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	}
 	Rml::Debugger::Initialise(context);
 	Shell::LoadFonts();
-	auto docStr = R"(<rml><head><title>Demo</title>
-<style>body{background:#fff;font-family: "Microsoft YaHei";font-size: 20dp;width: 100%;height:100%;color: #000;padding:100px;}
-#btn{background:blue;color:#fff;border-radius:12px;padding:28px;}
-</style></head>
-<body><div id="btn">asdfasdfasdfasdfasf</div></body></rml>)";
-	if (Rml::ElementDocument* document = context->LoadDocumentFromMemory(docStr))
-	{
-		document->Show();
-	}
+	WindowMain* windowMain{ new WindowMain() };
 	bool running = true;
 	while (running)
 	{
@@ -50,5 +46,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Rml::Shutdown();
 	Backend::Shutdown();
 	Shell::Shutdown();
+	delete windowMain;
 	return 0;
 }

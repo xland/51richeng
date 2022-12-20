@@ -57,7 +57,6 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
     <Import Project="..\Backend\Backend.vcxitems" Label="Shared" />
-    <Import Project="..\Shell\Shell.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -136,6 +135,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ResourceHelper.cpp" />
+    <ClCompile Include="Shell.cpp" />
+    <ClCompile Include="ShellFileInterface.cpp" />
+    <ClCompile Include="WindowMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="ResourceHelper.h" />
+    <ClInclude Include="Shell.h" />
+    <ClInclude Include="ShellFileInterface.h" />
+    <ClInclude Include="WindowMain.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RiCheng.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ui1.bin" />
+    <None Include="ui\main.rml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

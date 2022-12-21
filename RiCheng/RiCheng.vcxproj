@@ -154,6 +154,9 @@
     <None Include="ui1.bin" />
     <None Include="ui\main.rml" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="ui\iconfont.ttf" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -5,7 +5,8 @@
 namespace ResourceHelper
 {
 	static std::map<std::string, int> ResourcePathMap {
-		{"ui/main.rml",IDR_MAIN}
+		{"ui/main.rml",IDR_MAIN},
+		{"ui/iconfont.ttf",IDR_ICON}
 	};
 }
 

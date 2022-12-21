@@ -18,6 +18,7 @@ bool Shell::Initialize()
 }
 void Shell::LoadFonts()
 {
+	Rml::LoadFontFace("ui/iconfont.ttf", true);
 	UINT size = GetWindowsDirectory(NULL, 0);
 	wchar_t* path = new wchar_t[size];
 	if (GetWindowsDirectory(path, size) == 0) {
@@ -25,7 +26,7 @@ void Shell::LoadFonts()
 	}
 	auto systemFontPath = std::filesystem::path(path);
 	systemFontPath.append(L"Fonts\\msyh.ttc");  //Î¢ÈíÑÅºÚ
-	Rml::LoadFontFace(systemFontPath.string(), true);
+	Rml::LoadFontFace(systemFontPath.string());
 }
 void Shell::Shutdown()
 {

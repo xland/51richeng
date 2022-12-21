@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include <RmlUi/Core.h>
 #include "RmlUi_Backend.h"
 #include "RmlUi_Platform_GLFW.h"
 #include "RmlUi_Renderer_GL3.h"
@@ -9,6 +10,7 @@
 #include <Windows.h>
 #include <windowsx.h>
 #include <dwmapi.h>
+#include <format>
 #define GLFW_EXPOSE_NATIVE_WIN32
 #include <GLFW/glfw3native.h>
 
@@ -38,15 +40,14 @@ struct BackendData {
 static Rml::UniquePtr<BackendData> data;
 
 namespace FramelessHelper {
-
 	WNDPROC OldProc;
 	static LRESULT HitTest(HWND hwnd, LPARAM lParam) {
 		POINT absoluteCursor = POINT{ GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
 		RECT winRect;
 		::GetWindowRect(hwnd, &winRect);
-		POINT cursor = POINT{ absoluteCursor.x - winRect.left,absoluteCursor.y - winRect.top };
 		if (absoluteCursor.x > winRect.left && absoluteCursor.y > winRect.top && absoluteCursor.x < winRect.right && absoluteCursor.y < winRect.bottom) {
-			int borderWidth = 4;
+			int borderWidth = 6;
+			//Rml::Log::Message(Rml::Log::LT_ERROR, "%d < %d,%d < 50", absoluteCursor.x, winRect.right - 260, absoluteCursor.y);
 			if (absoluteCursor.x < winRect.left + borderWidth && absoluteCursor.y < winRect.top + borderWidth) return HTTOPLEFT;
 			else if (absoluteCursor.x < winRect.left + borderWidth && absoluteCursor.y > winRect.bottom - borderWidth) return HTBOTTOMLEFT;
 			else if (absoluteCursor.x > winRect.right - borderWidth && absoluteCursor.y > winRect.bottom - borderWidth) return HTBOTTOMRIGHT;
@@ -55,7 +56,7 @@ namespace FramelessHelper {
 			else if (absoluteCursor.x > winRect.right - borderWidth) return HTRIGHT;
 			else if (absoluteCursor.y < winRect.top + borderWidth) return HTTOP;
 			else if (absoluteCursor.y > winRect.bottom - borderWidth) return HTBOTTOM;
-			if (cursor.x > 0 && cursor.y > 0 && cursor.x < winRect.right - 160 && cursor.y < 50) {
+			else if (absoluteCursor.x < winRect.right - 260 && absoluteCursor.y < winRect.top+50) {
 				return HTCAPTION;
 			}
 			return HTCLIENT;
@@ -69,10 +70,37 @@ namespace FramelessHelper {
 	LRESULT CALLBACK WindowHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		switch (msg) {
 			case WM_NCCALCSIZE: {
+				WINDOWPLACEMENT      wp;
+				LPNCCALCSIZE_PARAMS  szr;
+				wp.length = sizeof(WINDOWPLACEMENT);
+				GetWindowPlacement(hwnd, &wp);
+				szr = LPNCCALCSIZE_PARAMS(lParam);
+				if (wp.showCmd == SW_SHOWMAXIMIZED) {
+					RECT WorkAreaRect;
+					SystemParametersInfo(SPI_GETWORKAREA, 0, &WorkAreaRect, 0);
+					szr->rgrc[0] = WorkAreaRect;
+				}
+				else if (wp.showCmd == SW_SHOWNORMAL) {
+					auto context = Rml::GetContext("main");
+					if (context) {
+						auto doc = context->GetDocument("main");
+						auto ele = doc->GetElementById("maximizeBtn");
+						ele->SetInnerRML((const char*)u8"\ue6e5");
+					}
+				}
 				return 0;
 			}
 			case WM_NCHITTEST: {
 				return HitTest(hwnd, lParam);
+			}
+			case WM_GETMINMAXINFO: {				
+				MINMAXINFO* mminfo;
+				mminfo = (PMINMAXINFO)lParam;
+				mminfo->ptMinTrackSize.x = 898;
+				mminfo->ptMinTrackSize.y = 542;
+				mminfo->ptMaxPosition.x = 0;
+				mminfo->ptMaxPosition.y = 0;
+				break;
 			}
 			case WM_SIZE: {
 				if (data && data->context) {
@@ -84,6 +112,7 @@ namespace FramelessHelper {
 					data->context->Render();
 					Backend::PresentFrame();
 				}
+				break;
 			}
 		}
 		return CallWindowProc(OldProc, hwnd, msg, wParam, lParam); //窗口消息处理权力交给原有的窗口处理逻辑

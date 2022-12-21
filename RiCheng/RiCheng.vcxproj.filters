@@ -59,4 +59,7 @@
     </None>
     <None Include="ui\main.rml" />
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="ui\iconfont.ttf" />
+  </ItemGroup>
 </Project>

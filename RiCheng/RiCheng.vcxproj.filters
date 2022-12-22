@@ -47,6 +47,15 @@
     <ClInclude Include="WindowMain.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="date\date.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="date\iso_week.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="date\tz.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RiCheng.rc">

@@ -8,11 +8,22 @@
                 padding: 0px;
                 background: #fff;
                 font-family: "Microsoft YaHei";
-                font-size: 14dp;
                 width: 100%;
                 height: 100%;
-                color: #000;
-                line-height: 50px;
+                color: #333;
+                font-size: 16px;
+            }
+
+
+            #appIcon {
+                margin-left: 12px;
+                padding-left: 10px;
+                padding-right: 10px;
+                width: 60px;
+                text-align: center;
+                line-height: 48px;
+                height: 50px;
+                color: #f02c38;
             }
 
             #topBar {
@@ -23,7 +34,10 @@
 
             #titleBox {
                 height: 50px;
+                line-height: 50px;
                 flex: 1;
+                font-size: 22px;
+                color: #666;
             }
 
             .toolBtn {
@@ -31,6 +45,9 @@
                 height: 50px;
                 text-align: center;
                 color: #888;
+                line-height: 50px;
+                cursor: pointer;
+                font-size: 16px;
             }
 
             .toolBtn:hover {
@@ -41,15 +58,218 @@
                 background: #ffa39e;
                 color: #ffffff;
             }
+
+            #switchBtn {
+                width: 74px;
+                height: 34px;
+                text-align: center;
+                margin-top: 8px;
+                line-height: 32px;
+                cursor: pointer;
+                border-radius: 3px;
+                border: 1px #eeeff0;
+                margin-right: 12px;
+                color: #666;
+                font-size: 18px;
+            }
+
+            #switchBtn:hover {
+                background-color: #eeeff0;
+            }
+
+
+            #switchDropDownBtn {
+                padding-left: 12px;
+                color: #bbb;
+            }
+
+            .preNextBtn {
+                height: 30px;
+                width: 30px;
+                margin-top: 10px;
+                border: 1px #eeeff0;
+                border-radius: 30px;
+                cursor: pointer;
+                text-align: center;
+                font-size: 14px;
+                line-height: 27px;
+            }
+
+            .preNextBtn:hover {
+                background: #eff0f1;
+            }
+
+            #nextBtn {
+                margin-right: 30px;
+            }
+
+            #currentDay {
+                width: 200px;
+                text-align: center;
+                height: 50px;
+                line-height: 50px;
+                color: #666;
+                font-size: 18px;
+            }
+
+            .titleLeft {
+                height: 50px;
+                width: 399px;
+                background-color: rgb(253, 233, 235);
+                position: absolute;
+                left: 0px;
+                border-right: 1px rgb(233, 213, 215);
+                box-sizing: border-box;
+            }
+
+            .bodyBox {
+                position: absolute;
+                top: 50px;
+                bottom: 0px;
+                left: 0px;
+                right: 0px;
+            }
+
+            .bodyLeft {
+                height: 100%;
+                padding-left: 17px;
+                padding-right: 17px;
+                background-color: rgb(253, 233, 235);
+                border-right: 1px rgb(233, 213, 215);
+                position: absolute;
+                left: 0px;
+                width: 364px;
+            }
+
+            .bodyRight {
+                flex: 1;
+                height: 100%;
+                position: absolute;
+                right: 0px;
+                left: 400px;
+            }
+
+            #calendarHeader {
+                width: 364px;
+                margin-top: 20px;
+                height: 46px;
+                line-height: 46px;
+            }
+
+            #calendarHeader div {
+                float: left;
+                min-width: 52px;
+                text-align: center;
+            }
+
+            #calendarEleBox {
+                width: 364px;
+                height: 276px;
+                line-height: 46px;
+            }
+
+            .curMonthEle {
+                float: left;
+                min-width: 52px;
+                text-align: center;
+                border-radius: 3px;
+                font-size: 19px;
+                cursor: pointer;
+                color: #666;
+            }
+
+            .notCurMonthEle {
+                float: left;
+                min-width: 52px;
+                text-align: center;
+                border-radius: 3px;
+                font-size: 19px;
+                cursor: pointer;
+                color: #aaa;
+            }
+
+            #calendarEleBox div:hover {
+                background: rgb(233, 213, 215);
+            }
         </style>
     </head>
 
     <body>
         <div id="topBar">
-            <div id="titleBox">日历</div>
+            <div id="titleBox">
+                <div class="titleLeft">
+                    <div id="appIcon"></div>
+                    <div>日程</div>
+                </div>
+            </div>
+            <div id="preBtn" class="preNextBtn"></div>
+            <div id="currentDay"></div>
+            <div id="nextBtn" class="preNextBtn"></div>
+            <div id="switchBtn">
+                <div>月</div>
+                <div id="switchDropDownBtn"></div>
+            </div>
             <div id="minimizeBtn" class="toolBtn"></div>
             <div id="maximizeBtn" class="toolBtn"></div>
             <div id="closeBtn" class="toolBtn"></div>
+        </div>
+        <div class="bodyBox">
+            <div class="bodyLeft">
+                <div id="calendarHeader">
+                    <div>一</div>
+                    <div>二</div>
+                    <div>三</div>
+                    <div>四</div>
+                    <div>五</div>
+                    <div>六</div>
+                    <div>日</div>
+                </div>
+                <div id="calendarEleBox">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </div>
+            <div class="bodyRight"></div>
         </div>
     </body>
 </rml>

@@ -1,5 +1,11 @@
 #pragma once
 #include <RmlUi/Core.h>
+#include <chrono>
+#include "date/date.h"
+#include "date/iso_week.h"
+
+using namespace std::chrono;
+
 class WindowMain :public Rml::EventListener
 {
 public:
@@ -9,5 +15,11 @@ public:
 	void ProcessEvent(Rml::Event& event) override;
 private:
 	Rml::ElementDocument* document;
+	date::year_month_day today;
+	inline Rml::Element* setEleIcon(std::string&& id);
+	inline void setBtn();
+	inline void initDocument();
+	inline void initCurDate();
+	void initCalendar();
 };
 

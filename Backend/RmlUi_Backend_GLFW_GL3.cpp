@@ -56,7 +56,7 @@ namespace FramelessHelper {
 			else if (absoluteCursor.x > winRect.right - borderWidth) return HTRIGHT;
 			else if (absoluteCursor.y < winRect.top + borderWidth) return HTTOP;
 			else if (absoluteCursor.y > winRect.bottom - borderWidth) return HTBOTTOM;
-			else if (absoluteCursor.x < winRect.right - 260 && absoluteCursor.y < winRect.top+50) {
+			else if (absoluteCursor.x < winRect.right - 768 && absoluteCursor.y < winRect.top+50) {
 				return HTCAPTION;
 			}
 			return HTCLIENT;
@@ -121,7 +121,7 @@ namespace FramelessHelper {
 	void CustomWindowHandler(GLFWwindow* window)
 	{
 		HWND hwnd = glfwGetWin32Window((GLFWwindow*)window);
-		SetWindowText(hwnd, L"日历");
+		SetWindowText(hwnd, L"日程");
 		auto borderlessStyle = WS_POPUP | WS_THICKFRAME | WS_CAPTION | WS_SYSMENU | WS_VISIBLE;
 		::SetWindowLongPtr(hwnd, GWL_STYLE, borderlessStyle);
 		static const MARGINS shadow_state{ 1,1,1,1 };

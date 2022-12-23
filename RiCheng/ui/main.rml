@@ -145,7 +145,7 @@
                 height: 100%;
                 position: absolute;
                 right: 0px;
-                left: 400px;
+                left: 399px;
             }
 
             #calendarHeader {
@@ -198,7 +198,7 @@
                 width: 74px;
                 border-radius: 3px;
                 top: 43px;
-                z-index: 2;
+                z-index: 8;
                 border-left: 1px #eeeff0;
                 border-bottom: 1px #eeeff0;
                 border-right: 1px #eeeff0;
@@ -219,6 +219,54 @@
             #switchMenu div:hover {
                 background-color: #eeeff0;
             }
+
+            #viewDay {
+                display: flex;
+                height: 100%;
+                width: 100%;
+                flex-direction: column;
+                position: relative;
+            }
+
+            .viewDayRow {
+                display: block;
+                flex: 1;
+                border-top: 1px #eeeff0;
+                position: relative;
+                color: #888;
+            }
+
+            .viewDayRow:hover {
+                color: #333;
+                border-top: 1px #dddee0;
+                background: #fcfcfc;
+            }
+
+            .viewDayRowPre {
+                position: absolute;
+                background: #eeeff0;
+                display: block;
+                top: 0px;
+                width: 56px;
+                padding-top: 2px;
+                padding-bottom: 2px;
+                text-align: center;
+                border-bottom-right-radius: 8px;
+                z-index: 3;
+            }
+
+            .todoItem {
+                color: #596b93;
+                position: absolute;
+                left: 80px;
+                right: 24px;
+                height: 100px;
+                border-radius: 12px;
+                top: 22px;
+                z-index: 2;
+                background: rgb(3, 155, 229);
+                cursor: nwse-resize;
+            }
         </style>
     </head>
 
@@ -234,7 +282,7 @@
             <div id="currentDay"></div>
             <div id="nextBtn" class="preNextBtn"></div>
             <div id="switchBtn">
-                <div>月</div>
+                <div>日</div>
                 <div id="switchDropDownBtn"></div>
             </div>
             <div id="switchMenu" style="display: none;">
@@ -247,7 +295,7 @@
             <div id="closeBtn" class="toolBtn"></div>
         </div>
         <div class="bodyBox">
-            <div class="bodyLeft">
+            <div drag="drag-drop" class="bodyLeft">
                 <div id="calendarHeader">
                     <div>一</div>
                     <div>二</div>
@@ -302,7 +350,108 @@
                     <div></div>
                 </div>
             </div>
-            <div class="bodyRight"></div>
+            <div class="bodyRight">
+                <div id="viewDay">
+                    <div id="todoItem1" class="todoItem">
+                        allen
+                    </div>
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">0:00</div>
+                    </div>
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">1:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">2:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">3:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">4:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">5:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">6:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">7:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">8:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">9:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">10:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">11:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">12:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">13:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">14:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">15:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">16:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">17:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">18:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">19:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">20:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">21:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">22:00</div>
+                    </div>
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">23:00</div>
+                    </div>
+                </div>
+                <div id="viewWeek" style="display: none;">周视图</div>
+                <div id="viewMonth" style="display: none;">月视图</div>
+            </div>
         </div>
     </body>
 </rml>

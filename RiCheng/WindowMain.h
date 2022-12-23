@@ -16,6 +16,7 @@ public:
 private:
 	Rml::ElementDocument* document;
 	date::year_month_day today;
+	Rml::Vector2f mousePointLeftTopPointSpace;
 	inline Rml::Element* setEleIcon(std::string&& id);
 	inline void setBtn();
 	inline void initDocument();

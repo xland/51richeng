@@ -41,6 +41,9 @@ void WindowMain::setBtn() {
 	switchOption = switchOption->GetNextSibling();
 	switchOption->AddEventListener(Rml::EventId::Click, this);
 	switchOption->GetNextSibling()->AddEventListener(Rml::EventId::Click, this);
+
+	auto ele = document->GetElementById("todoItem1");
+	ele->AddEventListener(Rml::EventId::Mousedown, this);
 }
 
 void WindowMain::initCurDate() {
@@ -125,16 +128,31 @@ bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
 	else if (eleId == "switchOptionDay")
 	{
 		document->GetElementById("switchBtn")->GetFirstChild()->SetInnerRML((const char*)u8"日");
+		auto tarEle = document->GetElementById("viewDay");
+		tarEle->SetProperty("display", "flex");
+		tarEle = tarEle->GetNextSibling();
+		tarEle->SetProperty("display", "none");
+		tarEle->GetNextSibling()->SetProperty("display", "none");
 		return true;
 	}
 	else if (eleId == "switchOptionWeek")
 	{
 		document->GetElementById("switchBtn")->GetFirstChild()->SetInnerRML((const char*)u8"周");
+		auto tarEle = document->GetElementById("viewDay");
+		tarEle->SetProperty("display", "none");
+		tarEle = tarEle->GetNextSibling();
+		tarEle->SetProperty("display", "block");
+		tarEle->GetNextSibling()->SetProperty("display", "none");
 		return true;
 	}
 	else if (eleId == "switchOptionMonth")
 	{
 		document->GetElementById("switchBtn")->GetFirstChild()->SetInnerRML((const char*)u8"月");
+		auto tarEle = document->GetElementById("viewDay");
+		tarEle->SetProperty("display", "none");
+		tarEle = tarEle->GetNextSibling();
+		tarEle->SetProperty("display", "none");
+		tarEle->GetNextSibling()->SetProperty("display", "block");
 		return true;
 	}
 	else if (document == ele) {
@@ -153,6 +171,32 @@ void WindowMain::ProcessEvent(Rml::Event& event) {
 		case Rml::EventId::Click: {
 			if (windowToolBtnEventProcess(eleId, ele)) return;
 			else if (switchViewModeProcess(eleId, ele)) return;
+			break;
+		}
+		case Rml::EventId::Mousedown: {
+			if (eleId == "todoItem1") {
+				auto point1 = ele->GetAbsoluteOffset();
+				auto point2 = event.GetUnprojectedMouseScreenPos();
+				mousePointLeftTopPointSpace = point2 - point1;
+				document->AddEventListener(Rml::EventId::Mousemove, this);
+				document->AddEventListener(Rml::EventId::Mouseup, this);
+			}
+			break;
+		}
+		case Rml::EventId::Mousemove: {
+			if (ele == document) {
+				auto mousePoint = event.GetUnprojectedMouseScreenPos();
+				auto leftTopPoint = mousePoint - mousePointLeftTopPointSpace;
+				auto targetEle = document->GetElementById("todoItem1");
+				targetEle->SetProperty(Rml::PropertyId::Top, Rml::Property(leftTopPoint.y, Rml::Property::PX));
+			}
+			break;
+		}
+		case Rml::EventId::Mouseup: {
+			if (ele == document) {
+				document->RemoveEventListener(Rml::EventId::Mousemove, this);
+				document->RemoveEventListener(Rml::EventId::Mouseup, this);
+			}
 			break;
 		}
 		default:

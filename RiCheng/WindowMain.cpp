@@ -33,7 +33,14 @@ void WindowMain::setBtn() {
 	setEleIcon("minimizeBtn")->AddEventListener(Rml::EventId::Click, this);
 	setEleIcon("preBtn")->AddEventListener(Rml::EventId::Click, this);
 	setEleIcon("nextBtn")->AddEventListener(Rml::EventId::Click, this);
-	setEleIcon("switchDropDownBtn")->AddEventListener(Rml::EventId::Click, this);
+	setEleIcon("switchDropDownBtn");
+	
+	document->GetElementById("switchBtn")->AddEventListener(Rml::EventId::Click, this);
+	auto switchOption = document->GetElementById("switchOptionDay");
+	switchOption->AddEventListener(Rml::EventId::Click, this);
+	switchOption = switchOption->GetNextSibling();
+	switchOption->AddEventListener(Rml::EventId::Click, this);
+	switchOption->GetNextSibling()->AddEventListener(Rml::EventId::Click, this);
 }
 
 void WindowMain::initCurDate() {
@@ -81,35 +88,71 @@ void WindowMain::initCalendar() {
 	}
 }
 
+bool WindowMain::windowToolBtnEventProcess(std::string& eleId,Rml::Element* ele) {
+	if (eleId == "minimizeBtn") {
+		ShowWindow(::GetForegroundWindow(), SW_MINIMIZE);
+		return true;
+	}
+	else if (eleId == "closeBtn")
+	{
+		PostMessage(::GetForegroundWindow(), WM_CLOSE, 0, 0);
+		return true;
+	}
+	else if (eleId == "maximizeBtn")
+	{
+		if (ele->GetInnerRML() == std::string{ ResourceHelper::IconMap["maximizeBtn"] }) {
+			ele->SetInnerRML(ResourceHelper::IconMap["restoreBtn"]);
+			HWND hWnd = ::GetForegroundWindow();
+			ShowWindow(hWnd, SW_MAXIMIZE);
+		}
+		else
+		{
+			ele->SetInnerRML(ResourceHelper::IconMap["maximizeBtn"]);
+			HWND hWnd = ::GetForegroundWindow();
+			ShowWindow(hWnd, SW_RESTORE);
+		}
+		return true;
+	}
+	return false;
+}
+
+bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
+	if (eleId == "switchBtn") {
+		document->GetElementById("switchMenu")->SetProperty("display", "block");
+		document->AddEventListener(Rml::EventId::Click, this);
+		return true;
+	}
+	else if (eleId == "switchOptionDay")
+	{
+		document->GetElementById("switchBtn")->GetFirstChild()->SetInnerRML((const char*)u8"日");
+		return true;
+	}
+	else if (eleId == "switchOptionWeek")
+	{
+		document->GetElementById("switchBtn")->GetFirstChild()->SetInnerRML((const char*)u8"周");
+		return true;
+	}
+	else if (eleId == "switchOptionMonth")
+	{
+		document->GetElementById("switchBtn")->GetFirstChild()->SetInnerRML((const char*)u8"月");
+		return true;
+	}
+	else if (document == ele) {
+		document->GetElementById("switchMenu")->SetProperty("display", "none");
+		document->RemoveEventListener(Rml::EventId::Click, this);
+		return true;
+	}
+	return false;
+}
+
 void WindowMain::ProcessEvent(Rml::Event& event) {
+	auto ele = event.GetCurrentElement();
+	auto eleId = ele->GetId();
 	switch (event.GetId())
 	{
 		case Rml::EventId::Click: {
-			auto eleId = event.GetTargetElement()->GetId();
-			if (eleId == "minimizeBtn") {
-				HWND hWnd = ::GetForegroundWindow();
-				ShowWindow(hWnd, SW_MINIMIZE);
-			}
-			else if(eleId == "closeBtn")
-			{
-				HWND hWnd = ::GetForegroundWindow();
-				PostMessage(hWnd, WM_CLOSE, 0, 0);
-			}
-			else if (eleId == "maximizeBtn")
-			{
-				auto ele = event.GetTargetElement();
-				if (ele->GetInnerRML() == std::string{ (const char*)u8"\ue6e5" }) {
-					ele->SetInnerRML((const char*)u8"\ue6e9");
-					HWND hWnd = ::GetForegroundWindow();
-					ShowWindow(hWnd, SW_MAXIMIZE);
-				}
-				else
-				{
-					ele->SetInnerRML((const char*)u8"\ue6e5");
-					HWND hWnd = ::GetForegroundWindow();
-					ShowWindow(hWnd, SW_RESTORE);
-				}
-			}
+			if (windowToolBtnEventProcess(eleId, ele)) return;
+			else if (switchViewModeProcess(eleId, ele)) return;
 			break;
 		}
 		default:

@@ -66,7 +66,6 @@
                 margin-top: 8px;
                 line-height: 32px;
                 cursor: pointer;
-                border-radius: 3px;
                 border: 1px #eeeff0;
                 margin-right: 12px;
                 color: #666;
@@ -191,10 +190,39 @@
             #calendarEleBox div:hover {
                 background: rgb(233, 213, 215);
             }
+
+            #switchMenu {
+                position: absolute;
+                right: 180px;
+                height: 120px;
+                width: 74px;
+                border-radius: 3px;
+                top: 43px;
+                z-index: 2;
+                border-left: 1px #eeeff0;
+                border-bottom: 1px #eeeff0;
+                border-right: 1px #eeeff0;
+                margin-right: 12px;
+                background: #fff;
+                color: #666;
+            }
+
+            #switchMenu div {
+                display: block;
+                width: 74px;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                cursor: pointer;
+            }
+
+            #switchMenu div:hover {
+                background-color: #eeeff0;
+            }
         </style>
     </head>
 
-    <body>
+    <body id="document">
         <div id="topBar">
             <div id="titleBox">
                 <div class="titleLeft">
@@ -208,6 +236,11 @@
             <div id="switchBtn">
                 <div>月</div>
                 <div id="switchDropDownBtn"></div>
+            </div>
+            <div id="switchMenu" style="display: none;">
+                <div id="switchOptionDay">日</div>
+                <div id="switchOptionWeek">周</div>
+                <div id="switchOptionMonth">月</div>
             </div>
             <div id="minimizeBtn" class="toolBtn"></div>
             <div id="maximizeBtn" class="toolBtn"></div>

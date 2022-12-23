@@ -30,6 +30,12 @@
     <ClCompile Include="WindowMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="EventInstance.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="EventProcessor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -54,6 +60,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="date\tz.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EventInstance.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="EventProcessor.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

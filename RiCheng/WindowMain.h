@@ -20,6 +20,8 @@ private:
 	inline void setBtn();
 	inline void initDocument();
 	inline void initCurDate();
+	inline bool windowToolBtnEventProcess(std::string& eleId, Rml::Element* ele);
+	inline bool switchViewModeProcess(std::string& eleId, Rml::Element* ele);
 	void initCalendar();
 };
 

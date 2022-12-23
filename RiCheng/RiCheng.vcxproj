@@ -134,6 +134,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EventInstance.cpp" />
+    <ClCompile Include="EventProcessor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ResourceHelper.cpp" />
     <ClCompile Include="Shell.cpp" />
@@ -144,6 +146,8 @@
     <ClInclude Include="date\date.h" />
     <ClInclude Include="date\iso_week.h" />
     <ClInclude Include="date\tz.h" />
+    <ClInclude Include="EventInstance.h" />
+    <ClInclude Include="EventProcessor.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceHelper.h" />
     <ClInclude Include="Shell.h" />

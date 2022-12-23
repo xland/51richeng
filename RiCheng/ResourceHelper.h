@@ -16,6 +16,7 @@ namespace ResourceHelper
 		{"preBtn",(const char*)u8"\ue60e"},
 		{"nextBtn",(const char*)u8"\ue638"},
 		{"switchDropDownBtn",(const char*)u8"\ue60f"},
+		{"restoreBtn",(const char*)u8"\ue6e9"},
 	};
 }
 

@@ -2,6 +2,7 @@
 #include <RmlUi/Core.h>
 #include <RmlUi/Debugger.h>
 #include "RmlUi_Backend.h"
+#include "EventInstance.h"
 #include "Shell.h"
 #include "WindowMain.h"
 #include <string>
@@ -33,6 +34,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	}
 	Rml::Debugger::Initialise(context);
 	Shell::LoadFonts();
+	//EventInstance eventListenerInstancer;
+	//Rml::Factory::RegisterEventListenerInstancer(&eventListenerInstancer);
 	WindowMain* windowMain{ new WindowMain() };
 	bool running = true;
 	while (running)

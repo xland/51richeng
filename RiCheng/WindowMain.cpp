@@ -14,6 +14,7 @@ WindowMain::WindowMain() {
 
 void WindowMain::initDocument() {
 	auto context = Rml::GetContext("main");
+	context->EnableMouseCursor(true);
 	document = context->LoadDocument("ui/main.rml");
 	document->SetId("main");
 	document->Show();
@@ -41,9 +42,13 @@ void WindowMain::setBtn() {
 	switchOption = switchOption->GetNextSibling();
 	switchOption->AddEventListener(Rml::EventId::Click, this);
 	switchOption->GetNextSibling()->AddEventListener(Rml::EventId::Click, this);
-
-	auto ele = document->GetElementById("todoItem1");
-	ele->AddEventListener(Rml::EventId::Mousedown, this);
+	
+	Rml::ElementList list;
+	document->QuerySelectorAll(list,".todoItem > div");
+	for (auto& ele:list)
+	{
+		ele->AddEventListener(Rml::EventId::Mousedown, this);
+	}	
 }
 
 void WindowMain::initCurDate() {
@@ -163,6 +168,29 @@ bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
 	return false;
 }
 
+void WindowMain::updateTargetTime() {
+	auto top = targetEle->GetProperty(Rml::PropertyId::Top)->value.Get<int>();
+	auto bottom = top + targetEle->GetClientHeight();
+	auto totalHeight = targetEle->GetParentNode()->GetClientHeight();
+	std::string endTime;
+	auto func = [&totalHeight](int p) {
+		double h1 = 24 * p / totalHeight;
+		double m1 = 60 * (h1 - (int)h1);
+		if (m1 > 56) {
+			h1 += 1;
+			m1 = 0;
+		}
+		else if (m1 < 4) {
+			m1 = 0;
+		}
+		auto hStr = h1 < 10 ? ("0" + std::to_string((int)h1)) : std::to_string((int)h1);
+		auto mStr = m1 < 10 ? ("0" + std::to_string((int)m1)) : std::to_string((int)m1);
+		return std::format("{0}:{1}", hStr, mStr);
+	};
+	std::string timeStr = std::format("{0}-{1}", func(top), func(bottom));
+	targetEle->GetChild(1)->GetChild(0)->SetInnerRML(timeStr);
+}
+
 void WindowMain::ProcessEvent(Rml::Event& event) {
 	auto ele = event.GetCurrentElement();
 	auto eleId = ele->GetId();
@@ -174,10 +202,28 @@ void WindowMain::ProcessEvent(Rml::Event& event) {
 			break;
 		}
 		case Rml::EventId::Mousedown: {
-			if (eleId == "todoItem1") {
-				auto point1 = ele->GetAbsoluteOffset();
-				auto point2 = event.GetUnprojectedMouseScreenPos();
-				mousePointLeftTopPointSpace = point2 - point1;
+			auto eleClassName = ele->GetClassNames();
+			if (eleClassName == "todoContent") {
+				targetEle = ele->GetParentNode();
+				targetEleHeight = targetEle->GetClientHeight();
+				dragType = 1;
+				auto mouseY = event.GetUnprojectedMouseScreenPos().y;
+				auto eleTop = targetEle->GetAbsoluteTop();
+				mousePointTopSpan = mouseY - eleTop + 50;//50是标题栏的高度
+				document->AddEventListener(Rml::EventId::Mousemove, this);
+				document->AddEventListener(Rml::EventId::Mouseup, this);
+			}
+			else if (eleClassName == "todoDragBottom") {
+				targetEle = ele->GetParentNode();
+				targetEleHeight = targetEle->GetClientHeight();
+				dragType = 2;
+				document->AddEventListener(Rml::EventId::Mousemove, this);
+				document->AddEventListener(Rml::EventId::Mouseup, this);
+			}
+			else if (eleClassName == "todoDragTop") {
+				targetEle = ele->GetParentNode();
+				targetEleHeight = targetEle->GetClientHeight();
+				dragType = 3;
 				document->AddEventListener(Rml::EventId::Mousemove, this);
 				document->AddEventListener(Rml::EventId::Mouseup, this);
 			}
@@ -185,10 +231,40 @@ void WindowMain::ProcessEvent(Rml::Event& event) {
 		}
 		case Rml::EventId::Mousemove: {
 			if (ele == document) {
-				auto mousePoint = event.GetUnprojectedMouseScreenPos();
-				auto leftTopPoint = mousePoint - mousePointLeftTopPointSpace;
-				auto targetEle = document->GetElementById("todoItem1");
-				targetEle->SetProperty(Rml::PropertyId::Top, Rml::Property(leftTopPoint.y, Rml::Property::PX));
+				//todo 动态颜色
+				if (dragType == 1) {
+					auto mouseY = event.GetUnprojectedMouseScreenPos().y;
+					auto yPoint = mouseY - mousePointTopSpan; 
+					if (yPoint < 3) yPoint = 3;
+					auto bottom = targetEle->GetParentNode()->GetClientHeight() - yPoint - targetEleHeight;
+					targetEle->SetProperty(Rml::PropertyId::Top, Rml::Property(yPoint, Rml::Property::PX));
+					targetEle->SetProperty(Rml::PropertyId::Bottom, Rml::Property(bottom, Rml::Property::PX));
+				}
+				else if (dragType == 2) {
+					auto height = event.GetUnprojectedMouseScreenPos().y - 50;
+					auto bottom = targetEle->GetParentNode()->GetClientHeight() - height - 3 ;
+					if (bottom < 3) {
+						bottom = 3;
+						document->RemoveEventListener(Rml::EventId::Mousemove, this);
+						document->RemoveEventListener(Rml::EventId::Mouseup, this);
+					}
+					if (targetEle->GetParentNode()->GetClientHeight() - targetEle->GetProperty(Rml::PropertyId::Top)->value.Get<int>() - bottom <= 20) {
+						bottom = targetEle->GetParentNode()->GetClientHeight() - targetEle->GetProperty(Rml::PropertyId::Top)->value.Get<int>() - 20;
+					}
+					targetEle->SetProperty(Rml::PropertyId::Bottom, Rml::Property(bottom, Rml::Property::PX));
+				}
+				else if (dragType == 3) {
+					auto top = event.GetUnprojectedMouseScreenPos().y - 50 - 3;
+					if (top < 3) {
+						top = 3;
+					}
+					if (targetEle->GetParentNode()->GetClientHeight() - targetEle->GetProperty(Rml::PropertyId::Bottom)->value.Get<int>() - top <= 20) {
+						top = targetEle->GetParentNode()->GetClientHeight() - targetEle->GetProperty(Rml::PropertyId::Bottom)->value.Get<int>() - 20;
+					}
+					targetEle->SetProperty(Rml::PropertyId::Top, Rml::Property(top, Rml::Property::PX));
+					
+				}
+				updateTargetTime();
 			}
 			break;
 		}

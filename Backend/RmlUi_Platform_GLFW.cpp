@@ -38,6 +38,8 @@ SystemInterface_GLFW::SystemInterface_GLFW()
 	cursor_pointer = glfwCreateStandardCursor(GLFW_HAND_CURSOR);
 	cursor_cross = glfwCreateStandardCursor(GLFW_CROSSHAIR_CURSOR);
 	cursor_text = glfwCreateStandardCursor(GLFW_IBEAM_CURSOR);
+	cursor_vresize = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
+	cursor_hresize = glfwCreateStandardCursor(GLFW_VRESIZE_CURSOR);
 }
 
 SystemInterface_GLFW::~SystemInterface_GLFW()
@@ -73,6 +75,10 @@ void SystemInterface_GLFW::SetMouseCursor(const Rml::String& cursor_name)
 		cursor = cursor_cross;
 	else if (cursor_name == "text")
 		cursor = cursor_text;
+	else if (cursor_name == "vresize")
+		cursor = cursor_vresize;
+	else if (cursor_name == "hresize")
+		cursor = cursor_hresize;
 	else if (cursor_name == "unavailable")
 		cursor = nullptr;
 

@@ -16,7 +16,10 @@ public:
 private:
 	Rml::ElementDocument* document;
 	date::year_month_day today;
-	Rml::Vector2f mousePointLeftTopPointSpace;
+	int mousePointTopSpan;
+	Rml::Element* targetEle;
+	int targetEleHeight;
+	int dragType;
 	inline Rml::Element* setEleIcon(std::string&& id);
 	inline void setBtn();
 	inline void initDocument();
@@ -24,5 +27,6 @@ private:
 	inline bool windowToolBtnEventProcess(std::string& eleId, Rml::Element* ele);
 	inline bool switchViewModeProcess(std::string& eleId, Rml::Element* ele);
 	void initCalendar();
+	void updateTargetTime();
 };
 

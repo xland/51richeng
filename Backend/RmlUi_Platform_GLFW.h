@@ -57,6 +57,8 @@ private:
 	GLFWcursor* cursor_pointer = nullptr;
 	GLFWcursor* cursor_cross = nullptr;
 	GLFWcursor* cursor_text = nullptr;
+	GLFWcursor* cursor_vresize = nullptr;
+	GLFWcursor* cursor_hresize = nullptr;
 };
 
 /**

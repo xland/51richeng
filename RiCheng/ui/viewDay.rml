@@ -57,7 +57,7 @@
             #todoItem1 {
                 position: absolute;
                 left: 80px;
-                right: 450px;
+                right: 440px;
                 bottom: 200px;
                 top: 22px;
                 z-index: 2;
@@ -68,7 +68,7 @@
             #todoItem2 {
                 position: absolute;
                 left: 80px;
-                right: 450px;
+                right: 440px;
                 bottom: 260px;
                 top: 122px;
                 z-index: 2;

@@ -162,7 +162,6 @@
                 width: 74px;
                 border-radius: 3px;
                 top: 43px;
-                z-index: 8;
                 border-left: 1px #eeeff0;
                 border-bottom: 1px #eeeff0;
                 border-right: 1px #eeeff0;

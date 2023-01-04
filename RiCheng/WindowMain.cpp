@@ -82,7 +82,10 @@ bool WindowMain::windowToolBtnEventProcess(std::string& eleId,Rml::Element* ele)
 
 bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
 	if (eleId == "switchBtn") {
-		document->GetElementById("switchMenu")->SetProperty("display", "block");
+		auto menu = document->GetElementById("switchMenu");
+		menu->AppendChild()
+		menu->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(33, Rml::Property::NUMBER));
+		menu->SetProperty("display", "block");
 		document->AddEventListener(Rml::EventId::Click, this);
 		return true;
 	}
@@ -94,6 +97,9 @@ bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
 		tarEle = tarEle->GetNextSibling();
 		tarEle->SetProperty("display", "none");
 		tarEle->GetNextSibling()->SetProperty("display", "none");
+		viewWeek->hide();
+		viewMonth->hide();
+		viewDay->show();
 		return true;
 	}
 	else if (eleId == "switchOptionWeek")
@@ -104,6 +110,12 @@ bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
 		tarEle = tarEle->GetNextSibling();
 		tarEle->SetProperty("display", "flex");
 		tarEle->GetNextSibling()->SetProperty("display", "none");
+		viewDay->hide();
+		viewMonth->hide();
+		if (viewWeek.get() == nullptr) {
+			viewWeek = std::make_unique<ViewWeek>();
+		}
+		viewWeek->show();
 		return true;
 	}
 	else if (eleId == "switchOptionMonth")
@@ -114,6 +126,12 @@ bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
 		tarEle = tarEle->GetNextSibling();
 		tarEle->SetProperty("display", "none");
 		tarEle->GetNextSibling()->SetProperty("display", "block");
+		viewDay->hide();
+		viewWeek->hide();
+		if (viewMonth.get() == nullptr) {
+			viewMonth = std::make_unique<ViewMonth>();
+		}
+		viewMonth->show();
 		return true;
 	}
 	else if (document == ele) {

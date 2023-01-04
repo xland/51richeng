@@ -1,6 +1,7 @@
 #pragma once
 #include <RmlUi/Core.h>
-class ViewDay :public Rml::EventListener
+#include "ViewBase.h"
+class ViewDay :public ViewBase
 {
 public:
 	ViewDay();
@@ -9,12 +10,12 @@ public:
 	void ProcessEvent(Rml::Event& event) override;
 private:
 	void updateTargetTime();
-	int mousePointTopSpan;
-	int mousePointLeftSpan;
-	Rml::Element* targetEle;
-	int targetEleHeight;
-	int dragType;
-	int viewMode = 1;
-	Rml::ElementDocument* document;
+	void processMouseMove(const Rml::Vector2f& mousePoint);
+	void processMouseDown(const std::string& className, const Rml::Vector2f& mousePoint);
+	int mousePointTopSpan = 0;
+	int mousePointLeftSpan = 0;
+	Rml::Element* targetEle = nullptr;
+	int targetEleHeight = 0;
+	int dragType = 0;
 };
 

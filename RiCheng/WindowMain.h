@@ -4,6 +4,8 @@
 #include <memory>
 #include "CalendarSmall.h"
 #include "ViewDay.h"
+#include "ViewWeek.h"
+#include "ViewMonth.h"
 
 using namespace std::chrono;
 
@@ -18,7 +20,8 @@ private:
 	Rml::ElementDocument* document;
 	std::unique_ptr<CalendarSmall> calendarSmall;
 	std::unique_ptr<ViewDay> viewDay;
-	
+	std::unique_ptr<ViewWeek> viewWeek;
+	std::unique_ptr<ViewMonth> viewMonth;
 	inline Rml::Element* setEleIcon(std::string&& id);
 	inline void setBtn();
 	inline void initDocument();

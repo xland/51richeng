@@ -140,6 +140,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shell.cpp" />
     <ClCompile Include="ShellFileInterface.cpp" />
+    <ClCompile Include="ViewBase.cpp" />
     <ClCompile Include="ViewDay.cpp" />
     <ClCompile Include="ViewMonth.cpp" />
     <ClCompile Include="ViewWeek.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="ResourceHelper.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="ShellFileInterface.h" />
+    <ClInclude Include="ViewBase.h" />
     <ClInclude Include="ViewDay.h" />
     <ClInclude Include="ViewMonth.h" />
     <ClInclude Include="ViewWeek.h" />

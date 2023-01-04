@@ -134,10 +134,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CalendarSmall.cpp" />
     <ClCompile Include="EventInstance.cpp" />
     <ClCompile Include="EventProcessor.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="ResourceHelper.cpp" />
     <ClCompile Include="Shell.cpp" />
     <ClCompile Include="ShellFileInterface.cpp" />
     <ClCompile Include="ViewDay.cpp" />
@@ -146,6 +146,7 @@
     <ClCompile Include="WindowMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CalendarSmall.h" />
     <ClInclude Include="date\date.h" />
     <ClInclude Include="date\iso_week.h" />
     <ClInclude Include="date\tz.h" />
@@ -165,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ui1.bin" />
+    <None Include="ui\calendarSmall.rml" />
     <None Include="ui\main.rml" />
     <None Include="ui\viewDay.rml" />
     <None Include="ui\viewMonth.rml" />

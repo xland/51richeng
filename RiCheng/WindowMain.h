@@ -1,8 +1,9 @@
 #pragma once
 #include <RmlUi/Core.h>
 #include <chrono>
-#include "date/date.h"
-#include "date/iso_week.h"
+#include <memory>
+#include "CalendarSmall.h"
+#include "ViewDay.h"
 
 using namespace std::chrono;
 
@@ -15,20 +16,15 @@ public:
 	void ProcessEvent(Rml::Event& event) override;
 private:
 	Rml::ElementDocument* document;
-	date::year_month_day today;
-	int mousePointTopSpan;
-	int mousePointLeftSpan;
-	Rml::Element* targetEle;
-	int targetEleHeight;
-	int dragType;
-	int viewMode = 1;
+	std::unique_ptr<CalendarSmall> calendarSmall;
+	std::unique_ptr<ViewDay> viewDay;
+	
 	inline Rml::Element* setEleIcon(std::string&& id);
 	inline void setBtn();
 	inline void initDocument();
 	inline void initCurDate();
 	inline bool windowToolBtnEventProcess(std::string& eleId, Rml::Element* ele);
 	inline bool switchViewModeProcess(std::string& eleId, Rml::Element* ele);
-	void initCalendar();
-	void updateTargetTime();
+	
 };
 

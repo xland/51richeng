@@ -6,6 +6,9 @@ namespace ResourceHelper
 {
 	static std::map<std::string, int> ResourcePathMap {
 		{"ui/main.rml",IDR_MAIN},
+		{"ui/viewDay.rml",IDR_ViewDay},
+		{"ui/viewMonth.rml",IDR_ViewMonth},
+		{"ui/viewWeek.rml",IDR_ViewWeek},
 		{"ui/iconfont.ttf",IDR_ICON}
 	};
 	static std::map<std::string, const char*> IconMap{

@@ -14,17 +14,12 @@
                 font-size: 16px;
             }
 
-
-            #appIcon {
-                margin-left: 12px;
-                padding-left: 10px;
-                padding-right: 10px;
-                width: 60px;
-                text-align: center;
-                line-height: 48px;
-                height: 50px;
-                color: #f02c38;
+            div {
+                display: block;
             }
+
+
+
 
             #topBar {
                 height: 50px;
@@ -70,6 +65,10 @@
                 margin-right: 12px;
                 color: #666;
                 font-size: 18px;
+            }
+
+            #switchBtn div {
+                display: inline-block;
             }
 
             #switchBtn:hover {
@@ -119,6 +118,19 @@
                 left: 0px;
                 border-right: 1px rgb(233, 213, 215);
                 box-sizing: border-box;
+            }
+
+            #appIcon {
+                padding-left: 10px;
+                width: 52px;
+                text-align: center;
+                line-height: 50px;
+                height: 50px;
+                color: #f02c38;
+            }
+
+            .titleLeft div {
+                display: inline-block;
             }
 
             .bodyBox {
@@ -208,7 +220,6 @@
             }
 
             #switchMenu div {
-                display: block;
                 width: 74px;
                 height: 40px;
                 line-height: 40px;
@@ -229,7 +240,6 @@
             }
 
             .viewDayRow {
-                display: block;
                 flex: 1;
                 border-top: 1px #eeeff0;
                 position: relative;
@@ -245,7 +255,6 @@
             .viewDayRowPre {
                 position: absolute;
                 background: #eeeff0;
-                display: block;
                 top: 0px;
                 width: 56px;
                 padding-top: 2px;
@@ -257,12 +266,27 @@
 
             .todoItem {
                 position: absolute;
+                box-sizing: border-box;
+            }
+
+            #todoItem1 {
                 left: 80px;
                 right: 24px;
                 bottom: 200px;
                 top: 22px;
                 z-index: 2;
+                border: 1px rgb(3, 155, 229);
                 background: rgba(3, 155, 229, 100);
+            }
+
+            #todoItem2 {
+                left: 80px;
+                right: 24px;
+                bottom: 260px;
+                top: 122px;
+                z-index: 2;
+                border: 1px rgb(163, 135, 229);
+                background: rgba(163, 135, 229, 100);
             }
 
             .todoDragTop {
@@ -298,19 +322,71 @@
                 right: 0px;
                 bottom: 6px;
                 color: #fff;
-                display: block;
                 text-align: center;
                 font-size: 20px;
+                line-height: 36px;
                 padding-top: 12px;
             }
 
-            .todoContentTitle {
-                padding-left: 12px;
+            .todoContentTitle {}
+
+
+            #viewWeek {
+                display: flex;
+                height: 100%;
+                width: 100%;
+                flex-direction: column;
+                position: relative;
+                border-top: 1px #eeeff0;
+            }
+
+            #weekColumnBox {
+                position: absolute;
+                top: 0px;
+                left: 100px;
+                bottom: 0px;
+                right: 0px;
+                z-index: 2;
+
+            }
+
+            .weekColumn {
+                width: 14.2857%;
+                height: 100%;
+                border-left: 1px #eeeff0;
+                float: left;
+                box-sizing: border-box;
+            }
+
+            .weekColumnHeader {
+                color: #888;
+                text-align: center;
+                line-height: 40px;
+            }
+
+            #todoItem3 {
+                left: 0%;
+                width: 14.2857%;
+                bottom: 260px;
+                top: 122px;
+                z-index: 3;
+                border: 1px rgb(63, 155, 229);
+                background: rgba(63, 155, 229, 100);
+            }
+
+            #todoItem4 {
+                left: 42.8571%;
+                width: 14.2857%;
+                bottom: 260px;
+                top: 122px;
+                z-index: 3;
+                border: 1px rgb(163, 135, 229);
+                background: rgba(163, 135, 229, 100);
             }
         </style>
     </head>
 
-    <body id="document">
+    <body>
         <div id="topBar">
             <div id="titleBox">
                 <div class="titleLeft">
@@ -502,7 +578,141 @@
                         <div class="viewDayRowPre">23:00</div>
                     </div>
                 </div>
-                <div id="viewWeek" style="display: none;">周视图</div>
+                <div id="viewWeek" style="display: none;">
+                    <div id="weekColumnBox">
+                        <div id="todoItem3" class="todoItem">
+                            <div class="todoDragTop"></div>
+                            <div class="todoContent">
+                                <div>00:00-00:00</div>
+                                <div class="todoContentTitle">年终总结会议</div>
+                            </div>
+                            <div class="todoDragBottom"></div>
+                        </div>
+                        <div id="todoItem4" class="todoItem">
+                            <div class="todoDragTop"></div>
+                            <div class="todoContent">
+                                <div>00:00-00:00</div>
+                                <div class="todoContentTitle">年终总结会议</div>
+                            </div>
+                            <div class="todoDragBottom"></div>
+                        </div>
+                        <div class="weekColumn">
+                            <div class="weekColumnHeader"> 周一 1月4日 </div>
+                        </div>
+                        <div class="weekColumn">
+                            <div class="weekColumnHeader"> 周二 1月4日 </div>
+                        </div>
+                        <div class="weekColumn">
+                            <div class="weekColumnHeader"> 周三 1月4日 </div>
+                        </div>
+                        <div class="weekColumn">
+                            <div class="weekColumnHeader"> 周四 1月4日 </div>
+                        </div>
+                        <div class="weekColumn">
+                            <div class="weekColumnHeader"> 周五 1月4日 </div>
+                        </div>
+                        <div class="weekColumn">
+                            <div class="weekColumnHeader"> 周六 1月4日 </div>
+                        </div>
+                        <div class="weekColumn">
+                            <div class="weekColumnHeader"> 周日 1月4日 </div>
+                        </div>
+                    </div>
+                    <div style="height: 40px;"></div>
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">0:00</div>
+                    </div>
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">1:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">2:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">3:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">4:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">5:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">6:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">7:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">8:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">9:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">10:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">11:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">12:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">13:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">14:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">15:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">16:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">17:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">18:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">19:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">20:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">21:00</div>
+                    </div>
+
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">22:00</div>
+                    </div>
+                    <div class="viewDayRow">
+                        <div class="viewDayRowPre">23:00</div>
+                    </div>
+                </div>
                 <div id="viewMonth" style="display: none;">月视图</div>
             </div>
         </div>

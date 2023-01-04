@@ -36,6 +36,15 @@
     <ClCompile Include="EventProcessor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ViewDay.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewMonth.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewWeek.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -68,6 +77,15 @@
     <ClInclude Include="EventProcessor.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ViewDay.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewMonth.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewWeek.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RiCheng.rc">
@@ -79,6 +97,9 @@
       <Filter>资源文件</Filter>
     </None>
     <None Include="ui\main.rml" />
+    <None Include="ui\viewDay.rml" />
+    <None Include="ui\viewMonth.rml" />
+    <None Include="ui\viewWeek.rml" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="ui\iconfont.ttf" />

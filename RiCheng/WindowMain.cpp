@@ -138,6 +138,7 @@ bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
 		tarEle = tarEle->GetNextSibling();
 		tarEle->SetProperty("display", "none");
 		tarEle->GetNextSibling()->SetProperty("display", "none");
+		viewMode = 1;
 		return true;
 	}
 	else if (eleId == "switchOptionWeek")
@@ -146,8 +147,9 @@ bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
 		auto tarEle = document->GetElementById("viewDay");
 		tarEle->SetProperty("display", "none");
 		tarEle = tarEle->GetNextSibling();
-		tarEle->SetProperty("display", "block");
+		tarEle->SetProperty("display", "flex");
 		tarEle->GetNextSibling()->SetProperty("display", "none");
+		viewMode = 2;
 		return true;
 	}
 	else if (eleId == "switchOptionMonth")
@@ -158,6 +160,7 @@ bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
 		tarEle = tarEle->GetNextSibling();
 		tarEle->SetProperty("display", "none");
 		tarEle->GetNextSibling()->SetProperty("display", "block");
+		viewMode = 3;
 		return true;
 	}
 	else if (document == ele) {
@@ -207,9 +210,8 @@ void WindowMain::ProcessEvent(Rml::Event& event) {
 				targetEle = ele->GetParentNode();
 				targetEleHeight = targetEle->GetClientHeight();
 				dragType = 1;
-				auto mouseY = event.GetUnprojectedMouseScreenPos().y;
-				auto eleTop = targetEle->GetAbsoluteTop();
-				mousePointTopSpan = mouseY - eleTop + 50;//50是标题栏的高度
+				mousePointTopSpan = event.GetUnprojectedMouseScreenPos().y - targetEle->GetAbsoluteTop() + 50;//50是标题栏的高度
+				mousePointLeftSpan = event.GetUnprojectedMouseScreenPos().x - targetEle->GetAbsoluteLeft() + 499; //左边距
 				document->AddEventListener(Rml::EventId::Mousemove, this);
 				document->AddEventListener(Rml::EventId::Mouseup, this);
 			}
@@ -239,6 +241,10 @@ void WindowMain::ProcessEvent(Rml::Event& event) {
 					auto bottom = targetEle->GetParentNode()->GetClientHeight() - yPoint - targetEleHeight;
 					targetEle->SetProperty(Rml::PropertyId::Top, Rml::Property(yPoint, Rml::Property::PX));
 					targetEle->SetProperty(Rml::PropertyId::Bottom, Rml::Property(bottom, Rml::Property::PX));
+					if (viewMode == 2) {
+						auto xPoint = event.GetUnprojectedMouseScreenPos().x - mousePointLeftSpan;
+						targetEle->SetProperty(Rml::PropertyId::Left, Rml::Property(xPoint, Rml::Property::PX));
+					}
 				}
 				else if (dragType == 2) {
 					auto height = event.GetUnprojectedMouseScreenPos().y - 50;
@@ -272,6 +278,11 @@ void WindowMain::ProcessEvent(Rml::Event& event) {
 			if (ele == document) {
 				document->RemoveEventListener(Rml::EventId::Mousemove, this);
 				document->RemoveEventListener(Rml::EventId::Mouseup, this);
+				if (viewMode == 2 && dragType == 1) {
+					auto left = targetEle->GetAbsoluteLeft() - 499;
+					int index = left / (targetEle->GetParentNode()->GetClientWidth() / 7);
+					targetEle->SetProperty(Rml::PropertyId::Left, Rml::Property(14.2857*index, Rml::Property::PERCENT));
+				}
 			}
 			break;
 		}

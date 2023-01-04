@@ -17,9 +17,11 @@ private:
 	Rml::ElementDocument* document;
 	date::year_month_day today;
 	int mousePointTopSpan;
+	int mousePointLeftSpan;
 	Rml::Element* targetEle;
 	int targetEleHeight;
 	int dragType;
+	int viewMode = 1;
 	inline Rml::Element* setEleIcon(std::string&& id);
 	inline void setBtn();
 	inline void initDocument();

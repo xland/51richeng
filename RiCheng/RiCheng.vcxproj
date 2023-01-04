@@ -140,6 +140,9 @@
     <ClCompile Include="ResourceHelper.cpp" />
     <ClCompile Include="Shell.cpp" />
     <ClCompile Include="ShellFileInterface.cpp" />
+    <ClCompile Include="ViewDay.cpp" />
+    <ClCompile Include="ViewMonth.cpp" />
+    <ClCompile Include="ViewWeek.cpp" />
     <ClCompile Include="WindowMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +155,9 @@
     <ClInclude Include="ResourceHelper.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="ShellFileInterface.h" />
+    <ClInclude Include="ViewDay.h" />
+    <ClInclude Include="ViewMonth.h" />
+    <ClInclude Include="ViewWeek.h" />
     <ClInclude Include="WindowMain.h" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +166,9 @@
   <ItemGroup>
     <None Include="ui1.bin" />
     <None Include="ui\main.rml" />
+    <None Include="ui\viewDay.rml" />
+    <None Include="ui\viewMonth.rml" />
+    <None Include="ui\viewWeek.rml" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="ui\iconfont.ttf" />

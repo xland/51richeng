@@ -8,7 +8,5 @@ public:
 	ViewWeek(const ViewWeek&) = delete;
 	ViewWeek& operator=(const ViewWeek&) = delete;
 	void ProcessEvent(Rml::Event& event) override;
-private:
-	Rml::ElementDocument* document = nullptr;
 };
 

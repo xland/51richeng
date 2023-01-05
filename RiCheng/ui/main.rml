@@ -28,13 +28,106 @@
                 display: flex;
             }
 
-            #titleBox {
+            .titleLeft {
                 height: 50px;
-                line-height: 50px;
-                flex: 1;
+                width: 400px;
+                background-color: rgb(253, 233, 235);
+                border-right: 1px rgb(233, 213, 215);
+                float: left;
                 font-size: 22px;
-                color: #666;
             }
+
+            #appIcon {
+                padding-left: 10px;
+                width: 52px;
+                text-align: center;
+                line-height: 50px;
+                height: 50px;
+                color: #f02c38;
+            }
+
+            .titleLeft div {
+                display: inline-block;
+            }
+
+            .switchBtn {
+                color: #888;
+                height: 30px;
+                margin-top: 10px;
+                line-height: 26px;
+                text-align: center;
+                cursor: pointer;
+                background: #f6f6f6;
+                width: 60px;
+                font-size: 18px;
+            }
+
+            .switchBtn:hover {
+                background-color: #e6e6e6;
+            }
+
+            .switchBtnSelected {
+                background: rgb(253, 233, 235);
+                color: #f02c38;
+            }
+
+            .switchBtnSelected:hover {
+                background: rgb(253, 233, 235);
+                color: #f02c38;
+            }
+
+            .preNextBtn {
+                width: 30px;
+                font-size: 16px;
+                line-height: 26px;
+                height: 30px;
+                margin-top: 10px;
+                text-align: center;
+                cursor: pointer;
+                background: #f6f6f6;
+            }
+
+            .preNextBtn:hover {
+                background-color: #e6e6e6;
+            }
+
+
+            #switchOptionDay {
+                margin-left: 30px;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
+
+            #switchOptionMonth {
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+            }
+
+            #preBtn {
+                margin-left: 30px;
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+                color: #999;
+            }
+
+            #currentDay {
+                padding-left: 18px;
+                padding-right: 18px;
+                height: 30px;
+                line-height: 26px;
+                margin-top: 10px;
+                text-align: center;
+                color: #888;
+                background: #f6f6f6;
+                font-size: 18px;
+            }
+
+            #nextBtn {
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+                color: #999;
+            }
+
 
             .toolBtn {
                 width: 60px;
@@ -55,82 +148,8 @@
                 color: #ffffff;
             }
 
-            #switchBtn {
-                width: 74px;
-                height: 34px;
-                text-align: center;
-                margin-top: 8px;
-                line-height: 32px;
-                cursor: pointer;
-                border: 1px #eeeff0;
-                margin-right: 12px;
-                color: #666;
-                font-size: 18px;
-            }
-
-            #switchBtn div {
-                display: inline-block;
-            }
-
-            #switchBtn:hover {
-                background-color: #eeeff0;
-            }
 
 
-            #switchDropDownBtn {
-                padding-left: 12px;
-                color: #bbb;
-            }
-
-            .preNextBtn {
-                height: 30px;
-                width: 30px;
-                margin-top: 10px;
-                border: 1px #eeeff0;
-                border-radius: 30px;
-                cursor: pointer;
-                text-align: center;
-                font-size: 14px;
-                line-height: 27px;
-            }
-
-            .preNextBtn:hover {
-                background: #eff0f1;
-            }
-
-            #nextBtn {
-                margin-right: 30px;
-            }
-
-            #currentDay {
-                width: 200px;
-                text-align: center;
-                height: 50px;
-                line-height: 50px;
-                color: #666;
-                font-size: 18px;
-            }
-
-            .titleLeft {
-                height: 50px;
-                width: 400px;
-                background-color: rgb(253, 233, 235);
-                border-right: 1px rgb(233, 213, 215);
-                float: left;
-            }
-
-            #appIcon {
-                padding-left: 10px;
-                width: 52px;
-                text-align: center;
-                line-height: 50px;
-                height: 50px;
-                color: #f02c38;
-            }
-
-            .titleLeft div {
-                display: inline-block;
-            }
 
             .bodyBox {
                 position: absolute;
@@ -151,35 +170,6 @@
             .bodyRight {
                 height: 100%;
                 margin-left: 400px;
-            }
-
-
-
-            #switchMenu {
-                position: absolute;
-                right: 180px;
-                height: 120px;
-                width: 74px;
-                border-radius: 3px;
-                top: 43px;
-                border-left: 1px #eeeff0;
-                border-bottom: 1px #eeeff0;
-                border-right: 1px #eeeff0;
-                margin-right: 12px;
-                background: #fff;
-                color: #666;
-            }
-
-            #switchMenu div {
-                width: 74px;
-                height: 40px;
-                line-height: 40px;
-                text-align: center;
-                cursor: pointer;
-            }
-
-            #switchMenu div:hover {
-                background-color: #eeeff0;
             }
 
             #viewWeek {
@@ -239,24 +229,18 @@
 
     <body>
         <div id="topBar">
-            <div id="titleBox">
-                <div class="titleLeft">
-                    <div id="appIcon"></div>
-                    <div>日程</div>
-                </div>
+            <div class="titleLeft">
+                <div id="appIcon"></div>
+                <div>日程</div>
             </div>
+            <div id="switchOptionDay" class="switchBtn switchBtnSelected">日</div>
+            <div id="switchOptionWeek" class="switchBtn">周</div>
+            <div id="switchOptionMonth" class="switchBtn">月</div>
             <div id="preBtn" class="preNextBtn"></div>
             <div id="currentDay"></div>
             <div id="nextBtn" class="preNextBtn"></div>
-            <div id="switchBtn">
-                <div>日</div>
-                <div id="switchDropDownBtn"></div>
-            </div>
-            <div id="switchMenu" style="display: none;">
-                <div id="switchOptionDay">日</div>
-                <div id="switchOptionWeek">周</div>
-                <div id="switchOptionMonth">月</div>
-            </div>
+
+            <div style="flex: 1;"></div>
             <div id="minimizeBtn" class="toolBtn"></div>
             <div id="maximizeBtn" class="toolBtn"></div>
             <div id="closeBtn" class="toolBtn"></div>

@@ -2,7 +2,7 @@
 ViewWeek::ViewWeek() {
 	auto context = Rml::GetContext("main");
 	document = context->LoadDocument("ui/viewWeek.rml");
-	document->SetId("viewDay");
+	document->SetId("viewWeek");
 	document->SetProperty(Rml::PropertyId::Top, Rml::Property(50, Rml::Property::PX));
 	document->SetProperty(Rml::PropertyId::Left, Rml::Property(400, Rml::Property::PX));
 	document->SetProperty(Rml::PropertyId::Right, Rml::Property(0, Rml::Property::PX));

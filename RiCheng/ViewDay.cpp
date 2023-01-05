@@ -9,7 +9,7 @@ ViewDay::ViewDay() {
 	document->SetProperty(Rml::PropertyId::Left, Rml::Property(400, Rml::Property::PX));
 	document->SetProperty(Rml::PropertyId::Right, Rml::Property(0, Rml::Property::PX));
 	document->SetProperty(Rml::PropertyId::Bottom, Rml::Property(0, Rml::Property::PX));
-	document->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(2, Rml::Property::NUMBER));
+	document->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(1, Rml::Property::NUMBER));
 	document->Show();
 	Rml::ElementList list;
 	document->QuerySelectorAll(list, ".todoItem > div");

@@ -34,9 +34,7 @@ void WindowMain::setBtn() {
 	setEleIcon("minimizeBtn")->AddEventListener(Rml::EventId::Click, this);
 	setEleIcon("preBtn")->AddEventListener(Rml::EventId::Click, this);
 	setEleIcon("nextBtn")->AddEventListener(Rml::EventId::Click, this);
-	setEleIcon("switchDropDownBtn");
 	
-	document->GetElementById("switchBtn")->AddEventListener(Rml::EventId::Click, this);
 	auto switchOption = document->GetElementById("switchOptionDay");
 	switchOption->AddEventListener(Rml::EventId::Click, this);
 	switchOption = switchOption->GetNextSibling();
@@ -83,35 +81,36 @@ bool WindowMain::windowToolBtnEventProcess(std::string& eleId,Rml::Element* ele)
 bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
 	if (eleId == "switchBtn") {
 		auto menu = document->GetElementById("switchMenu");
-		menu->AppendChild()
-		menu->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(33, Rml::Property::NUMBER));
 		menu->SetProperty("display", "block");
 		document->AddEventListener(Rml::EventId::Click, this);
 		return true;
 	}
 	else if (eleId == "switchOptionDay")
 	{
-		document->GetElementById("switchBtn")->GetFirstChild()->SetInnerRML((const char*)u8"日");
-		auto tarEle = document->GetElementById("viewDay");
-		tarEle->SetProperty("display", "flex");
-		tarEle = tarEle->GetNextSibling();
-		tarEle->SetProperty("display", "none");
-		tarEle->GetNextSibling()->SetProperty("display", "none");
-		viewWeek->hide();
-		viewMonth->hide();
+		if (ele->GetClassNames().find("switchBtnSelected") != std::string::npos) return true;
+		ele->SetClass("switchBtnSelected", true);
+		auto nextEle = ele->GetNextSibling();
+		nextEle->SetClass("switchBtnSelected", false);
+		nextEle->GetNextSibling()->SetClass("switchBtnSelected", false);
+		if (viewWeek.get() != nullptr) {
+			viewWeek->hide();
+		}
+		if (viewMonth.get() != nullptr) {
+			viewMonth->hide();
+		}
 		viewDay->show();
 		return true;
 	}
 	else if (eleId == "switchOptionWeek")
 	{
-		document->GetElementById("switchBtn")->GetFirstChild()->SetInnerRML((const char*)u8"周");
-		auto tarEle = document->GetElementById("viewDay");
-		tarEle->SetProperty("display", "none");
-		tarEle = tarEle->GetNextSibling();
-		tarEle->SetProperty("display", "flex");
-		tarEle->GetNextSibling()->SetProperty("display", "none");
+		if (ele->GetClassNames().find("switchBtnSelected") != std::string::npos) return true;
+		ele->SetClass("switchBtnSelected", true);
+		ele->GetNextSibling()->SetClass("switchBtnSelected", false);
+		ele->GetPreviousSibling()->SetClass("switchBtnSelected", false);
 		viewDay->hide();
-		viewMonth->hide();
+		if (viewMonth.get() != nullptr) {
+			viewMonth->hide();
+		}
 		if (viewWeek.get() == nullptr) {
 			viewWeek = std::make_unique<ViewWeek>();
 		}
@@ -120,14 +119,15 @@ bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
 	}
 	else if (eleId == "switchOptionMonth")
 	{
-		document->GetElementById("switchBtn")->GetFirstChild()->SetInnerRML((const char*)u8"月");
-		auto tarEle = document->GetElementById("viewDay");
-		tarEle->SetProperty("display", "none");
-		tarEle = tarEle->GetNextSibling();
-		tarEle->SetProperty("display", "none");
-		tarEle->GetNextSibling()->SetProperty("display", "block");
+		if (ele->GetClassNames().find("switchBtnSelected") != std::string::npos) return true;
+		ele->SetClass("switchBtnSelected", true);
+		auto preEle = ele->GetPreviousSibling();
+		preEle->SetClass("switchBtnSelected", false);
+		preEle->GetPreviousSibling()->SetClass("switchBtnSelected", false);
 		viewDay->hide();
-		viewWeek->hide();
+		if (viewWeek.get() != nullptr) {
+			viewWeek->hide();
+		}
 		if (viewMonth.get() == nullptr) {
 			viewMonth = std::make_unique<ViewMonth>();
 		}

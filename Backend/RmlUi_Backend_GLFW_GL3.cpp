@@ -56,8 +56,13 @@ namespace FramelessHelper {
 			else if (absoluteCursor.x > winRect.right - borderWidth) return HTRIGHT;
 			else if (absoluteCursor.y < winRect.top + borderWidth) return HTTOP;
 			else if (absoluteCursor.y > winRect.bottom - borderWidth) return HTBOTTOM;
-			else if (absoluteCursor.x < winRect.right - 768 && absoluteCursor.y < winRect.top+50) {
-				return HTCAPTION;
+			else if (absoluteCursor.y < winRect.top + 50) {
+				if (absoluteCursor.x < winRect.left + 430) {
+					return HTCAPTION;
+				}
+				else if (absoluteCursor.x > winRect.left + 860 && absoluteCursor.x < winRect.right - 180) {
+					return HTCAPTION;
+				}
 			}
 			return HTCLIENT;
 		}

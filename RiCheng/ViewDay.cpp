@@ -19,25 +19,10 @@ ViewDay::ViewDay() {
 	}
 }
 void ViewDay::updateTargetTime() {
-	auto top = targetEle->GetProperty(Rml::PropertyId::Top)->value.Get<int>();
+	auto top = targetEle->GetProperty(Rml::PropertyId::Top)->value.Get<float>();
 	auto bottom = top + targetEle->GetClientHeight();
 	auto totalHeight = targetEle->GetParentNode()->GetClientHeight();
-	std::string endTime;
-	auto func = [&totalHeight](int p) {
-		double h1 = 24 * p / totalHeight;
-		double m1 = 60 * (h1 - (int)h1);
-		if (m1 > 56) {
-			h1 += 1;
-			m1 = 0;
-		}
-		else if (m1 < 4) {
-			m1 = 0;
-		}
-		auto hStr = h1 < 10 ? ("0" + std::to_string((int)h1)) : std::to_string((int)h1);
-		auto mStr = m1 < 10 ? ("0" + std::to_string((int)m1)) : std::to_string((int)m1);
-		return std::format("{0}:{1}", hStr, mStr);
-	};
-	std::string timeStr = std::format("{0}-{1}", func(top), func(bottom));
+	std::string timeStr = std::format("{0}-{1}", PositionToTime(totalHeight,top), PositionToTime(totalHeight,bottom));
 	targetEle->GetChild(1)->GetChild(0)->SetInnerRML(timeStr);
 }
 void ViewDay::processMouseDown(const std::string& className, const Rml::Vector2f& mousePoint) {

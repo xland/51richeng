@@ -1,7 +1,8 @@
 <rml>
 
     <head>
-        <title>Demo</title>
+        <title>ViewDay</title>
+        <link type="text/rcss" href="style.rcss" />
         <style>
             body {
                 margin: 0px;
@@ -20,12 +21,10 @@
             }
 
             #viewDay {
-                height: 100%;
-                width: 100%;
-                position: relative;
+                position: absolute;
                 left: 0px;
-                right: 0px;
-                top: 0px;
+                right: 400px;
+                top: 0dp;
                 bottom: 0px;
             }
 
@@ -54,26 +53,13 @@
                 z-index: 3;
             }
 
-            #todoItem1 {
+            .todoItem {
                 position: absolute;
                 left: 80px;
-                right: 440px;
-                bottom: 200px;
-                top: 22px;
+                right: 40px;
                 z-index: 2;
-                border: 1px rgb(3, 155, 229);
-                background: rgba(3, 155, 229, 100);
-            }
-
-            #todoItem2 {
-                position: absolute;
-                left: 80px;
-                right: 440px;
-                bottom: 260px;
-                top: 122px;
-                z-index: 2;
-                border: 1px rgb(163, 135, 229);
-                background: rgba(163, 135, 229, 100);
+                display: none;
+                border-width: 1px;
             }
 
             .todoDragTop {
@@ -121,10 +107,10 @@
 
     <body>
         <div id="viewDay">
-            <div id="todoItem1" class="todoItem">
+            <div id="todoItemTemplate" class="todoItem">
                 <div class="todoDragTop"></div>
                 <div class="todoContent">
-                    <div>00:00-00:00</div>
+                    <div><span class="startTime"></span>-<span class="endTime"></span></div>
                     <div class="todoContentTitle">年终总结会议</div>
                 </div>
                 <div class="todoDragBottom"></div>
@@ -132,7 +118,7 @@
             <div id="todoItem2" class="todoItem">
                 <div class="todoDragTop"></div>
                 <div class="todoContent">
-                    <div>00:00-00:00</div>
+                    <div><span class="startTime"></span>-<span class="endTime"></span></div>
                     <div class="todoContentTitle">年终总结会议</div>
                 </div>
                 <div class="todoDragBottom"></div>

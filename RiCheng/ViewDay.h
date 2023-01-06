@@ -9,7 +9,7 @@ public:
 	ViewDay& operator=(const ViewDay&) = delete;
 	void ProcessEvent(Rml::Event& event) override;
 private:
-	void updateTargetTime();
+	void createTodoEle(int top,int bottom,int index);
 	void processMouseMove(const Rml::Vector2f& mousePoint);
 	void processMouseDown(const std::string& className, const Rml::Vector2f& mousePoint);
 	int mousePointTopSpan = 0;

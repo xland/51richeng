@@ -8,8 +8,10 @@ public:
 	ViewBase& operator=(const ViewBase&) = delete;
 	void show();
 	void hide();
-	std::string PositionToTime(float totalHeight,float position);
 protected:
 	Rml::ElementDocument* document = nullptr;
+	std::string PositionToTime(float totalHeight, float position);
+	void RemoveDocumentListener();
+	void AddDocumentListener();
 };
 

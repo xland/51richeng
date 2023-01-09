@@ -1,7 +1,7 @@
 <rml>
 
     <head>
-        <title>Demo</title>
+        <title>CalendarSmall</title>
         <style>
             body {
                 margin: 0px;
@@ -11,7 +11,7 @@
                 height: 100%;
                 color: #333;
                 font-size: 16px;
-                text-align: center;
+                display: block;
             }
 
             div {

@@ -110,6 +110,7 @@
     <None Include="ui\viewMonth.rml" />
     <None Include="ui\viewWeek.rml" />
     <None Include="ui\calendarSmall.rml" />
+    <None Include="ui\style.rcss" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="ui\iconfont.ttf" />

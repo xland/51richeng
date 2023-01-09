@@ -24,6 +24,12 @@ Rml::FileHandle ShellFileInterface::Open(const Rml::String& path)
 	}
 	else if (ResourceHelper::ResourcePathMap[path]) {
 		data->idr_number = ResourceHelper::ResourcePathMap[path];
+		HMODULE instance = ::GetModuleHandle(NULL);
+		HRSRC resID = ::FindResource(instance, MAKEINTRESOURCE(data->idr_number), L"ui");
+		if (resID != 0) {
+			size_t resSize = ::SizeofResource(instance, resID);
+			data->length = resSize;
+		}
 	}
 	else {
 		Rml::Log::Message(Rml::Log::LT_ERROR, "ShellFileInterface Open %s", path);
@@ -54,8 +60,9 @@ size_t ShellFileInterface::Read(void* buffer, size_t size, Rml::FileHandle file)
 		}
 		HGLOBAL res = ::LoadResource(instance, resID);
 		if (res == 0) return 0;
-		LPVOID resData = ::LockResource(res);
-		memcpy(buffer, resData, size);
+		char* resData = (char*)::LockResource(res);
+		memcpy(buffer, resData+data->seek_state, size);
+		data->seek_state += size;
 		return size;
 	}
 }
@@ -65,7 +72,21 @@ bool ShellFileInterface::Seek(Rml::FileHandle file, long offset, int origin)
 	if (data->file_handle) {
 		return fseek((FILE*)data->file_handle, offset, origin) == 0;
 	}
-	return true;
+	else
+	{
+		switch (origin)
+		{
+			case SEEK_SET:
+				data->seek_state = offset;
+				break;
+			case SEEK_END:
+				data->seek_state = data->length - offset;
+				break;
+			case SEEK_CUR:
+				data->seek_state = data->seek_state + offset;
+		}
+		return true;
+	}
 }
 size_t ShellFileInterface::Tell(Rml::FileHandle file)
 {
@@ -75,15 +96,6 @@ size_t ShellFileInterface::Tell(Rml::FileHandle file)
 	}
 	else
 	{
-		if (!data->length) {
-			HMODULE instance = ::GetModuleHandle(NULL);
-			HRSRC resID = ::FindResource(instance, MAKEINTRESOURCE(data->idr_number), L"ui");
-			if (resID != 0) {
-				size_t resSize = ::SizeofResource(instance, resID);
-				data->length = resSize;
-				return resSize;
-			}
-		}
-		return data->length;
+		return data->seek_state;
 	}
 }

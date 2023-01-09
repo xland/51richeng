@@ -170,6 +170,7 @@
     <None Include="ui1.bin" />
     <None Include="ui\calendarSmall.rml" />
     <None Include="ui\main.rml" />
+    <None Include="ui\style.rcss" />
     <None Include="ui\viewDay.rml" />
     <None Include="ui\viewMonth.rml" />
     <None Include="ui\viewWeek.rml" />

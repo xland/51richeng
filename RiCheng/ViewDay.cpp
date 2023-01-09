@@ -11,9 +11,9 @@ ViewDay::ViewDay() {
 	document->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(1, Rml::Property::NUMBER));
 	document->Show();
 
-	for (size_t i = 0; i < 16; i++)
+	for (size_t i = 0; i < 5; i++)
 	{
-		
+		createTodoEle(i + 50, i+50, i);
 	}
 	
 
@@ -30,21 +30,10 @@ void ViewDay::createTodoEle(int top,int bottom,int index) {
 	
 	auto templateEle = document->GetElementById("todoItemTemplate");
 	Rml::ElementPtr ele = templateEle->Clone();
-	ele->SetProperty(Rml::PropertyId::Display, Rml::Property("block", Rml::Property::STRING));
 	ele->SetProperty(Rml::PropertyId::Top, Rml::Property(top, Rml::Property::PX));
 	ele->SetProperty(Rml::PropertyId::Bottom, Rml::Property(bottom, Rml::Property::PX));
-
-	auto colorIndex = index % ResourceHelper::todoColor.size();
-	auto color = ResourceHelper::todoColor[colorIndex];
-	ele->SetProperty(Rml::PropertyId::BorderLeftColor, Rml::Property(color, Rml::Property::COLOUR));
-	ele->SetProperty(Rml::PropertyId::BorderTopColor, Rml::Property(color, Rml::Property::COLOUR));
-	ele->SetProperty(Rml::PropertyId::BorderRightColor, Rml::Property(color, Rml::Property::COLOUR));
-	ele->SetProperty(Rml::PropertyId::BorderBottomColor, Rml::Property(color, Rml::Property::COLOUR));
-	color.alpha = 100;
-	ele->SetProperty(Rml::PropertyId::BackgroundColor, Rml::Property(color, Rml::Property::COLOUR));
-
-	ele->set
-
+	auto className = std::format("todoItem{0}", index % 6);
+	ele->SetClass(className, true);
 	templateEle->GetParentNode()->AppendChild(std::move(ele));
 }
 
@@ -135,6 +124,7 @@ void ViewDay::ProcessEvent(Rml::Event& event) {
 	{
 	case Rml::EventId::Mousedown: {
 		targetEle = ele->GetParentNode();
+		targetEle->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(5+3, Rml::Property::NUMBER))
 		processMouseDown(ele->GetClassNames(), event.GetUnprojectedMouseScreenPos());
 		break;
 	}

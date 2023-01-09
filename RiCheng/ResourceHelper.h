@@ -11,6 +11,7 @@ namespace ResourceHelper
 {
 	static std::map<std::string, int> ResourcePathMap {
 		{"ui/main.rml",IDR_Main},
+		{"ui/style.rcss",IDR_Style},
 		{"ui/calendarSmall.rml",IDR_CalendarSmall},
 		{"ui/viewDay.rml",IDR_ViewDay},
 		{"ui/viewMonth.rml",IDR_ViewMonth},
@@ -26,12 +27,6 @@ namespace ResourceHelper
 		{"nextBtn",(const char*)u8"\ue638"},
 		{"switchDropDownBtn",(const char*)u8"\ue60f"},
 		{"restoreBtn",(const char*)u8"\ue6e9"},
-	};
-	static std::vector<Rml::Colourb> todoColor{
-		{3, 155, 229},
-		{163, 135, 229},
-		{96, 169, 23},
-		{27, 161, 226},
 	};
 	static date::year_month_day now { floor<days>(system_clock::now()) };
 }

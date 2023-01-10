@@ -2,6 +2,7 @@
 #include "ResourceHelper.h"
 #include <format>
 
+
 ViewDay::ViewDay() {
 	auto context = Rml::GetContext("main");
 	document = context->LoadDocument("ui/viewDay.rml");
@@ -9,32 +10,47 @@ ViewDay::ViewDay() {
 	document->SetProperty(Rml::PropertyId::Top, Rml::Property(50, Rml::Property::PX));
 	document->SetProperty(Rml::PropertyId::Left, Rml::Property(400, Rml::Property::PX));
 	document->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(1, Rml::Property::NUMBER));
+	document->AddEventListener(Rml::EventId::Resize, this);
 	document->Show();
 
-	for (size_t i = 0; i < 5; i++)
+	for (size_t i = 0; i < 2; i++)
 	{
 		createTodoEle(i + 50, i+50, i);
 	}
-	
-
-
-	Rml::ElementList list;
-	document->QuerySelectorAll(list, ".todoItem > div");
-	for (auto& ele : list)
-	{
-		ele->AddEventListener(Rml::EventId::Mousedown, this);
-	}
 }
 
-void ViewDay::createTodoEle(int top,int bottom,int index) {
-	
+void ViewDay::createTodoEle(int top,int bottom,int index) {	
 	auto templateEle = document->GetElementById("todoItemTemplate");
 	Rml::ElementPtr ele = templateEle->Clone();
 	ele->SetProperty(Rml::PropertyId::Top, Rml::Property(top, Rml::Property::PX));
 	ele->SetProperty(Rml::PropertyId::Bottom, Rml::Property(bottom, Rml::Property::PX));
+	ele->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(index+3, Rml::Property::NUMBER));
 	auto className = std::format("todoItem{0}", index % 6);
 	ele->SetClass(className, true);
-	templateEle->GetParentNode()->AppendChild(std::move(ele));
+	ele->GetChild(0)->AddEventListener(Rml::EventId::Mousedown, this);
+	ele->GetChild(1)->AddEventListener(Rml::EventId::Mousedown, this);
+	ele->GetChild(2)->AddEventListener(Rml::EventId::Mousedown, this);
+	templateEle->GetPreviousSibling()->GetFirstChild()->AppendChild(std::move(ele));
+}
+
+void ViewDay::activeTodoEle(Rml::Element* ele) {
+	auto container = document->GetElementById("todoContainer");
+	auto oldIndex = ele->GetProperty(Rml::PropertyId::ZIndex)->value.Get<int>();
+	auto item = container->GetFirstChild();
+	int topIndex = 3;
+	while (item != nullptr)
+	{
+		if (item != ele) {
+			auto itemIndex = item->GetProperty(Rml::PropertyId::ZIndex)->value.Get<int>();
+			if (itemIndex > oldIndex) {
+				item->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(itemIndex - 1, Rml::Property::NUMBER));
+			}
+		}
+		topIndex += 1;
+		item = item->GetNextSibling();
+	}
+	if (topIndex == oldIndex) return;
+	ele->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(topIndex, Rml::Property::NUMBER));
 }
 
 //void ViewDay::updateTargetTime() {
@@ -122,30 +138,44 @@ void ViewDay::ProcessEvent(Rml::Event& event) {
 	auto eleId = ele->GetId();
 	switch (event.GetId())
 	{
-	case Rml::EventId::Mousedown: {
-		targetEle = ele->GetParentNode();
-		targetEle->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(5+3, Rml::Property::NUMBER))
-		processMouseDown(ele->GetClassNames(), event.GetUnprojectedMouseScreenPos());
-		break;
-	}
-	case Rml::EventId::Mousemove: {
-		if (ele == document) {
-			processMouseMove(event.GetUnprojectedMouseScreenPos());
+		case Rml::EventId::Resize: {
+			auto height = ele->GetClientHeight();			
+			if (documentHeight != height) {
+				if (documentHeight != 0) {
+					//只有高度变化的时候再更新todoItem的位置
+
+				}
+				else
+				{
+					height = ele->GetParentNode()->GetClientHeight();
+				}
+				documentHeight = height;
+			}			
 		}
-		break;
-	}
-	case Rml::EventId::Mouseup: {
-		if (ele == document) {
-			RemoveDocumentListener();
-			if (false) {
-				auto left = targetEle->GetAbsoluteLeft() - 499;
-				int index = left / (targetEle->GetParentNode()->GetClientWidth() / 7);
-				targetEle->SetProperty(Rml::PropertyId::Left, Rml::Property(14.2857 * index, Rml::Property::PERCENT));
+		case Rml::EventId::Mousedown: {
+			targetEle = ele->GetParentNode();
+			activeTodoEle(targetEle);
+			processMouseDown(ele->GetClassNames(), event.GetUnprojectedMouseScreenPos());
+			break;
+		}
+		case Rml::EventId::Mousemove: {
+			if (ele == document) {
+				processMouseMove(event.GetUnprojectedMouseScreenPos());
 			}
+			break;
 		}
-		break;
-	}
-	default:
-		break;
+		case Rml::EventId::Mouseup: {
+			if (ele == document) {
+				RemoveDocumentListener();
+				if (false) {
+					auto left = targetEle->GetAbsoluteLeft() - 499;
+					int index = left / (targetEle->GetParentNode()->GetClientWidth() / 7);
+					targetEle->SetProperty(Rml::PropertyId::Left, Rml::Property(14.2857 * index, Rml::Property::PERCENT));
+				}
+			}
+			break;
+		}
+		default:
+			break;
 	}
 }

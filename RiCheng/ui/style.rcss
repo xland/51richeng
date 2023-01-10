@@ -18,7 +18,7 @@ div {
     position: absolute;
     left: 80px;
     right: 40px;
-    z-index: 3;
+    z-index: 1;
     display: none;
     border-width: 1px;
 }

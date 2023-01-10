@@ -135,6 +135,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CalendarSmall.cpp" />
+    <ClCompile Include="DB.cpp" />
     <ClCompile Include="EventInstance.cpp" />
     <ClCompile Include="EventProcessor.cpp" />
     <ClCompile Include="main.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="date\date.h" />
     <ClInclude Include="date\iso_week.h" />
     <ClInclude Include="date\tz.h" />
+    <ClInclude Include="DB.h" />
     <ClInclude Include="EventInstance.h" />
     <ClInclude Include="EventProcessor.h" />
     <ClInclude Include="resource.h" />

@@ -1,6 +1,4 @@
 #pragma once
-#include <format>
-#include "sqlite/sqlite3ext.h"
 class DB
 {
 public:

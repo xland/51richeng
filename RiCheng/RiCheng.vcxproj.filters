@@ -27,12 +27,6 @@
     <ClCompile Include="WindowMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="EventInstance.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="EventProcessor.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="ViewDay.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -48,7 +42,13 @@
     <ClCompile Include="ViewBase.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="sqlite\sqlite3.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="DB.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Time.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,21 +68,6 @@
     <ClInclude Include="WindowMain.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="date\date.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="date\iso_week.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="date\tz.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="EventInstance.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="EventProcessor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ViewDay.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -98,7 +83,19 @@
     <ClInclude Include="ViewBase.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Repeat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ToDo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sqlite\sqlite3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="DB.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

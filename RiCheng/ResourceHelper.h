@@ -3,8 +3,6 @@
 #include <string>
 #include <map>
 #include <chrono>
-#include "date/date.h"
-#include "date/iso_week.h"
 #include "resource.h"
 using namespace std::chrono;
 namespace ResourceHelper
@@ -28,6 +26,5 @@ namespace ResourceHelper
 		{"switchDropDownBtn",(const char*)u8"\ue60f"},
 		{"restoreBtn",(const char*)u8"\ue6e9"},
 	};
-	static date::year_month_day now { floor<days>(system_clock::now()) };
 }
 

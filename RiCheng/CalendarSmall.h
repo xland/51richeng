@@ -1,8 +1,6 @@
 #pragma once
 #include <RmlUi/Core.h>
 #include <chrono>
-#include "date/date.h"
-#include "date/iso_week.h"
 
 using namespace std::chrono;
 class CalendarSmall :public Rml::EventListener

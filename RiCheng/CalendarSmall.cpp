@@ -1,5 +1,6 @@
 #include "CalendarSmall.h"
 #include "ResourceHelper.h"
+#include "Time.h"
 
 CalendarSmall::CalendarSmall() {
 	auto context = Rml::GetContext("main");
@@ -15,17 +16,15 @@ CalendarSmall::CalendarSmall() {
 
 void CalendarSmall::initCalendar() {
 	auto dayEle = document->GetElementById("calendarEleBox")->GetChild(0);
-	date::year_month_day firstDay{ ResourceHelper::now.year(),ResourceHelper::now.month(),date::day{1} };
-	date::year_month_day_last lastDay{ ResourceHelper::now.year(),date::month_day_last{ResourceHelper::now.month()} };
-	iso_week::year_weeknum_weekday weekNumWeekDay{ firstDay };
-	auto weekDay = (unsigned)(weekNumWeekDay.weekday()) - 1;
-	if (weekDay != 0) {
-		date::year_month_day_last temp{ ResourceHelper::now.year() ,date::month_day_last { --ResourceHelper::now.month() } };
-		int day = (unsigned)temp.day() - weekDay;
-		for (size_t i = 0; i < weekDay; i++)
+	auto firstDay = Time::getCurrentMonthFirstDay();
+	auto lastDay = Time::getCurrentMonthLastDay();
+	auto dayOfWeek = Time::dayOfWeek(firstDay);
+	if (dayOfWeek != 1) {
+		year_month_day preMonthLastDay = Time::getMonthLastDay(Time::currentDay.year(), --Time::currentDay.month());	
+		auto temp = (unsigned)preMonthLastDay.day() - dayOfWeek +1;
+		for (size_t i = 1; i < dayOfWeek; i++)
 		{
-			day += 1;
-			dayEle->SetInnerRML(std::to_string(day));
+			dayEle->SetInnerRML(std::to_string(temp+i));
 			dayEle->SetClassNames("notCurMonthEle");
 			dayEle = dayEle->GetNextSibling();
 		}
@@ -37,7 +36,7 @@ void CalendarSmall::initCalendar() {
 		dayEle->SetClassNames("curMonthEle");
 		dayEle = dayEle->GetNextSibling();
 	}
-	auto lastEleNum = 42 - curMonthLastDay - weekDay;
+	auto lastEleNum = 42 - curMonthLastDay - dayOfWeek+1;
 	for (size_t i = 1; i <= lastEleNum; i++)
 	{
 		dayEle->SetInnerRML(std::to_string(i));

@@ -1,5 +1,4 @@
-#ifndef RMLUI_SHELL_SHELL_H
-#define RMLUI_SHELL_SHELL_H
+#pragma once
 
 #include <RmlUi/Core/Context.h>
 #include <RmlUi/Core/Input.h>
@@ -22,6 +21,4 @@ void LoadFonts();
 // @return True if the event is still propagating, false if it was handled here.
 bool ProcessKeyDownShortcuts(Rml::Context* context, Rml::Input::KeyIdentifier key, int key_modifier, float native_dp_ratio, bool priority);
 
-} // namespace Shell
-
-#endif
+} 

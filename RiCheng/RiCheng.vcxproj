@@ -103,7 +103,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;RMLUI_STATIC_LIB;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;RMLUI_STATIC_LIB;NOMINMAX;_WINDOWS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\sdk\glfw-3.3.8\install\include;D:\sdk\RmlUi5\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -136,11 +136,11 @@
   <ItemGroup>
     <ClCompile Include="CalendarSmall.cpp" />
     <ClCompile Include="DB.cpp" />
-    <ClCompile Include="EventInstance.cpp" />
-    <ClCompile Include="EventProcessor.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Shell.cpp" />
     <ClCompile Include="ShellFileInterface.cpp" />
+    <ClCompile Include="sqlite\sqlite3.c" />
+    <ClCompile Include="Time.cpp" />
     <ClCompile Include="ViewBase.cpp" />
     <ClCompile Include="ViewDay.cpp" />
     <ClCompile Include="ViewMonth.cpp" />
@@ -149,16 +149,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CalendarSmall.h" />
-    <ClInclude Include="date\date.h" />
-    <ClInclude Include="date\iso_week.h" />
-    <ClInclude Include="date\tz.h" />
     <ClInclude Include="DB.h" />
-    <ClInclude Include="EventInstance.h" />
-    <ClInclude Include="EventProcessor.h" />
+    <ClInclude Include="Repeat.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResourceHelper.h" />
     <ClInclude Include="Shell.h" />
     <ClInclude Include="ShellFileInterface.h" />
+    <ClInclude Include="sqlite\sqlite3.h" />
+    <ClInclude Include="Time.h" />
+    <ClInclude Include="ToDo.h" />
     <ClInclude Include="ViewBase.h" />
     <ClInclude Include="ViewDay.h" />
     <ClInclude Include="ViewMonth.h" />

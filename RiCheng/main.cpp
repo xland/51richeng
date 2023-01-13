@@ -2,21 +2,22 @@
 #include <RmlUi/Core.h>
 #include <RmlUi/Debugger.h>
 #include "RmlUi_Backend.h"
-#include "EventInstance.h"
 #include "Shell.h"
 #include "WindowMain.h"
 #include <string>
-#include <cwchar>
-#include <stdexcept>
+#include "Time.h"
+#include "DB.h"
+
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPTSTR lpCmdLine, _In_ int nCmdShow) {
+	//auto db = DB::get();
 	int width = 1024;
 	int height = 768;
 	if (!Shell::Initialize()) {
 		return -1;
 	}
-	if (!Backend::Initialize("", width, height, true))
+	if (!Backend::Initialize("51RiCheng", width, height, true))
 	{
 		Shell::Shutdown();
 		return -1;
@@ -34,8 +35,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	}
 	Rml::Debugger::Initialise(context);
 	Shell::LoadFonts();
-	//EventInstance eventListenerInstancer;
-	//Rml::Factory::RegisterEventListenerInstancer(&eventListenerInstancer);
 	WindowMain* windowMain{ new WindowMain() };
 	bool running = true;
 	while (running)

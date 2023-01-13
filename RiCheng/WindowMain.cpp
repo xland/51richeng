@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include <format>
 #include "ResourceHelper.h"
+#include "Time.h"
 
 using namespace std::chrono;
 
@@ -44,9 +45,9 @@ void WindowMain::setBtn() {
 }
 
 void WindowMain::initCurDate() {
-	auto curDayStr = std::to_string((int)(ResourceHelper::now.year())) + (const char*)u8"年"
-		+ std::to_string((unsigned)(ResourceHelper::now.month())) + (const char*)u8"月"
-		+ std::to_string((unsigned)(ResourceHelper::now.day())) + (const char*)u8"日";
+	auto curDayStr = std::to_string((int)(Time::currentDay.year())) + (const char*)u8"年"
+		+ std::to_string((unsigned)(Time::currentDay.month())) + (const char*)u8"月"
+		+ std::to_string((unsigned)(Time::currentDay.day())) + (const char*)u8"日";
 	document->GetElementById("currentDay")->SetInnerRML(curDayStr);
 }
 

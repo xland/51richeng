@@ -1,6 +1,8 @@
 #include "CalendarSmall.h"
 #include "ResourceHelper.h"
 #include "Time.h"
+#include "CalendarModel.h"
+#include "CalendarItem.h"
 
 CalendarSmall::CalendarSmall() {
 	auto context = Rml::GetContext("main");
@@ -16,33 +18,13 @@ CalendarSmall::CalendarSmall() {
 
 void CalendarSmall::initCalendar() {
 	auto dayEle = document->GetElementById("calendarEleBox")->GetChild(0);
-	auto firstDay = Time::getCurrentMonthFirstDay();
-	auto lastDay = Time::getCurrentMonthLastDay();
-	auto dayOfWeek = Time::dayOfWeek(firstDay);
-	if (dayOfWeek != 1) {
-		year_month_day preMonthLastDay = Time::getMonthLastDay(Time::currentDay.year(), --Time::currentDay.month());	
-		auto temp = (unsigned)preMonthLastDay.day() - dayOfWeek +1;
-		for (size_t i = 1; i < dayOfWeek; i++)
-		{
-			dayEle->SetInnerRML(std::to_string(temp+i));
-			dayEle->SetClassNames("notCurMonthEle");
-			dayEle = dayEle->GetNextSibling();
-		}
-	}
-	auto curMonthLastDay = (unsigned)lastDay.day();
-	for (size_t i = 1; i <= curMonthLastDay; i++)
+	auto model = CalendarModel::get();
+	for (auto& item:model->data)
 	{
-		dayEle->SetInnerRML(std::to_string(i));
-		dayEle->SetClassNames("curMonthEle");
+		dayEle->SetInnerRML(std::to_string(item->day));
+		dayEle->SetClassNames(item->isCurrentMonthDay?"curMonthEle":"notCurMonthEle");
 		dayEle = dayEle->GetNextSibling();
-	}
-	auto lastEleNum = 42 - curMonthLastDay - dayOfWeek+1;
-	for (size_t i = 1; i <= lastEleNum; i++)
-	{
-		dayEle->SetInnerRML(std::to_string(i));
-		dayEle->SetClassNames("notCurMonthEle");
-		dayEle = dayEle->GetNextSibling();
-	}
+	}	
 }
 
 void CalendarSmall::ProcessEvent(Rml::Event& event) {

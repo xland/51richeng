@@ -86,7 +86,7 @@
             }
 
             .preNextBtn:hover {
-                background-color: #e6e6e6;
+                background-color: #ebebeb;
             }
 
 
@@ -118,6 +118,11 @@
                 color: #888;
                 background: #f6f6f6;
                 font-size: 18px;
+                cursor: pointer;
+            }
+
+            #currentDay:hover {
+                background-color: #ebebeb;
             }
 
             #nextBtn {

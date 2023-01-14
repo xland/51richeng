@@ -1,6 +1,38 @@
 #include "Time.h"
+#include <mutex>
+namespace {
+	std::mutex mylock;
+	static Rml::EventId NewDayEventId;
+	static std::vector<Rml::EventListener*> newDayProcessor;
+	void timerFunc() {
+		auto now = system_clock::now();
+		auto d1 = floor<minutes>(now).time_since_epoch();
+		auto dayCount = floor<days>(now).time_since_epoch().count();
+		auto d2 = floor<minutes>(days{ dayCount + 1 });
+		auto d3 = d2.count() - d1.count() - 480;//480是8小时，VS时区的库是坏的，还不知道为啥 todo
+		std::this_thread::sleep_for(minutes(d3+1));
+		mylock.lock();
+		Time::currentDay = year_month_day{ floor<days>(system_clock::now()) };
+		auto size = newDayProcessor.size();
+		for (auto& processor : newDayProcessor)
+		{
+			Rml::Dictionary dic;
+			Rml::Event e(nullptr, NewDayEventId, "", dic, false);
+			processor->ProcessEvent(e);
+		}
+		mylock.unlock();
+		timerFunc();
+	}
+}
 
 namespace Time {
+	year_month getCurrentYearMonth() {
+		year_month_day ymd{ floor<days>(system_clock::now()) };
+		return year_month{ ymd.year(),ymd.month() };
+	}
+	bool isToday(year_month_day ymd) {		
+		return currentDay == ymd;
+	}
 	year_month_day getDay(int year1, unsigned int month1, unsigned int day1) {
 		year_month_day result{ year{year1},month{month1},day{day1} };
 		return result;
@@ -10,7 +42,7 @@ namespace Time {
 		year_month_day result{ ymd.year(),ymd.month(),day {1} };
 		return result;
 	}
-	year_month_day getMonthFirstDay(year_month_day& ymd) {
+	year_month_day getMonthFirstDay(year_month& ymd) {
 		year_month_day result{ ymd.year(),ymd.month(),day {1} };
 		return result;
 	}
@@ -20,13 +52,8 @@ namespace Time {
 		year_month_day result{ ymdl };
 		return result;
 	}
-	year_month_day getMonthLastDay(year_month_day& ymd) {
+	year_month_day getMonthLastDay(year_month& ymd) {
 		year_month_day_last ymdl{ ymd.year(),month_day_last{ymd.month()} };
-		year_month_day result{ ymdl };
-		return result;
-	}
-	year_month_day getMonthLastDay(year year1, month month1) {
-		year_month_day_last ymdl{ year1,month_day_last{month1} };
 		year_month_day result{ ymdl };
 		return result;
 	}
@@ -55,6 +82,19 @@ namespace Time {
 		sys_days sd{ days{dayCount} };
 		year_month_day ymd{ sd };
 		return ymd;
+	}
+	void registNewDayEventObj(Rml::EventListener* obj) {
+		mylock.lock();
+		newDayProcessor.push_back(obj);
+		mylock.unlock();
+		if (NewDayEventId == Rml::EventId::Invalid) {
+			NewDayEventId = Rml::RegisterEventType("NewDayEvent", false, false);
+			std::thread t(timerFunc);
+			t.detach();
+		}
+	}
+	Rml::EventId getNewDayEventId() {
+		return NewDayEventId;
 	}
 }
 

@@ -12,6 +12,7 @@ WindowMain::WindowMain()  {
 	initCurDate();
 	calendarSmall = std::make_unique<CalendarSmall>();
 	viewDay = std::make_unique<ViewDay>();
+	Time::registNewDayEventObj(this);
 }
 
 void WindowMain::initDocument() {
@@ -146,14 +147,15 @@ bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
 
 
 void WindowMain::ProcessEvent(Rml::Event& event) {
-	auto ele = event.GetCurrentElement();
-	auto eleId = ele->GetId();
-	switch (event.GetId())
-	{
-	case Rml::EventId::Click: {
+	auto eventId = event.GetId();
+	if (eventId == Rml::EventId::Click) {
+		auto ele = event.GetCurrentElement();
+		auto eleId = ele->GetId();
 		if (windowToolBtnEventProcess(eleId, ele)) return;
 		else if (switchViewModeProcess(eleId, ele)) return;
-		break;
 	}
+	else if (eventId == Time::getNewDayEventId()) {
+		initCurDate();
+		return;
 	}
 }

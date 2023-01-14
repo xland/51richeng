@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CalendarModel.cpp" />
     <ClCompile Include="CalendarSmall.cpp" />
     <ClCompile Include="DB.cpp" />
     <ClCompile Include="main.cpp" />
@@ -148,6 +149,8 @@
     <ClCompile Include="WindowMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CalendarItem.h" />
+    <ClInclude Include="CalendarModel.h" />
     <ClInclude Include="CalendarSmall.h" />
     <ClInclude Include="DB.h" />
     <ClInclude Include="Repeat.h" />

@@ -5,9 +5,8 @@ ViewWeek::ViewWeek() {
 	document->SetId("viewWeek");
 	document->SetProperty(Rml::PropertyId::Top, Rml::Property(50, Rml::Property::PX));
 	document->SetProperty(Rml::PropertyId::Left, Rml::Property(400, Rml::Property::PX));
-	document->SetProperty(Rml::PropertyId::Right, Rml::Property(0, Rml::Property::PX));
-	document->SetProperty(Rml::PropertyId::Bottom, Rml::Property(0, Rml::Property::PX));
-	document->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(2, Rml::Property::NUMBER));
+	document->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(1, Rml::Property::NUMBER));
+	document->AddEventListener(Rml::EventId::Resize, this);
 	document->Show();
 	Rml::ElementList list;
 	document->QuerySelectorAll(list, ".todoItem > div");

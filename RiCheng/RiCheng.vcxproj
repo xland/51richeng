@@ -141,7 +141,6 @@
     <ClCompile Include="Shell.cpp" />
     <ClCompile Include="ShellFileInterface.cpp" />
     <ClCompile Include="sqlite\sqlite3.c" />
-    <ClCompile Include="Time.cpp" />
     <ClCompile Include="ViewBase.cpp" />
     <ClCompile Include="ViewDay.cpp" />
     <ClCompile Include="ViewMonth.cpp" />
@@ -149,7 +148,6 @@
     <ClCompile Include="WindowMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CalendarItem.h" />
     <ClInclude Include="CalendarModel.h" />
     <ClInclude Include="CalendarSmall.h" />
     <ClInclude Include="DB.h" />
@@ -159,8 +157,8 @@
     <ClInclude Include="Shell.h" />
     <ClInclude Include="ShellFileInterface.h" />
     <ClInclude Include="sqlite\sqlite3.h" />
-    <ClInclude Include="Time.h" />
     <ClInclude Include="ToDo.h" />
+    <ClInclude Include="TypeDefine.h" />
     <ClInclude Include="ViewBase.h" />
     <ClInclude Include="ViewDay.h" />
     <ClInclude Include="ViewMonth.h" />

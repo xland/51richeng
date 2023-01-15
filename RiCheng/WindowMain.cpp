@@ -1,8 +1,9 @@
 ﻿#include "WindowMain.h"
 #include <Windows.h>
 #include <format>
+#include "TypeDefine.h"
 #include "ResourceHelper.h"
-#include "Time.h"
+#include "CalendarModel.h"
 
 using namespace std::chrono;
 
@@ -12,7 +13,7 @@ WindowMain::WindowMain()  {
 	initCurDate();
 	calendarSmall = std::make_unique<CalendarSmall>();
 	viewDay = std::make_unique<ViewDay>();
-	Time::registNewDayEventObj(this);
+	CalendarModel::get()->registNewDayEventObj(this);
 }
 
 void WindowMain::initDocument() {
@@ -46,9 +47,10 @@ void WindowMain::setBtn() {
 }
 
 void WindowMain::initCurDate() {
-	auto curDayStr = std::to_string((int)(Time::currentDay.year())) + (const char*)u8"年"
-		+ std::to_string((unsigned)(Time::currentDay.month())) + (const char*)u8"月"
-		+ std::to_string((unsigned)(Time::currentDay.day())) + (const char*)u8"日";
+	auto [y,d,m,wod] = CalendarModel::get()->currentDay;
+	auto curDayStr = std::to_string(y) + (const char*)u8"年"
+		+ std::to_string(d) + (const char*)u8"月"
+		+ std::to_string(m) + (const char*)u8"日";
 	document->GetElementById("currentDay")->SetInnerRML(curDayStr);
 }
 
@@ -154,7 +156,7 @@ void WindowMain::ProcessEvent(Rml::Event& event) {
 		if (windowToolBtnEventProcess(eleId, ele)) return;
 		else if (switchViewModeProcess(eleId, ele)) return;
 	}
-	else if (eventId == Time::getNewDayEventId()) {
+	else if (eventId == CalendarModel::get()->NewDayEventId) {
 		initCurDate();
 		return;
 	}

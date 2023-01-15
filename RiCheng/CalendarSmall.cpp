@@ -1,8 +1,7 @@
 #include "CalendarSmall.h"
 #include "ResourceHelper.h"
-#include "Time.h"
 #include "CalendarModel.h"
-#include "CalendarItem.h"
+#include "TypeDefine.h"
 
 CalendarSmall::CalendarSmall() {
 	auto context = Rml::GetContext("main");
@@ -19,10 +18,18 @@ CalendarSmall::CalendarSmall() {
 void CalendarSmall::initCalendar() {
 	auto dayEle = document->GetElementById("calendarEleBox")->GetChild(0);
 	auto model = CalendarModel::get();
-	for (auto& item:model->data)
+	for (auto[day,curDay,curMonth] : model->data)
 	{
-		dayEle->SetInnerRML(std::to_string(item->day));
-		dayEle->SetClassNames(item->isCurrentMonthDay?"curMonthEle":"notCurMonthEle");
+
+		dayEle->SetInnerRML(std::to_string(day));
+		if (curDay) {
+			dayEle->SetClass("curDayEle", curDay);
+		}
+		else
+		{
+			dayEle->SetClass("notCurMonthEle", !curMonth);
+			dayEle->SetClass("curMonthEle", curMonth);
+		}		
 		dayEle = dayEle->GetNextSibling();
 	}	
 }

@@ -169,6 +169,7 @@
     <ResourceCompile Include="RiCheng.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="sqlite\db.db" />
     <None Include="ui1.bin" />
     <None Include="ui\calendarSmall.rml" />
     <None Include="ui\main.rml" />

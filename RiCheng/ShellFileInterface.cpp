@@ -25,7 +25,7 @@ Rml::FileHandle ShellFileInterface::Open(const Rml::String& path)
 	else if (ResourceHelper::ResourcePathMap[path]) {
 		data->idr_number = ResourceHelper::ResourcePathMap[path];
 		HMODULE instance = ::GetModuleHandle(NULL);
-		HRSRC resID = ::FindResource(instance, MAKEINTRESOURCE(data->idr_number), L"ui");
+		HRSRC resID = ::FindResource(instance, MAKEINTRESOURCE(data->idr_number), L"UI");
 		if (resID != 0) {
 			size_t resSize = ::SizeofResource(instance, resID);
 			data->length = resSize;
@@ -54,7 +54,7 @@ size_t ShellFileInterface::Read(void* buffer, size_t size, Rml::FileHandle file)
 	else
 	{
 		HMODULE instance = ::GetModuleHandle(NULL);
-		HRSRC resID = ::FindResource(instance, MAKEINTRESOURCE(data->idr_number), L"ui");
+		HRSRC resID = ::FindResource(instance, MAKEINTRESOURCE(data->idr_number), L"UI");
 		if (resID == 0) {
 			return 0;
 		}

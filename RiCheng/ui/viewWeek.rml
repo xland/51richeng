@@ -1,4 +1,5 @@
 <rml>
+
   <head>
     <title>ViewWeek</title>
     <link type="text/rcss" href="style.rcss" />
@@ -9,7 +10,9 @@
         right: 400px;
         top: 0px;
         bottom: 0px;
+        border-top: 1px #f7f7f7;
       }
+
       #rowBox {
         position: absolute;
         left: 0px;
@@ -17,6 +20,7 @@
         top: 40px;
         bottom: 0px;
       }
+
       .viewDayRow {
         height: 4%;
         border-top: 1px #eeeff0;
@@ -42,6 +46,7 @@
         border-bottom-right-radius: 8px;
         z-index: 3;
       }
+
       #weekColumnBox {
         position: absolute;
         top: 0px;
@@ -50,7 +55,6 @@
         right: 0px;
         z-index: 2;
         font-size: 18px;
-        border-top: 1px #eeeff0;
       }
 
       .weekColumn {

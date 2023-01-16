@@ -1,4 +1,5 @@
 <rml>
+
   <head>
     <title>main</title>
     <style>
@@ -174,20 +175,20 @@
   <body>
     <div id="topBar">
       <div class="titleLeft">
-        <div id="appIcon"></div>
+        <div id="appIcon">&#xe685;</div>
         <div>日程</div>
       </div>
       <div id="switchOptionDay" class="switchBtn switchBtnSelected">日</div>
       <div id="switchOptionWeek" class="switchBtn">周</div>
       <div id="switchOptionMonth" class="switchBtn">月</div>
-      <div id="preBtn" class="preNextBtn"></div>
+      <div id="preBtn" class="preNextBtn">&#xe60e;</div>
       <div id="currentDay"></div>
-      <div id="nextBtn" class="preNextBtn"></div>
+      <div id="nextBtn" class="preNextBtn">&#xe638;</div>
 
       <div style="flex: 1"></div>
-      <div id="minimizeBtn" class="toolBtn"></div>
-      <div id="maximizeBtn" class="toolBtn"></div>
-      <div id="closeBtn" class="toolBtn"></div>
+      <div id="minimizeBtn" class="toolBtn">&#xe6e8;</div>
+      <div id="maximizeBtn" class="toolBtn">&#xe6e5;</div>
+      <div id="closeBtn" class="toolBtn">&#xe6e7;</div>
     </div>
     <div class="bodyBox">
       <div class="bodyLeft"></div>

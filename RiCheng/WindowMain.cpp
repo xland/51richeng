@@ -23,20 +23,12 @@ void WindowMain::initDocument() {
 	document->Show();
 }
 
-inline Rml::Element* WindowMain::setEleIcon(std::string&& id) {
-	auto btn = document->GetElementById(id);
-	auto icon = ResourceHelper::IconMap[id];
-	btn->SetInnerRML(icon);
-	return btn;
-}
-
 void WindowMain::setBtn() {
-	setEleIcon("appIcon");
-	setEleIcon("closeBtn")->AddEventListener(Rml::EventId::Click, this);
-	setEleIcon("maximizeBtn")->AddEventListener(Rml::EventId::Click, this);
-	setEleIcon("minimizeBtn")->AddEventListener(Rml::EventId::Click, this);
-	setEleIcon("preBtn")->AddEventListener(Rml::EventId::Click, this);
-	setEleIcon("nextBtn")->AddEventListener(Rml::EventId::Click, this);
+	document->GetElementById("closeBtn")->AddEventListener(Rml::EventId::Click, this);
+	document->GetElementById("maximizeBtn")->AddEventListener(Rml::EventId::Click, this);
+	document->GetElementById("minimizeBtn")->AddEventListener(Rml::EventId::Click, this);
+	document->GetElementById("preBtn")->AddEventListener(Rml::EventId::Click, this);
+	document->GetElementById("nextBtn")->AddEventListener(Rml::EventId::Click, this);
 	
 	auto switchOption = document->GetElementById("switchOptionDay");
 	switchOption->AddEventListener(Rml::EventId::Click, this);
@@ -66,14 +58,14 @@ bool WindowMain::windowToolBtnEventProcess(std::string& eleId,Rml::Element* ele)
 	}
 	else if (eleId == "maximizeBtn")
 	{
-		if (ele->GetInnerRML() == std::string{ ResourceHelper::IconMap["maximizeBtn"] }) {
-			ele->SetInnerRML(ResourceHelper::IconMap["restoreBtn"]);
+		if (ele->GetInnerRML() == (const char*)u8"\ue6e5") {
+			ele->SetInnerRML("&#xe6e9;");
 			HWND hWnd = ::GetForegroundWindow();
 			ShowWindow(hWnd, SW_MAXIMIZE);
 		}
 		else
 		{
-			ele->SetInnerRML(ResourceHelper::IconMap["maximizeBtn"]);
+			ele->SetInnerRML("&#xe6e5;");
 			HWND hWnd = ::GetForegroundWindow();
 			ShowWindow(hWnd, SW_RESTORE);
 		}

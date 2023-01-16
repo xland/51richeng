@@ -22,7 +22,6 @@ private:
 	std::unique_ptr<ViewDay> viewDay;
 	std::unique_ptr<ViewWeek> viewWeek;
 	std::unique_ptr<ViewMonth> viewMonth;
-	inline Rml::Element* setEleIcon(std::string&& id);
 	inline void setBtn();
 	inline void initDocument();
 	inline void initCurDate();

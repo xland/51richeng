@@ -16,15 +16,5 @@ namespace ResourceHelper
 		{"ui/viewWeek.rml",IDR_ViewWeek},
 		{"ui/iconfont.ttf",IDR_Icon}
 	};
-	static std::map<std::string, const char*> IconMap{
-		{"appIcon",(const char*)u8"\ue685"},
-		{"closeBtn",(const char*)u8"\ue6e7"},
-		{"maximizeBtn",(const char*)u8"\ue6e5"},
-		{"minimizeBtn",(const char*)u8"\ue6e8"},
-		{"preBtn",(const char*)u8"\ue60e"},
-		{"nextBtn",(const char*)u8"\ue638"},
-		{"switchDropDownBtn",(const char*)u8"\ue60f"},
-		{"restoreBtn",(const char*)u8"\ue6e9"},
-	};
 }
 

@@ -1,25 +1,27 @@
 #include <Windows.h>
+#include <string>
 #include <RmlUi/Core.h>
 #include <RmlUi/Debugger.h>
+#include "spdlog/spdlog.h"
 #include "RmlUi_Backend.h"
 #include "Shell.h"
 #include "WindowMain.h"
-#include <string>
-#include "Time.h"
-#include "DB.h"
+#include "spdlog/spdlog.h"
+#include "AppData.h"
 
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPTSTR lpCmdLine, _In_ int nCmdShow) {
-	auto db = DB::get();
+	AppData::init();
 	int width = 1024;
-	int height = 768;
+	int height = 768;	
 	if (!Shell::Initialize()) {
+		spdlog::error("Shell::Initialize() ß∞‹");
 		return -1;
 	}
-	if (!Backend::Initialize("51RiCheng", width, height, true))
-	{
+	if (!Backend::Initialize("51RiCheng", width, height, true)) {
 		Shell::Shutdown();
+		spdlog::error("Backend::Initialize ß∞‹");
 		return -1;
 	}
 	Rml::SetSystemInterface(Backend::GetSystemInterface());
@@ -28,6 +30,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Rml::Context* context = Rml::CreateContext("main", Rml::Vector2i(width, height));
 	if (context == nullptr)
 	{
+		spdlog::error("Rml::CreateContext main ß∞‹");
 		Rml::Shutdown();
 		Backend::Shutdown();
 		Shell::Shutdown();

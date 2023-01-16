@@ -6,52 +6,13 @@
 #include <iostream>
 #include "RmlUi/Core.h"
 #include "resource.h"
+#include "AppData.h"
 
 
-DB::DB() {
-    TCHAR szPath[MAX_PATH];
-    if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, szPath)))
-    {
-        PathAppend(szPath, L"\\51RiCheng");
-        //todo error
-    }
-    std::filesystem::path dbPath{ szPath };
-    if (!std::filesystem::exists(dbPath)) {
-        std::filesystem::create_directories(dbPath);
-    }
-    dbPath /= "db.db";
-    if (!std::filesystem::exists(dbPath)) {
-        createDBFile(dbPath);
-    }
-    int rc  = sqlite3_open(dbPath.generic_string().c_str(), &db);
+DB::DB(sqlite3* db):db {db} {
+        
 }
-void DB::createDBFile(std::filesystem::path& dbPath) {
-    HMODULE instance = ::GetModuleHandle(NULL);
-    HRSRC resID = ::FindResource(instance, MAKEINTRESOURCE(IDR_DB1), L"DB");
-    if (resID == 0) {
-        //todo
-        return;
-    }
-    HGLOBAL res = ::LoadResource(instance, resID);
-    if (res == 0) {
-        //todo
-        return;
-    }
-    LPVOID resData = ::LockResource(res);
-    DWORD dwResSize = ::SizeofResource(instance, resID);
-    if (!dwResSize)
-    {
-        return;
-    }
-    HANDLE hResFile = CreateFile(dbPath.wstring().c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-    DWORD dwWritten = 0;
-    WriteFile(hResFile, resData, dwResSize, &dwWritten, NULL);
-    CloseHandle(hResFile);
-    if (dwResSize != dwWritten);
-    {
-        return;
-    }
-}
+
 void DB::close() {
     sqlite3_close(db);
 }
@@ -67,8 +28,8 @@ std::vector<ToDo> DB::getTodo(std::chrono::year_month_day& day) {
 
 
 DB* DB::get() {
-    if (instance == nullptr) {
-        instance = new DB();
-    }
     return instance;
+}
+void DB::init(sqlite3* db) {
+    instance = new DB(db);
 }

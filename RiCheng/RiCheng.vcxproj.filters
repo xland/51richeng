@@ -51,6 +51,9 @@
     <ClCompile Include="CalendarModel.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="AppData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -99,6 +102,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="TypeDefine.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AppData.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

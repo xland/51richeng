@@ -8,7 +8,6 @@ void App::init() {
     instance = new App();
 }
 App::App() {
-    AppData::init();
     fileInterface = new ShellFileInterface();
     Rml::SetFileInterface(fileInterface);    
     systemInterface = new SystemInterface_GLFW();
@@ -16,6 +15,7 @@ App::App() {
     renderInterface = new RenderInterface_GL3();
     Rml::SetRenderInterface(renderInterface);
     Rml::Initialise();
+    AppData::init();
 }
 App::~App() {
     Rml::Shutdown();

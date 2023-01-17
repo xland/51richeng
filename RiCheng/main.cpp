@@ -6,13 +6,15 @@
 #include "RmlUi_Backend.h"
 #include "Shell.h"
 #include "WindowMain.h"
-#include "AppData.h"
+#include "App.h"
+#include "WindowBase.h"
 
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPTSTR lpCmdLine, _In_ int nCmdShow) {
-	//AppData::init();
-	int width = 1024;
+	App::init();
+	WindowBase* base = new WindowBase(1024,768,L"allen","aaa");
+	/*int width = 1024;
 	int height = 768;	
 	if (!Shell::Initialize()) {
 		spdlog::error("Shell::Initialize()Ê§°Ü");
@@ -50,6 +52,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance
 	Rml::Shutdown();
 	Backend::Shutdown();
 	Shell::Shutdown();
-	delete windowMain;
+	delete windowMain;*/
 	return 0;
 }

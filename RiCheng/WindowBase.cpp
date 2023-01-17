@@ -20,7 +20,7 @@ namespace {
 		else {
 			win = (WindowBase*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 		}
-		return win->winProc(hwnd, msg, wParam, lParam);		
+		return win->winProc(hwnd, msg, wParam, lParam);	
 	}	
 }
 
@@ -46,6 +46,11 @@ WindowBase::WindowBase(int width, int height, std::wstring&& windowTitle, std::s
 		Backend::PresentFrame();
 	}
 }
+
+void WindowBase::ProcessEvent(Rml::Event& event) {
+	auto eventId = event.GetId();
+}
+
 void WindowBase::initGLFWwindow() {
 	glfwSetErrorCallback(LogErrorFromGLFW);
 	if (!glfwInit()) {

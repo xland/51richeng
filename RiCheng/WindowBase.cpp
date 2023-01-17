@@ -1,8 +1,8 @@
 #include "WindowBase.h"
 #include <dwmapi.h>
 #include <RmlUi/Core.h>
+#include <RmlUi/Debugger.h>
 #include "spdlog/spdlog.h"
-#include "RmlUi_Renderer_GL3.h"
 #include "App.h"
 
 
@@ -13,13 +13,11 @@ namespace {
 	}	
 	LRESULT CALLBACK WindowHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 		WindowBase* win;
-		if (msg == WM_CREATE)
-		{
+		if (msg == WM_CREATE) {
 			win = (WindowBase*)(((LPCREATESTRUCT)lParam)->lpCreateParams);
 			SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)win);
 		}
-		else
-		{
+		else {
 			win = (WindowBase*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 		}
 		return win->winProc(hwnd, msg, wParam, lParam);		
@@ -32,6 +30,21 @@ WindowBase::WindowBase(int width, int height, std::wstring&& windowTitle, std::s
 	initGLFWwindow();
 	framelessWindow();
 	context = Rml::CreateContext(windowName, Rml::Vector2i(width, height));
+	if (context == nullptr) {
+		spdlog::error("Rml::CreateContext mainÊ§°Ü");
+	}
+#ifdef DEBUG
+	Rml::Debugger::Initialise(context);
+#endif // DEBUG
+	bool running = true;
+	while (running)
+	{
+		running = ProcessEvents(context);
+		context->Update();
+		Backend::BeginFrame();
+		context->Render();
+		Backend::PresentFrame();
+	}
 }
 void WindowBase::initGLFWwindow() {
 	glfwSetErrorCallback(LogErrorFromGLFW);
@@ -54,6 +67,7 @@ void WindowBase::initGLFWwindow() {
 	if (!window) {
 		spdlog::error("glfwCreateWindowÊ§°Ü");
 	}
+	winMap.insert({ window, this });
 	hwnd = glfwGetWin32Window((GLFWwindow*)window);
 	SetWindowText(hwnd, windowTitle.c_str());
 	framelessWindow();
@@ -71,7 +85,7 @@ void WindowBase::initGLFWwindow() {
 	// Receive num lock and caps lock modifiers for proper handling of numpad inputs in text fields.
 	glfwSetInputMode(window, GLFW_LOCK_KEY_MODS, GLFW_TRUE);
 	// Setup the input and window event callback functions.
-	SetupCallbacks(window);
+	setupCallbacks();
 }
 
 void WindowBase::framelessWindow()
@@ -173,15 +187,14 @@ LRESULT WindowBase::hitTest(HWND hwnd, LPARAM lParam) {
 	}
 }
 void WindowBase::setupCallbacks()
-{
-	auto self = this;
+{	
 	// Key input
-	glfwSetKeyCallback(window, [&self](GLFWwindow* /*window*/, int glfw_key, int /*scancode*/, int glfw_action, int glfw_mods) {
-		if (!self->context) return;
-		// Store the active modifiers for later because GLFW doesn't provide them in the callbacks to the mouse input events.
+	glfwSetKeyCallback(window, [](GLFWwindow* window, int glfw_key, int /*scancode*/, int glfw_action, int glfw_mods) {
+		auto self = WindowBase::winMap[window];
+		if (!self->context) return;	
 		self->glfw_active_modifiers = glfw_mods;
 		// Override the default key event callback to add global shortcuts for the samples.
-		KeyDownCallback key_down_callback = data->key_down_callback;
+		Rml::Context* context = self->context;
 		switch (glfw_action)
 		{
 			case GLFW_PRESS:
@@ -190,49 +203,144 @@ void WindowBase::setupCallbacks()
 				const Rml::Input::KeyIdentifier key = RmlGLFW::ConvertKey(glfw_key);
 				const int key_modifier = RmlGLFW::ConvertKeyModifiers(glfw_mods);
 				float dp_ratio = 1.f;
-				glfwGetWindowContentScale(data->window, &dp_ratio, nullptr);
+				glfwGetWindowContentScale(self->window, &dp_ratio, nullptr);
 
 				// See if we have any global shortcuts that take priority over the context.
-				if (key_down_callback && !key_down_callback(self->context, key, key_modifier, dp_ratio, true))
+				if (self->needProcessEvent && !self->ProcessKeyDownShortcuts(context, key, key_modifier, dp_ratio, true))
 					break;
 				// Otherwise, hand the event over to the context by calling the input handler as normal.
-				if (!RmlGLFW::ProcessKeyCallback(self->context, glfw_key, glfw_action, glfw_mods))
+				if (!RmlGLFW::ProcessKeyCallback(context, glfw_key, glfw_action, glfw_mods))
 					break;
 				// The key was not consumed by the context either, try keyboard shortcuts of lower priority.
-				if (key_down_callback && !key_down_callback(self->context, key, key_modifier, dp_ratio, false))
+				if (self->needProcessEvent && !self->ProcessKeyDownShortcuts(context, key, key_modifier, dp_ratio, false))
 					break;
 			}
 			break;
 			case GLFW_RELEASE:
-				RmlGLFW::ProcessKeyCallback(self->context, glfw_key, glfw_action, glfw_mods);
+				RmlGLFW::ProcessKeyCallback(context, glfw_key, glfw_action, glfw_mods);
 				break;
 		}
 	});
 
-	glfwSetCharCallback(window, [&self](GLFWwindow* /*window*/, unsigned int codepoint) { RmlGLFW::ProcessCharCallback(self->context, codepoint); });
+	glfwSetCharCallback(window, [](GLFWwindow* window, unsigned int codepoint) { 
+		auto self = WindowBase::winMap[window];
+		RmlGLFW::ProcessCharCallback(self->context, codepoint); 
+	});
 
-	glfwSetCursorEnterCallback(window, [&self](GLFWwindow* /*window*/, int entered) { RmlGLFW::ProcessCursorEnterCallback(self->context, entered); });
+	glfwSetCursorEnterCallback(window, [](GLFWwindow* window, int entered) { 
+		auto self = WindowBase::winMap[window];
+		RmlGLFW::ProcessCursorEnterCallback(self->context, entered); 
+	});
 
 	// Mouse input
-	glfwSetCursorPosCallback(window, [&self](GLFWwindow* /*window*/, double xpos, double ypos) {
+	glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos) {
+		auto self = WindowBase::winMap[window];
 		RmlGLFW::ProcessCursorPosCallback(self->context, xpos, ypos, self->glfw_active_modifiers);
-		});
+	});
 
-	glfwSetMouseButtonCallback(window, [&self](GLFWwindow* /*window*/, int button, int action, int mods) {
+	glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods) {
+		auto self = WindowBase::winMap[window];
 		self->glfw_active_modifiers = mods;
-	RmlGLFW::ProcessMouseButtonCallback(self->context, button, action, mods);
-		});
+		RmlGLFW::ProcessMouseButtonCallback(self->context, button, action, mods);
+	});
 
-	glfwSetScrollCallback(window, [&self](GLFWwindow* /*window*/, double /*xoffset*/, double yoffset) {
+	glfwSetScrollCallback(window, [](GLFWwindow* window, double /*xoffset*/, double yoffset) {
+		auto self = WindowBase::winMap[window];
 		RmlGLFW::ProcessScrollCallback(self->context, yoffset, self->glfw_active_modifiers);
-		});
+	});
 
 	// Window events
-	glfwSetFramebufferSizeCallback(window, [&self](GLFWwindow* /*window*/, int width, int height) {
+	glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window, int width, int height) {
+		auto self = WindowBase::winMap[window];
 		App::get()->renderInterface->SetViewport(width, height);
-	RmlGLFW::ProcessFramebufferSizeCallback(self->context, width, height);
-		});
+		RmlGLFW::ProcessFramebufferSizeCallback(self->context, width, height);
+	});
 
-	glfwSetWindowContentScaleCallback(window,
-		[&self](GLFWwindow* /*window*/, float xscale, float /*yscale*/) { RmlGLFW::ProcessContentScaleCallback(self->context, xscale); });
+	glfwSetWindowContentScaleCallback(window,[](GLFWwindow* window, float xscale, float /*yscale*/) { 
+		auto self = WindowBase::winMap[window];
+		RmlGLFW::ProcessContentScaleCallback(self->context, xscale); 
+	});
+}
+bool WindowBase::ProcessEvents(Rml::Context* context)
+{
+	// The initial window size may have been affected by system DPI settings, apply the actual pixel size and dp-ratio to the context.
+	if (context_dimensions_dirty) {
+		context_dimensions_dirty = false;
+		Rml::Vector2i window_size;
+		float dp_ratio = 1.f;
+		glfwGetFramebufferSize(window, &window_size.x, &window_size.y);
+		glfwGetWindowContentScale(window, &dp_ratio, nullptr);
+		context->SetDimensions(window_size);
+		context->SetDensityIndependentPixelRatio(dp_ratio);
+	}
+	context = context;
+	needProcessEvent = true;
+	glfwPollEvents();
+	needProcessEvent = false;
+	context = nullptr;
+	const bool result = !glfwWindowShouldClose(window);
+	glfwSetWindowShouldClose(window, GLFW_FALSE);
+	return result;
+}
+bool WindowBase::ProcessKeyDownShortcuts(Rml::Context* context, Rml::Input::KeyIdentifier key, int key_modifier, float native_dp_ratio, bool priority)
+{
+	if (!context) return true;
+	// Result should return true to allow the event to propagate to the next handler.
+	bool result = false;
+	// This function is intended to be called twice by the backend, before and after submitting the key event to the context. This way we can
+	// intercept shortcuts that should take priority over the context, and then handle any shortcuts of lower priority if the context did not
+	// intercept it.
+	if (priority)
+	{
+		// Priority shortcuts are handled before submitting the key to the context.
+		// Toggle debugger and set dp-ratio using Ctrl +/-/0 keys.
+		if (key == Rml::Input::KI_F8)
+		{
+			Rml::Debugger::SetVisible(!Rml::Debugger::IsVisible());
+		}
+		else if (key == Rml::Input::KI_0 && key_modifier & Rml::Input::KM_CTRL)
+		{
+			context->SetDensityIndependentPixelRatio(native_dp_ratio);
+		}
+		else if (key == Rml::Input::KI_1 && key_modifier & Rml::Input::KM_CTRL)
+		{
+			context->SetDensityIndependentPixelRatio(1.f);
+		}
+		else if ((key == Rml::Input::KI_OEM_MINUS || key == Rml::Input::KI_SUBTRACT) && key_modifier & Rml::Input::KM_CTRL)
+		{
+			const float new_dp_ratio = Rml::Math::Max(context->GetDensityIndependentPixelRatio() / 1.2f, 0.5f);
+			context->SetDensityIndependentPixelRatio(new_dp_ratio);
+		}
+		else if ((key == Rml::Input::KI_OEM_PLUS || key == Rml::Input::KI_ADD) && key_modifier & Rml::Input::KM_CTRL)
+		{
+			const float new_dp_ratio = Rml::Math::Min(context->GetDensityIndependentPixelRatio() * 1.2f, 2.5f);
+			context->SetDensityIndependentPixelRatio(new_dp_ratio);
+		}
+		else
+		{
+			// Propagate the key down event to the context.
+			result = true;
+		}
+	}
+	else
+	{
+		// We arrive here when no priority keys are detected and the key was not consumed by the context. Check for shortcuts of lower priority.
+		if (key == Rml::Input::KI_R && key_modifier & Rml::Input::KM_CTRL)
+		{
+			for (int i = 0; i < context->GetNumDocuments(); i++)
+			{
+				Rml::ElementDocument* document = context->GetDocument(i);
+				const Rml::String& src = document->GetSourceURL();
+				if (src.size() > 4 && src.substr(src.size() - 4) == ".rml")
+				{
+					document->ReloadStyleSheet();
+				}
+			}
+		}
+		else
+		{
+			result = true;
+		}
+	}
+	return result;
 }

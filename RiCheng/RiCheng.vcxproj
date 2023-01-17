@@ -103,7 +103,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;RMLUI_STATIC_LIB;NOMINMAX;_WINDOWS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DEBUG;_DEBUG;RMLUI_STATIC_LIB;NOMINMAX;_WINDOWS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>D:\sdk\spdlog\include;D:\sdk\glfw-3.3.8\install\include;D:\sdk\RmlUi5\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
@@ -134,6 +134,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="App.cpp" />
     <ClCompile Include="AppData.cpp" />
     <ClCompile Include="CalendarModel.cpp" />
     <ClCompile Include="CalendarSmall.cpp" />
@@ -146,10 +147,12 @@
     <ClCompile Include="ViewDay.cpp" />
     <ClCompile Include="ViewMonth.cpp" />
     <ClCompile Include="ViewWeek.cpp" />
+    <ClCompile Include="WindowBase.cpp" />
     <ClCompile Include="WindowMain.cpp" />
     <ClCompile Include="WindowToDo.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="App.h" />
     <ClInclude Include="AppData.h" />
     <ClInclude Include="CalendarModel.h" />
     <ClInclude Include="CalendarSmall.h" />
@@ -166,6 +169,7 @@
     <ClInclude Include="ViewDay.h" />
     <ClInclude Include="ViewMonth.h" />
     <ClInclude Include="ViewWeek.h" />
+    <ClInclude Include="WindowBase.h" />
     <ClInclude Include="WindowMain.h" />
     <ClInclude Include="WindowToDo.h" />
   </ItemGroup>

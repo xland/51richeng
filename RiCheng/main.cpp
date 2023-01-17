@@ -11,7 +11,7 @@
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPTSTR lpCmdLine, _In_ int nCmdShow) {
-	AppData::init();
+	//AppData::init();
 	int width = 1024;
 	int height = 768;	
 	if (!Shell::Initialize()) {

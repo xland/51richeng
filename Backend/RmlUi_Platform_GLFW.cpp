@@ -47,6 +47,8 @@ SystemInterface_GLFW::~SystemInterface_GLFW()
 	glfwDestroyCursor(cursor_pointer);
 	glfwDestroyCursor(cursor_cross);
 	glfwDestroyCursor(cursor_text);
+	glfwDestroyCursor(cursor_vresize);
+	glfwDestroyCursor(cursor_hresize);
 }
 
 void SystemInterface_GLFW::SetWindow(GLFWwindow* in_window)

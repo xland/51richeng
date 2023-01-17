@@ -2,28 +2,50 @@
 #include <Windows.h>
 #include <shlwapi.h>
 #include <shlobj.h>
+#include <RmlUi/Core.h>
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 #include "sqlite/sqlite3.h"
 #include "resource.h"
 #include "DB.h"
 
+AppData* AppData::get() {
+    return instance;
+}
+void AppData::init() {
+    instance = new AppData();
+}
 AppData::AppData() {
+    initDataPath();
+    initLogger();
+    initDB();
+    initFont();
+}
+void AppData::initDataPath() {
     TCHAR szPath[MAX_PATH];
     if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, szPath)))
     {
-        appDataPath = std::filesystem::path{ szPath };
-        appDataPath /= "51RiCheng";
+        dataPath = std::filesystem::path{ szPath };
+        dataPath /= "51RiCheng";
     }
-    
-    if (!std::filesystem::exists(appDataPath)) {
-        std::filesystem::create_directories(appDataPath);
+    if (!std::filesystem::exists(dataPath)) {
+        std::filesystem::create_directories(dataPath);
     }
-    initLogger();
-    initDB();
 }
+void AppData::initFont() {
+    Rml::LoadFontFace("ui/iconfont.ttf", true);
+    UINT size = GetWindowsDirectory(NULL, 0);
+    wchar_t* path = new wchar_t[size];
+    if (GetWindowsDirectory(path, size) == 0) {
+        return;
+    }
+    auto systemFontPath = std::filesystem::path(path);
+    systemFontPath.append(L"Fonts\\msyh.ttc");  //Î¢ÈíÑÅºÚ
+    Rml::LoadFontFace(systemFontPath.string());
+}
+
 void AppData::initLogger() {
-    std::string logPath = appDataPath.string() + "\\log.txt";
+    std::string logPath = dataPath.string() + "\\log.txt";
     auto logger = spdlog::basic_logger_mt("logger", logPath.c_str(), true);
     spdlog::set_default_logger(logger);
 #ifdef NDEBUG
@@ -35,7 +57,7 @@ void AppData::initLogger() {
 #endif
 }
 void AppData::initDB() {
-    std::wstring dbPath = appDataPath.wstring() + L"\\db.db";
+    std::wstring dbPath = dataPath.wstring() + L"\\db.db";
     if (std::filesystem::exists(dbPath)) {
         openDB();
         return;
@@ -65,17 +87,11 @@ void AppData::initDB() {
     openDB();
 }
 void AppData::openDB() {
-    std::string dbPath2 = appDataPath.string() + "\\db.db";
+    std::string dbPath2 = dataPath.string() + "\\db.db";
     sqlite3* db;
     int rc = sqlite3_open(dbPath2.c_str(), &db);
     if (rc != 0) {
         spdlog::error("Êý¾Ý¿â´ò¿ªÊ§°Ü");
     }
     DB::init(db);
-}
-AppData* AppData::get() {
-    return instance;
-}
-void AppData::init() {
-    instance = new AppData();
 }

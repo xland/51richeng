@@ -1,4 +1,3 @@
-#include <Windows.h>
 #include <RmlUi/Core.h>
 #include "RmlUi_Backend.h"
 #include "RmlUi_Platform_GLFW.h"

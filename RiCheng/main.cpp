@@ -6,7 +6,6 @@
 #include "RmlUi_Backend.h"
 #include "Shell.h"
 #include "WindowMain.h"
-#include "spdlog/spdlog.h"
 #include "AppData.h"
 
 

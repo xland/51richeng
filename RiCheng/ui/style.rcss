@@ -16,8 +16,8 @@ div {
 
 .todoItem {
     position: absolute;
-    left: 80px;
-    right: 40px;
+    left: 136px;
+    right: 80px;
     z-index: 1;
     display: none;
     border-width: 1px;

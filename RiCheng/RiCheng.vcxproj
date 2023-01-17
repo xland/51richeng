@@ -147,6 +147,7 @@
     <ClCompile Include="ViewMonth.cpp" />
     <ClCompile Include="ViewWeek.cpp" />
     <ClCompile Include="WindowMain.cpp" />
+    <ClCompile Include="WindowToDo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppData.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="ViewMonth.h" />
     <ClInclude Include="ViewWeek.h" />
     <ClInclude Include="WindowMain.h" />
+    <ClInclude Include="WindowToDo.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="RiCheng.rc" />

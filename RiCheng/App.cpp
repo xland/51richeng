@@ -65,7 +65,7 @@ void App::start() {
 		for (auto& win:windows)
 		{
 			win->ProcessEvents();
-		}		
+		}
 	}
 }
 void App::closeWindow(WindowBase* window) {

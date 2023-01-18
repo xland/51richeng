@@ -68,7 +68,6 @@ void WindowBase::initGLFWwindow() {
 	// The window size may have been scaled by DPI settings, get the actual pixel size.
 	glfwGetFramebufferSize(glfwWindow, &width, &height);
 	renderInterface = new RenderInterface_GL3();
-	Rml::SetRenderInterface(renderInterface);
 	renderInterface->SetViewport(width, height);
 	// Receive num lock and caps lock modifiers for proper handling of numpad inputs in text fields.
 	glfwSetInputMode(glfwWindow, GLFW_LOCK_KEY_MODS, GLFW_TRUE);
@@ -257,17 +256,19 @@ void WindowBase::ProcessEvents()
 		context->SetDimensions(window_size);
 		context->SetDensityIndependentPixelRatio(dp_ratio);
 	}
-	needProcessEvent = true;
 	glfwPollEvents();
-	needProcessEvent = false;
 	const bool result = glfwWindowShouldClose(glfwWindow);
 	if (result) {		
 		App::get()->closeWindow(this);
 	}
 	else {
+		if (App::get()->windows.size() > 1) {
+			return;
+		}
 		context->Update();
 		renderInterface->BeginFrame();
 		renderInterface->Clear();
+		auto a = this->windowName;
 		context->Render();
 		renderInterface->EndFrame();
 		glfwSwapBuffers(glfwWindow);

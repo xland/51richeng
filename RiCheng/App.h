@@ -13,7 +13,7 @@ public:
 	static App* get();
 	static void init();
 	void start();
-	
+	void closeWindow(WindowBase* window);
 	SystemInterface_GLFW* systemInterface;
 	ShellFileInterface* fileInterface;
 	std::vector<WindowBase*> windows;

@@ -11,10 +11,11 @@ class WindowBase :public Rml::EventListener
 {
 public:
 	WindowBase(int width, int height,const std::string& windowName);
+	~WindowBase();
 	WindowBase(const WindowBase&) = delete;
 	WindowBase& operator=(const WindowBase&) = delete;
 	LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-	bool ProcessEvents();
+	void ProcessEvents();
 	int width, height;
 	//std::wstring windowTitle;
 	std::string windowName;

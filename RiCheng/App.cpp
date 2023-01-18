@@ -21,6 +21,8 @@ App::App() {
 }
 App::~App() {
     Rml::Shutdown();
+	RmlGL3::Shutdown();
+	glfwTerminate();
     delete fileInterface;
     delete systemInterface;
     delete AppData::get();
@@ -65,4 +67,13 @@ void App::start() {
 			win->ProcessEvents();
 		}		
 	}
+}
+void App::closeWindow(WindowBase* window) {
+	for (auto it = windows.begin(); it != windows.end();) {
+		if (*it == window) {
+			it = windows.erase(it);
+			break;
+		}
+	}
+	delete window;
 }

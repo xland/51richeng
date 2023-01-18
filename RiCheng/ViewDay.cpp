@@ -10,7 +10,7 @@ ViewDay::ViewDay() {
 	document->SetProperty(Rml::PropertyId::Top, Rml::Property(50, Rml::Property::PX));
 	document->SetProperty(Rml::PropertyId::Left, Rml::Property(400, Rml::Property::PX));
 	document->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(1, Rml::Property::NUMBER));
-	document->AddEventListener(Rml::EventId::Resize, this);
+	//document->AddEventListener(Rml::EventId::Resize, this);
 	document->Show();
 	for (size_t i = 0; i < 2; i++)
 	{
@@ -26,9 +26,9 @@ void ViewDay::createTodoEle(int top,int bottom,int index) {
 	ele->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(index+3, Rml::Property::NUMBER));
 	auto className = std::format("todoItem{0}", index % 6);
 	ele->SetClass(className, true);
-	ele->GetChild(0)->AddEventListener(Rml::EventId::Mousedown, this);
-	ele->GetChild(1)->AddEventListener(Rml::EventId::Mousedown, this);
-	ele->GetChild(2)->AddEventListener(Rml::EventId::Mousedown, this);
+	//ele->GetChild(0)->AddEventListener(Rml::EventId::Mousedown, this);
+	//ele->GetChild(1)->AddEventListener(Rml::EventId::Mousedown, this);
+	//ele->GetChild(2)->AddEventListener(Rml::EventId::Mousedown, this);
 	templateEle->GetPreviousSibling()->GetFirstChild()->AppendChild(std::move(ele));
 }
 

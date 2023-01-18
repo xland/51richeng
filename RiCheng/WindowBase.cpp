@@ -1,4 +1,5 @@
 #include "WindowBase.h"
+#include <algorithm>
 #include <Windows.h>
 #include <windowsx.h>
 #include <dwmapi.h>
@@ -48,7 +49,12 @@ WindowBase::WindowBase(int width, int height,const std::string& windowName)
 	Rml::Debugger::Initialise(context);
 #endif // DEBUG
 }
-
+WindowBase::~WindowBase() {
+	Rml::RemoveContext(windowName);
+	Rml::ReleaseTextures(renderInterface);
+	delete renderInterface;
+	glfwDestroyWindow(glfwWindow);
+}
 void WindowBase::initGLFWwindow() {
 	glfwWindow = glfwCreateWindow(width, height, "", nullptr, nullptr);
 	if (!glfwWindow) {
@@ -75,7 +81,7 @@ void WindowBase::initGLFWwindow() {
 }
 
 void WindowBase::framelessWindow() {
-	auto borderlessStyle = WS_POPUP | WS_THICKFRAME | WS_CAPTION | WS_SYSMENU | WS_VISIBLE;
+	static auto borderlessStyle = WS_POPUP | WS_THICKFRAME | WS_CAPTION | WS_SYSMENU | WS_VISIBLE;
 	SetWindowLongPtr(hwnd, GWL_STYLE, borderlessStyle);
 	SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)this);
 	static const MARGINS shadow_state{ 1,1,1,1 };
@@ -190,7 +196,6 @@ void WindowBase::setupCallbacks(){
 				const int key_modifier = RmlGLFW::ConvertKeyModifiers(glfw_mods);
 				float dp_ratio = 1.f;
 				glfwGetWindowContentScale(self->glfwWindow, &dp_ratio, nullptr);
-
 				// See if we have any global shortcuts that take priority over the context.
 				if (self->needProcessEvent && !self->ProcessKeyDownShortcuts(context, key, key_modifier, dp_ratio, true))
 					break;
@@ -215,7 +220,9 @@ void WindowBase::setupCallbacks(){
 
 	glfwSetCursorEnterCallback(glfwWindow, [](GLFWwindow* window, int entered) { 
 		auto self = findWindowByGlfwWindow(window);
-		RmlGLFW::ProcessCursorEnterCallback(self->context, entered); 
+		if (self && self->context) {
+			RmlGLFW::ProcessCursorEnterCallback(self->context, entered);
+		}		
 	});
 
 	// Mouse input
@@ -247,7 +254,7 @@ void WindowBase::setupCallbacks(){
 		RmlGLFW::ProcessContentScaleCallback(self->context, xscale); 
 	});
 }
-bool WindowBase::ProcessEvents()
+void WindowBase::ProcessEvents()
 {
 	if (context_dimensions_dirty) {
 		context_dimensions_dirty = false;
@@ -261,18 +268,18 @@ bool WindowBase::ProcessEvents()
 	needProcessEvent = true;
 	glfwPollEvents();
 	needProcessEvent = false;
-	const bool result = !glfwWindowShouldClose(glfwWindow);
-	glfwSetWindowShouldClose(glfwWindow, GLFW_FALSE);
-
-	context->Update();
-	renderInterface->BeginFrame();
-	renderInterface->Clear();
-	context->Render();
-	renderInterface->EndFrame();
-	glfwSwapBuffers(glfwWindow);
-	// Optional, used to mark frames during performance profiling.
-	RMLUI_FrameMark;
-	return result;
+	const bool result = glfwWindowShouldClose(glfwWindow);
+	if (result) {		
+		App::get()->closeWindow(this);
+	}
+	else {
+		context->Update();
+		renderInterface->BeginFrame();
+		renderInterface->Clear();
+		context->Render();
+		renderInterface->EndFrame();
+		glfwSwapBuffers(glfwWindow);
+	}
 }
 bool WindowBase::ProcessKeyDownShortcuts(Rml::Context* context, Rml::Input::KeyIdentifier key, int key_modifier, float native_dp_ratio, bool priority)
 {

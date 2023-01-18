@@ -1,5 +1,4 @@
 ﻿#include "WindowMain.h"
-#include <Windows.h>
 #include <format>
 #include "TypeDefine.h"
 #include "ResourceHelper.h"
@@ -7,7 +6,9 @@
 
 using namespace std::chrono;
 
-WindowMain::WindowMain()  {
+WindowMain::WindowMain(int width, int height)
+	: WindowBase(width,height, "windowMain") {
+	SetWindowText(hwnd, L"无忧日程");
 	initDocument();
 	setBtn();
 	initCurDate();
@@ -17,7 +18,7 @@ WindowMain::WindowMain()  {
 }
 
 void WindowMain::initDocument() {
-	auto context = Rml::GetContext("main");
+	auto context = Rml::GetContext("windowMain");
 	document = context->LoadDocument("ui/main.rml");
 	document->SetId("main");
 	document->Show();
@@ -30,7 +31,7 @@ void WindowMain::setBtn() {
 	document->GetElementById("preBtn")->AddEventListener(Rml::EventId::Click, this);
 	document->GetElementById("nextBtn")->AddEventListener(Rml::EventId::Click, this);
 	
-	auto switchOption = document->GetElementById("switchOptionDay");
+	Rml::Element* switchOption = document->GetElementById("switchOptionDay");
 	switchOption->AddEventListener(Rml::EventId::Click, this);
 	switchOption = switchOption->GetNextSibling();
 	switchOption->AddEventListener(Rml::EventId::Click, this);

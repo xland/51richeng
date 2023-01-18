@@ -1,8 +1,9 @@
 #pragma once
+#include <vector>
 #include <RmlUi/Core.h>
 #include "ShellFileInterface.h"
 #include "RmlUi_Platform_GLFW.h"
-#include "RmlUi_Renderer_GL3.h"
+#include "WindowBase.h"
 class App
 {
 public:
@@ -11,11 +12,15 @@ public:
 	~App();
 	static App* get();
 	static void init();
+	void start();
+	
 	SystemInterface_GLFW* systemInterface;
-	RenderInterface_GL3* renderInterface;
 	ShellFileInterface* fileInterface;
+	std::vector<WindowBase*> windows;
 private:
 	App();
+	void initGlfw();
+	void initFont();
 	inline static App* instance{ nullptr };
 };
 

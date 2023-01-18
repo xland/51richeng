@@ -4,7 +4,7 @@
 
 
 ViewDay::ViewDay() {
-	auto context = Rml::GetContext("main");
+	auto context = Rml::GetContext("windowMain");
 	document = context->LoadDocument("ui/viewDay.rml");
 	document->SetId("viewDay");
 	document->SetProperty(Rml::PropertyId::Top, Rml::Property(50, Rml::Property::PX));
@@ -12,7 +12,6 @@ ViewDay::ViewDay() {
 	document->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(1, Rml::Property::NUMBER));
 	document->AddEventListener(Rml::EventId::Resize, this);
 	document->Show();
-
 	for (size_t i = 0; i < 2; i++)
 	{
 		createTodoEle(i + 50, i+50, i);

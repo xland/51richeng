@@ -6,13 +6,14 @@
 #include "ViewDay.h"
 #include "ViewWeek.h"
 #include "ViewMonth.h"
+#include "WindowBase.h"
 
 using namespace std::chrono;
 
-class WindowMain :public Rml::EventListener
+class WindowMain : public WindowBase
 {
 public:
-	WindowMain();
+	WindowMain(int width, int height);
 	WindowMain(const WindowMain&) = delete;
 	WindowMain& operator=(const WindowMain&) = delete;
 	void ProcessEvent(Rml::Event& event) override;

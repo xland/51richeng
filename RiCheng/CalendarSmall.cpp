@@ -4,7 +4,7 @@
 #include "TypeDefine.h"
 
 CalendarSmall::CalendarSmall() {
-	auto context = Rml::GetContext("main");
+	auto context = Rml::GetContext("windowMain");
 	document = context->LoadDocument("ui/calendarSmall.rml");
 	document->SetId("calendarSmall");
 	document->SetProperty(Rml::PropertyId::Top, Rml::Property(50, Rml::Property::PX));

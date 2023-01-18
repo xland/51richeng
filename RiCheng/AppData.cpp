@@ -19,7 +19,6 @@ AppData::AppData() {
     initDataPath();
     initLogger();
     initDB();
-    initFont();
 }
 void AppData::initDataPath() {
     TCHAR szPath[MAX_PATH];
@@ -31,17 +30,6 @@ void AppData::initDataPath() {
     if (!std::filesystem::exists(dataPath)) {
         std::filesystem::create_directories(dataPath);
     }
-}
-void AppData::initFont() {
-    Rml::LoadFontFace("ui/iconfont.ttf", true);
-    UINT size = GetWindowsDirectory(NULL, 0);
-    wchar_t* path = new wchar_t[size];
-    if (GetWindowsDirectory(path, size) == 0) {
-        return;
-    }
-    auto systemFontPath = std::filesystem::path(path);
-    systemFontPath.append(L"Fonts\\msyh.ttc");  //Î¢ÈíÑÅºÚ
-    Rml::LoadFontFace(systemFontPath.string());
 }
 
 void AppData::initLogger() {

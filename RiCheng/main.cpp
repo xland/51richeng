@@ -7,13 +7,15 @@
 #include "Shell.h"
 #include "WindowMain.h"
 #include "App.h"
-#include "WindowBase.h"
 
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPTSTR lpCmdLine, _In_ int nCmdShow) {
 	App::init();
-	WindowBase* base = new WindowBase(1024,768,L"allen","aaa");
+	WindowMain* base = new WindowMain(1024,768);
+	bool running = true;
+	App::get()->start();
+	delete App::get();
 	/*int width = 1024;
 	int height = 768;	
 	if (!Shell::Initialize()) {

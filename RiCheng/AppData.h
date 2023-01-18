@@ -13,7 +13,6 @@ private:
 	void initDB();
 	void initLogger();
 	void openDB();
-	void initFont();
 	void initDataPath();
 	inline static AppData* instance{ nullptr };
 };

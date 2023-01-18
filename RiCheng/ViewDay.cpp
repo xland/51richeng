@@ -10,7 +10,7 @@ ViewDay::ViewDay() {
 	document->SetProperty(Rml::PropertyId::Top, Rml::Property(50, Rml::Property::PX));
 	document->SetProperty(Rml::PropertyId::Left, Rml::Property(400, Rml::Property::PX));
 	document->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(1, Rml::Property::NUMBER));
-	//document->AddEventListener(Rml::EventId::Resize, this);
+	document->AddEventListener(Rml::EventId::Resize, this);
 	document->Show();
 	for (size_t i = 0; i < 2; i++)
 	{

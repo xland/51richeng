@@ -20,7 +20,6 @@ void CalendarSmall::initCalendar() {
 	auto model = CalendarModel::get();
 	for (auto[day,curDay,curMonth] : model->data)
 	{
-
 		dayEle->SetInnerRML(std::to_string(day));
 		if (curDay) {
 			dayEle->SetClass("curDayEle", curDay);

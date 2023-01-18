@@ -35,7 +35,6 @@ namespace {
 		return win->winProc(hwnd, msg, wParam, lParam);	
 	}	
 }
-
 WindowBase::WindowBase(int width, int height,const std::string& windowName)
 	:width{ width }, height{height} , windowName{ windowName }
 {
@@ -79,7 +78,6 @@ void WindowBase::initGLFWwindow() {
 	// Setup the input and window event callback functions.
 	setupCallbacks();
 }
-
 void WindowBase::framelessWindow() {
 	static auto borderlessStyle = WS_POPUP | WS_THICKFRAME | WS_CAPTION | WS_SYSMENU | WS_VISIBLE;
 	SetWindowLongPtr(hwnd, GWL_STYLE, borderlessStyle);
@@ -95,7 +93,6 @@ void WindowBase::framelessWindow() {
 	auto top = (screenRect.bottom - winRect.bottom) / 2;
 	SetWindowPos(hwnd, HWND_TOP, left, top, winRect.right, winRect.bottom, SWP_FRAMECHANGED | SWP_NOSIZE);
 }
-
 LRESULT CALLBACK WindowBase::winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
 		case WM_NCCALCSIZE: {
@@ -147,7 +144,6 @@ LRESULT CALLBACK WindowBase::winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
 	}
 	return CallWindowProc(oldWindowProc, hwnd, msg, wParam, lParam); //窗口消息处理权力交给原有的窗口处理逻辑
 }
-
 LRESULT WindowBase::hitTest(HWND hwnd, LPARAM lParam) {
 	POINT absoluteCursor = POINT{ GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
 	RECT winRect;
@@ -178,7 +174,6 @@ LRESULT WindowBase::hitTest(HWND hwnd, LPARAM lParam) {
 		return HTNOWHERE;
 	}
 }
-
 void WindowBase::setupCallbacks(){	
 	// Key input
 	glfwSetKeyCallback(glfwWindow, [](GLFWwindow* window, int glfw_key, int /*scancode*/, int glfw_action, int glfw_mods) {

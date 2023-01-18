@@ -14,7 +14,8 @@ namespace ResourceHelper
 		{"ui/viewDay.rml",IDR_ViewDay},
 		{"ui/viewMonth.rml",IDR_ViewMonth},
 		{"ui/viewWeek.rml",IDR_ViewWeek},
-		{"ui/iconfont.ttf",IDR_Icon}
+		{"ui/iconfont.ttf",IDR_Icon},
+		{"ui/windowToDo.rml",IDR_WindowToDo}
 	};
 }
 

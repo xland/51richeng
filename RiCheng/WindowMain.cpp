@@ -1,4 +1,5 @@
 ﻿#include "WindowMain.h"
+#include <RmlUi/Debugger.h>
 #include <format>
 #include "TypeDefine.h"
 #include "ResourceHelper.h"
@@ -8,6 +9,9 @@ using namespace std::chrono;
 
 WindowMain::WindowMain(int width, int height)
 	: WindowBase(width,height, "windowMain") {
+#ifdef DEBUG
+	Rml::Debugger::Initialise(context);
+#endif // DEBUG
 	SetWindowText(hwnd, L"无忧日程");
 	initDocument();
 	setBtn();
@@ -138,9 +142,6 @@ bool WindowMain::switchViewModeProcess(std::string& eleId, Rml::Element* ele) {
 	}
 	return false;
 }
-
-
-
 void WindowMain::ProcessEvent(Rml::Event& event) {
 	auto eventId = event.GetId();
 	if (eventId == Rml::EventId::Click) {

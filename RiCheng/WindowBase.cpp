@@ -44,11 +44,8 @@ WindowBase::WindowBase(int width, int height,const std::string& windowName)
 	if (context == nullptr) {
 		spdlog::error("Rml::CreateContext main ß∞‹");
 	}
-#ifdef DEBUG
-	Rml::Debugger::Initialise(context);
-#endif // DEBUG
 }
-WindowBase::~WindowBase() {
+void WindowBase::Dispose() {
 	Rml::RemoveContext(windowName);
 	Rml::ReleaseTextures(renderInterface);
 	delete renderInterface;

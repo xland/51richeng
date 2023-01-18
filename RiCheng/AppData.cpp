@@ -51,7 +51,7 @@ void AppData::initDB() {
         return;
     }
     HMODULE instance = ::GetModuleHandle(NULL);
-    HRSRC resID = ::FindResource(instance, MAKEINTRESOURCE(IDR_DB1), L"DB");
+    HRSRC resID = ::FindResource(instance, MAKEINTRESOURCE(IDR_DB), L"DB");
     if (resID == 0) {
         spdlog::error("::FindResource(instance, MAKEINTRESOURCE(IDR_DB1), LDB)Ê§°Ü");
         return;

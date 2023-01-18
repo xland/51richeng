@@ -1,6 +1,7 @@
 #include "ViewDay.h"
-#include "ResourceHelper.h"
 #include <format>
+#include "ResourceHelper.h"
+#include "WindowToDo.h"
 
 
 ViewDay::ViewDay() {
@@ -26,9 +27,9 @@ void ViewDay::createTodoEle(int top,int bottom,int index) {
 	ele->SetProperty(Rml::PropertyId::ZIndex, Rml::Property(index+3, Rml::Property::NUMBER));
 	auto className = std::format("todoItem{0}", index % 6);
 	ele->SetClass(className, true);
-	//ele->GetChild(0)->AddEventListener(Rml::EventId::Mousedown, this);
-	//ele->GetChild(1)->AddEventListener(Rml::EventId::Mousedown, this);
-	//ele->GetChild(2)->AddEventListener(Rml::EventId::Mousedown, this);
+	ele->GetChild(0)->AddEventListener(Rml::EventId::Mousedown, this);
+	ele->GetChild(1)->AddEventListener(Rml::EventId::Mousedown, this);
+	ele->GetChild(2)->AddEventListener(Rml::EventId::Mousedown, this);
 	templateEle->GetPreviousSibling()->GetFirstChild()->AppendChild(std::move(ele));
 }
 
@@ -66,6 +67,7 @@ void ViewDay::processMouseDown(const std::string& className, const Rml::Vector2f
 		mousePointTopSpan = mousePoint.y - targetEle->GetAbsoluteTop() + 50;//50是标题栏的高度
 		//mousePointLeftSpan = mousePoint.x - targetEle->GetAbsoluteLeft() + 499; //左边距
 		AddDocumentListener();
+		new WindowToDo(800, 600);
 	}
 	else if (className == "todoDragBottom") {
 		targetEleHeight = targetEle->GetClientHeight();

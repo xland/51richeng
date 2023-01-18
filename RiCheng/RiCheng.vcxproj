@@ -185,6 +185,7 @@
     <None Include="ui\viewDay.rml" />
     <None Include="ui\viewMonth.rml" />
     <None Include="ui\viewWeek.rml" />
+    <None Include="ui\windowToDo.rml" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="ui\iconfont.ttf" />

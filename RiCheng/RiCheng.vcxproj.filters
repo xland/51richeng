@@ -142,6 +142,7 @@
     <None Include="ui\calendarSmall.rml" />
     <None Include="ui\style.rcss" />
     <None Include="sqlite\db.db" />
+    <None Include="ui\windowToDo.rml" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="ui\iconfont.ttf" />

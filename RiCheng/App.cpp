@@ -75,5 +75,6 @@ void App::closeWindow(WindowBase* window) {
 			break;
 		}
 	}
+	window->Dispose();
 	delete window;
 }

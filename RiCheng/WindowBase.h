@@ -11,7 +11,7 @@ class WindowBase :public Rml::EventListener
 {
 public:
 	WindowBase(int width, int height,const std::string& windowName);
-	~WindowBase();
+	void Dispose();
 	WindowBase(const WindowBase&) = delete;
 	WindowBase& operator=(const WindowBase&) = delete;
 	LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);

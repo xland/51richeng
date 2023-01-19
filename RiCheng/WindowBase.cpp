@@ -103,11 +103,7 @@ LRESULT CALLBACK WindowBase::winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
 				szr->rgrc[0] = WorkAreaRect;
 			}
 			else if (wp.showCmd == SW_SHOWNORMAL) {
-				if (context) {
-					auto doc = context->GetDocument("main");
-					auto ele = doc->GetElementById("maximizeBtn");
-					ele->SetInnerRML((const char*)u8"\ue6e5");
-				}
+				WindowShowNormal();
 			}
 			return 0;
 		}
@@ -125,8 +121,8 @@ LRESULT CALLBACK WindowBase::winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
 		}
 		case WM_SIZE: {
 			if (context) {
-				const int width = LOWORD(lParam);
-				const int height = HIWORD(lParam);
+				width = LOWORD(lParam);
+				height = HIWORD(lParam);
 				context->SetDimensions({ width,height });
 				context->Update();
 				renderInterface->BeginFrame();
@@ -155,13 +151,9 @@ LRESULT WindowBase::hitTest(HWND hwnd, LPARAM lParam) {
 		else if (absoluteCursor.x > winRect.right - borderWidth) return HTRIGHT;
 		else if (absoluteCursor.y < winRect.top + borderWidth) return HTTOP;
 		else if (absoluteCursor.y > winRect.bottom - borderWidth) return HTBOTTOM;
-		else if (absoluteCursor.y < winRect.top + 50) {
-			if (absoluteCursor.x < winRect.left + 430) {
-				return HTCAPTION;
-			}
-			else if (absoluteCursor.x > winRect.left + 860 && absoluteCursor.x < winRect.right - 180) {
-				return HTCAPTION;
-			}
+		else if(IsMouseInCaptionArea(absoluteCursor.x - winRect.left, absoluteCursor.y - winRect.top))
+		{
+			return HTCAPTION;
 		}
 		return HTCLIENT;
 	}

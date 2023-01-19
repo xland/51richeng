@@ -21,6 +21,23 @@ WindowMain::WindowMain(int width, int height)
 	CalendarModel::get()->registNewDayEventObj(this);
 }
 
+bool WindowMain::IsMouseInCaptionArea(int x, int y) {
+	if (y < 50) {
+		if (x < 430) {
+			return true;
+		}
+		else if (x > 860 && x < width - 180) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void WindowMain::WindowShowNormal() {
+	auto ele = document->GetElementById("maximizeBtn");
+	ele->SetInnerRML((const char*)u8"\ue6e5");
+}
+
 void WindowMain::initDocument() {
 	document = context->LoadDocument("ui/windowMain.rml");
 	document->SetId("windowMain");

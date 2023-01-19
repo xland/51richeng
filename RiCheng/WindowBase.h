@@ -13,10 +13,13 @@ public:
 	WindowBase(int width, int height,const std::string& windowName);
 	void Dispose();
 	void ProcessEvents();
+	virtual bool IsMouseInCaptionArea(int x,int y) = 0;
+	virtual void WindowShowNormal() = 0;
+	LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 	WindowBase(const WindowBase&) = delete;
 	WindowBase& operator=(const WindowBase&) = delete;
-	LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-	int width, height;
+	int width;
+	int height;
 	std::string windowName;
 	Rml::Context* context;
 	GLFWwindow* glfwWindow;

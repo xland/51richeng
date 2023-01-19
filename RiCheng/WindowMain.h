@@ -17,6 +17,8 @@ public:
 	WindowMain(const WindowMain&) = delete;
 	WindowMain& operator=(const WindowMain&) = delete;
 	void ProcessEvent(Rml::Event& event) override;
+	bool IsMouseInCaptionArea(int x, int y) override;
+	void WindowShowNormal() override;
 private:
 	Rml::ElementDocument* document;
 	std::unique_ptr<CalendarSmall> calendarSmall;

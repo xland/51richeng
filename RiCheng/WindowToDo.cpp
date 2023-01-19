@@ -13,6 +13,13 @@ void WindowToDo::initDocument() {
 	document->SetId("windowToDo");
 	document->Show();
 }
+bool WindowToDo::IsMouseInCaptionArea(int x, int y) {
+	return true;
+}
+void WindowToDo::WindowShowNormal() {
+	//auto ele = document->GetElementById("maximizeBtn");
+	//ele->SetInnerRML((const char*)u8"\ue6e5");
+}
 void WindowToDo::ProcessEvent(Rml::Event& event) {
 	
 }

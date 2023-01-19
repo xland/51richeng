@@ -22,9 +22,8 @@ WindowMain::WindowMain(int width, int height)
 }
 
 void WindowMain::initDocument() {
-	auto context = Rml::GetContext("windowMain");
-	document = context->LoadDocument("ui/main.rml");
-	document->SetId("main");
+	document = context->LoadDocument("ui/windowMain.rml");
+	document->SetId("windowMain");
 	document->Show();
 }
 
@@ -39,8 +38,7 @@ void WindowMain::setBtn() {
 	switchOption->AddEventListener(Rml::EventId::Click, this);
 	switchOption = switchOption->GetNextSibling();
 	switchOption->AddEventListener(Rml::EventId::Click, this);
-	switchOption->GetNextSibling()->AddEventListener(Rml::EventId::Click, this);
-		
+	switchOption->GetNextSibling()->AddEventListener(Rml::EventId::Click, this);		
 }
 
 void WindowMain::initCurDate() {

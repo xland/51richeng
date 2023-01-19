@@ -175,7 +175,7 @@ void WindowBase::setupCallbacks(){
 	glfwSetKeyCallback(glfwWindow, [](GLFWwindow* window, int glfw_key, int /*scancode*/, int glfw_action, int glfw_mods) {
 		auto self = findWindowByGlfwWindow(window);
 		if (!self->context) return;	
-		self->glfw_active_modifiers = glfw_mods;
+		self->glfwActiveModifiers = glfw_mods;
 		// Override the default key event callback to add global shortcuts for the samples.
 		Rml::Context* context = self->context;
 		switch (glfw_action)
@@ -188,13 +188,13 @@ void WindowBase::setupCallbacks(){
 				float dp_ratio = 1.f;
 				glfwGetWindowContentScale(self->glfwWindow, &dp_ratio, nullptr);
 				// See if we have any global shortcuts that take priority over the context.
-				if (self->needProcessEvent && !self->ProcessKeyDownShortcuts(context, key, key_modifier, dp_ratio, true))
+				if (!self->ProcessKeyDownShortcuts(context, key, key_modifier, dp_ratio, true))
 					break;
 				// Otherwise, hand the event over to the context by calling the input handler as normal.
 				if (!RmlGLFW::ProcessKeyCallback(context, glfw_key, glfw_action, glfw_mods))
 					break;
 				// The key was not consumed by the context either, try keyboard shortcuts of lower priority.
-				if (self->needProcessEvent && !self->ProcessKeyDownShortcuts(context, key, key_modifier, dp_ratio, false))
+				if (!self->ProcessKeyDownShortcuts(context, key, key_modifier, dp_ratio, false))
 					break;
 			}
 			break;
@@ -219,18 +219,18 @@ void WindowBase::setupCallbacks(){
 	// Mouse input
 	glfwSetCursorPosCallback(glfwWindow, [](GLFWwindow* window, double xpos, double ypos) {
 		auto self = findWindowByGlfwWindow(window);
-		RmlGLFW::ProcessCursorPosCallback(self->context, xpos, ypos, self->glfw_active_modifiers);
+		RmlGLFW::ProcessCursorPosCallback(self->context, xpos, ypos, self->glfwActiveModifiers);
 	});
 
 	glfwSetMouseButtonCallback(glfwWindow, [](GLFWwindow* window, int button, int action, int mods) {
 		auto self = findWindowByGlfwWindow(window);
-		self->glfw_active_modifiers = mods;
+		self->glfwActiveModifiers = mods;
 		RmlGLFW::ProcessMouseButtonCallback(self->context, button, action, mods);
 	});
 
 	glfwSetScrollCallback(glfwWindow, [](GLFWwindow* window, double /*xoffset*/, double yoffset) {
 		auto self = findWindowByGlfwWindow(window);
-		RmlGLFW::ProcessScrollCallback(self->context, yoffset, self->glfw_active_modifiers);
+		RmlGLFW::ProcessScrollCallback(self->context, yoffset, self->glfwActiveModifiers);
 	});
 
 	// Window events
@@ -247,8 +247,8 @@ void WindowBase::setupCallbacks(){
 }
 void WindowBase::ProcessEvents()
 {
-	if (context_dimensions_dirty) {
-		context_dimensions_dirty = false;
+	if (contextDimensionsDirty) {
+		contextDimensionsDirty = false;
 		Rml::Vector2i window_size;
 		float dp_ratio = 1.f;
 		glfwGetFramebufferSize(glfwWindow, &window_size.x, &window_size.y);
@@ -262,9 +262,6 @@ void WindowBase::ProcessEvents()
 		App::get()->closeWindow(this);
 	}
 	else {
-		//if (App::get()->windows.size() > 1 && windowName == "windowMain") {
-		//	return;
-		//}
 		context->Update();
 		renderInterface->BeginFrame();
 		renderInterface->Clear();

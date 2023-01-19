@@ -12,26 +12,24 @@ class WindowBase :public Rml::EventListener
 public:
 	WindowBase(int width, int height,const std::string& windowName);
 	void Dispose();
+	void ProcessEvents();
 	WindowBase(const WindowBase&) = delete;
 	WindowBase& operator=(const WindowBase&) = delete;
 	LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
-	void ProcessEvents();
 	int width, height;
-	//std::wstring windowTitle;
 	std::string windowName;
 	Rml::Context* context;
 	GLFWwindow* glfwWindow;
 	RenderInterface_GL3* renderInterface;
 	HWND hwnd;
 private:
-	WNDPROC oldWindowProc;
-	int glfw_active_modifiers = 0;
-	bool context_dimensions_dirty = true;
-	bool needProcessEvent;
 	void initGLFWwindow();
 	void framelessWindow();
 	LRESULT hitTest(HWND hwnd, LPARAM lParam);
 	void setupCallbacks();
 	bool ProcessKeyDownShortcuts(Rml::Context* context, Rml::Input::KeyIdentifier key, int key_modifier, float native_dp_ratio, bool priority);
+	WNDPROC oldWindowProc;
+	int glfwActiveModifiers = 0;
+	bool contextDimensionsDirty = true;
 };
 

@@ -135,7 +135,7 @@
     <None Include="ui1.bin">
       <Filter>资源文件</Filter>
     </None>
-    <None Include="ui\main.rml" />
+    <None Include="ui\windowMain.rml" />
     <None Include="ui\viewDay.rml" />
     <None Include="ui\viewMonth.rml" />
     <None Include="ui\viewWeek.rml" />

@@ -1,0 +1,339 @@
+<rml>
+
+  <head>
+    <title>main</title>
+    <style>
+      body {
+        margin: 0px;
+        padding: 0px;
+        font-family: "Microsoft YaHei";
+        width: 100%;
+        height: 100%;
+        color: #333;
+        font-size: 16px;
+        display: block;
+        background: #ffffff;
+      }
+
+      div {
+        display: block;
+        box-sizing: border-box;
+      }
+
+      #topBar {
+        height: 50px;
+        width: 100%;
+        display: flex;
+      }
+
+      .titleLeft {
+        height: 50px;
+        width: 400px;
+        background-color: rgb(253, 233, 235);
+        border-right: 1px rgb(233, 213, 215);
+        float: left;
+        font-size: 22px;
+      }
+
+      #appIcon {
+        padding-left: 10px;
+        width: 52px;
+        text-align: center;
+        line-height: 50px;
+        height: 50px;
+        color: #f02c38;
+      }
+
+      .titleLeft div {
+        display: inline-block;
+      }
+
+      .switchBtn {
+        color: #888;
+        height: 30px;
+        margin-top: 10px;
+        line-height: 26px;
+        text-align: center;
+        cursor: pointer;
+        background: #f6f6f6;
+        width: 60px;
+        font-size: 18px;
+      }
+
+      .switchBtn:hover {
+        background-color: #e6e6e6;
+      }
+
+      .switchBtnSelected {
+        background: rgb(253, 233, 235);
+        color: #f02c38;
+      }
+
+      .switchBtnSelected:hover {
+        background: rgb(253, 233, 235);
+        color: #f02c38;
+      }
+
+      .preNextBtn {
+        width: 30px;
+        font-size: 16px;
+        line-height: 26px;
+        height: 30px;
+        margin-top: 10px;
+        text-align: center;
+        cursor: pointer;
+        background: #f6f6f6;
+      }
+
+      .preNextBtn:hover {
+        background-color: #ebebeb;
+      }
+
+      #switchOptionDay {
+        margin-left: 30px;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
+
+      #switchOptionMonth {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
+
+      #preBtn {
+        margin-left: 30px;
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+        color: #999;
+      }
+
+      #currentDay {
+        padding-left: 18px;
+        padding-right: 18px;
+        height: 30px;
+        line-height: 26px;
+        margin-top: 10px;
+        text-align: center;
+        color: #888;
+        background: #f6f6f6;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      #currentDay:hover {
+        background-color: #ebebeb;
+      }
+
+      #nextBtn {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        color: #999;
+      }
+
+      .toolBtn {
+        width: 60px;
+        height: 50px;
+        text-align: center;
+        color: #888;
+        line-height: 50px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+
+      .toolBtn:hover {
+        background: #f0f0f0;
+      }
+
+      #closeBtn:hover {
+        background: #ffa39e;
+        color: #ffffff;
+      }
+
+      .bodyBox {
+        position: absolute;
+        top: 50px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+      }
+
+      .bodyLeft {
+        height: 100%;
+        background-color: rgb(253, 233, 235);
+        border-right: 1px rgb(233, 213, 215);
+        width: 400px;
+        float: left;
+      }
+
+      .bodyRight {
+        height: 100%;
+        margin-left: 400px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="topBar">
+      <div class="titleLeft">
+        <div id="appIcon">&#xe685;</div>
+        <div>日程</div>
+      </div>
+      <div id="switchOptionDay" class="switchBtn switchBtnSelected">日</div>
+      <div id="switchOptionWeek" class="switchBtn">周</div>
+      <div id="switchOptionMonth" class="switchBtn">月</div>
+      <div id="preBtn" class="preNextBtn">&#xe60e;</div>
+      <div id="currentDay"></div>
+      <div id="nextBtn" class="preNextBtn">&#xe638;</div>
+
+      <div style="flex: 1"></div>
+      <div id="minimizeBtn" class="toolBtn">&#xe6e8;</div>
+      <div id="maximizeBtn" class="toolBtn">&#xe6e5;</div>
+      <div id="closeBtn" class="toolBtn">&#xe6e7;</div>
+    </div>
+    <div class="bodyBox">
+      <div class="bodyLeft"></div>
+      <div class="bodyRight">
+        <div id="viewWeek" style="display: none">
+          <div id="weekColumnBox">
+            <div id="todoItem3" class="todoItem">
+              <div class="todoDragTop"></div>
+              <div class="todoContent">
+                <div>
+                  <span class="startTime"></span>-<span class="endTime"></span>
+                </div>
+                <div class="todoContentTitle">年终总结会议</div>
+              </div>
+              <div class="todoDragBottom"></div>
+            </div>
+            <div id="todoItem4" class="todoItem">
+              <div class="todoDragTop"></div>
+              <div class="todoContent">
+                <div>
+                  <span class="startTime"></span>-<span class="endTime"></span>
+                </div>
+                <div class="todoContentTitle">年终总结会议</div>
+              </div>
+              <div class="todoDragBottom"></div>
+            </div>
+            <div class="weekColumn">
+              <div class="weekColumnHeader">周一 1月4日</div>
+            </div>
+            <div class="weekColumn">
+              <div class="weekColumnHeader">周二 1月4日</div>
+            </div>
+            <div class="weekColumn">
+              <div class="weekColumnHeader">周三 1月4日</div>
+            </div>
+            <div class="weekColumn">
+              <div class="weekColumnHeader">周四 1月4日</div>
+            </div>
+            <div class="weekColumn">
+              <div class="weekColumnHeader">周五 1月4日</div>
+            </div>
+            <div class="weekColumn">
+              <div class="weekColumnHeader">周六 1月4日</div>
+            </div>
+            <div class="weekColumn">
+              <div class="weekColumnHeader">周日 1月4日</div>
+            </div>
+          </div>
+          <div style="height: 40px"></div>
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">0:00</div>
+          </div>
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">1:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">2:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">3:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">4:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">5:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">6:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">7:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">8:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">9:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">10:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">11:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">12:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">13:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">14:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">15:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">16:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">17:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">18:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">19:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">20:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">21:00</div>
+          </div>
+
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">22:00</div>
+          </div>
+          <div class="viewDayRow">
+            <div class="viewDayRowPre">23:00</div>
+          </div>
+        </div>
+        <div id="viewMonth" style="display: none">月视图</div>
+      </div>
+    </div>
+  </body>
+</rml>

@@ -2,7 +2,7 @@
 // Microsoft Visual C++ 生成的包含文件。
 // 供 RiCheng.rc 使用
 //
-#define IDR_Main                        102
+#define IDR_WindowMain                  102
 #define IDR_Icon                        103
 #define IDR_ViewDay                     104
 #define IDR_ViewMonth                   105

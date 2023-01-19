@@ -9,7 +9,6 @@ WindowToDo::WindowToDo(int width, int height)
 	initDocument();
 }
 void WindowToDo::initDocument() {
-	auto context = Rml::GetContext("windowToDo");
 	document = context->LoadDocument("ui/windowToDo.rml");
 	document->SetId("windowToDo");
 	document->Show();

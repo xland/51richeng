@@ -5,13 +5,14 @@
 #include "RmlUi_Backend.h"
 #include "Shell.h"
 #include "WindowMain.h"
+#include "WindowToDo.h"
 #include "App.h"
 
 
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPTSTR lpCmdLine, _In_ int nCmdShow) {
 	App::init();
-	WindowMain* base = new WindowMain(1024,768);	
+	new WindowMain(1024,768);
 	App::get()->start();
 	delete App::get();
 	/*int width = 1024;

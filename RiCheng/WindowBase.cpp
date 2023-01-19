@@ -262,13 +262,12 @@ void WindowBase::ProcessEvents()
 		App::get()->closeWindow(this);
 	}
 	else {
-		if (App::get()->windows.size() > 1) {
-			return;
-		}
+		//if (App::get()->windows.size() > 1 && windowName == "windowMain") {
+		//	return;
+		//}
 		context->Update();
 		renderInterface->BeginFrame();
 		renderInterface->Clear();
-		auto a = this->windowName;
 		context->Render();
 		renderInterface->EndFrame();
 		glfwSwapBuffers(glfwWindow);

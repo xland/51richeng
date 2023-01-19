@@ -12,7 +12,8 @@ public:
 	~App();
 	static App* get();
 	static void init();
-	void start();
+	static void start();
+	static void dispose();
 	void closeWindow(WindowBase* window);
 	SystemInterface_GLFW* systemInterface;
 	ShellFileInterface* fileInterface;

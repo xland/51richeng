@@ -20,12 +20,7 @@ App::App() {
 	initFont();
 }
 App::~App() {
-    Rml::Shutdown();
-	RmlGL3::Shutdown();
-	glfwTerminate();
-    delete fileInterface;
-    delete systemInterface;
-    delete AppData::get();
+
 }
 void App::initGlfw() {
 	glfwSetErrorCallback([](int error, const char* description) {
@@ -60,13 +55,21 @@ void App::initFont() {
 	Rml::LoadFontFace(systemFontPath.string());
 }
 void App::start() {
-	while (windows.size()>0)
+	while (instance->windows.size()>0)
 	{
-		for (auto& win:windows)
+		for (auto& win: instance->windows)
 		{
 			win->ProcessEvents();
 		}
 	}
+}
+void App::dispose() {
+	Rml::Shutdown();
+	RmlGL3::Shutdown();
+	glfwTerminate();
+	delete instance->fileInterface;
+	delete instance->systemInterface;
+	delete instance;
 }
 void App::closeWindow(WindowBase* window) {
 	for (auto it = windows.begin(); it != windows.end();) {
@@ -76,5 +79,6 @@ void App::closeWindow(WindowBase* window) {
 		}
 	}
 	window->Dispose();
+	auto size = windows.size();
 	delete window;
 }

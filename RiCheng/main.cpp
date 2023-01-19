@@ -13,8 +13,8 @@
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPTSTR lpCmdLine, _In_ int nCmdShow) {
 	App::init();
 	new WindowMain(1024,768);
-	App::get()->start();
-	delete App::get();
+	App::start();
+	App::dispose();
 	/*int width = 1024;
 	int height = 768;	
 	if (!Shell::Initialize()) {

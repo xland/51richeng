@@ -1,7 +1,6 @@
 <rml>
-
   <head>
-    <title>main</title>
+    <title>windowToDo</title>
     <style>
       body {
         margin: 0px;

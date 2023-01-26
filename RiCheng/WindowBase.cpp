@@ -237,6 +237,7 @@ void WindowBase::setupCallbacks(){
 		RmlGLFW::ProcessContentScaleCallback(self->context, xscale); 
 	});
 }
+
 void WindowBase::ProcessEvents()
 {
 	if (contextDimensionsDirty) {
@@ -254,6 +255,7 @@ void WindowBase::ProcessEvents()
 		App::get()->closeWindow(this);
 	}
 	else {
+		glfwMakeContextCurrent(glfwWindow);
 		context->Update();
 		renderInterface->BeginFrame();
 		renderInterface->Clear();
@@ -262,6 +264,7 @@ void WindowBase::ProcessEvents()
 		glfwSwapBuffers(glfwWindow);
 	}
 }
+
 bool WindowBase::ProcessKeyDownShortcuts(Rml::Context* context, Rml::Input::KeyIdentifier key, int key_modifier, float native_dp_ratio, bool priority)
 {
 	if (!context) return true;

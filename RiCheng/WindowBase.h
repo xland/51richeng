@@ -35,4 +35,3 @@ private:
 	int glfwActiveModifiers = 0;
 	bool contextDimensionsDirty = true;
 };
-

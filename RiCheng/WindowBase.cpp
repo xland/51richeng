@@ -102,7 +102,7 @@ LRESULT CALLBACK WindowBase::winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
 				SystemParametersInfo(SPI_GETWORKAREA, 0, &WorkAreaRect, 0);
 				szr->rgrc[0] = WorkAreaRect;
 			}
-			else if (wp.showCmd == SW_SHOWNORMAL) {
+			else if (wp.showCmd == SW_SHOWNORMAL && !contextDimensionsDirty) {
 				WindowShowNormal();
 			}
 			return 0;

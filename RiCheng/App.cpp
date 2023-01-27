@@ -2,6 +2,9 @@
 #include "AppData.h"
 #include "spdlog/spdlog.h"
 #include "RmlUi_Renderer_GL3.h"
+#include <mutex>
+
+std::mutex locker;
 
 App* App::get() {
     return instance;
@@ -55,12 +58,27 @@ void App::initFont() {
 	Rml::LoadFontFace(systemFontPath.string());
 }
 void App::start() {
-	while (instance->windows.size()>0)
-	{
-		for (auto& win: instance->windows)
-		{
-			win->ProcessEvents();
+	size_t size = instance->windows.size();
+	while (size > 0)
+	{		
+		for (int i = 0; i < size; i++) {
+			auto win = instance->windows.at(i);
+			glfwPollEvents();
+			bool result = glfwWindowShouldClose(win->glfwWindow);
+			if (result) {
+				instance->closeWindow(win);
+			}
+			else {
+				glfwMakeContextCurrent(win->glfwWindow);
+				win->context->Update();
+				win->renderInterface->BeginFrame();
+				win->renderInterface->Clear();
+				win->context->Render();
+				win->renderInterface->EndFrame();
+				glfwSwapBuffers(win->glfwWindow);
+			}
 		}
+		size = instance->windows.size();
 	}
 }
 void App::dispose() {
@@ -81,4 +99,8 @@ void App::closeWindow(WindowBase* window) {
 	window->Dispose();
 	auto size = windows.size();
 	delete window;
+}
+
+void App::newWindow(WindowBase* window) {
+	windows.push_back(window);
 }

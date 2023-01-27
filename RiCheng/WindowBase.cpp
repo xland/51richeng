@@ -10,6 +10,7 @@
 
 
 namespace {	
+	
 	WindowBase* findWindowByGlfwWindow(GLFWwindow* window) {
 		for (auto& win : App::get()->windows)
 		{
@@ -38,12 +39,11 @@ namespace {
 WindowBase::WindowBase(int width, int height,const std::string& windowName)
 	:width{ width }, height{height} , windowName{ windowName }
 {
-	App::get()->windows.push_back(this);
-	initGLFWwindow();
-	context = Rml::CreateContext(windowName, Rml::Vector2i(width, height),renderInterface);
-	if (context == nullptr) {
-		spdlog::error("Rml::CreateContext mainÊ§°Ü");
-	}
+	initGLFWwindow();		
+	App::get()->newWindow(this);	
+//#ifdef DEBUG
+//	Rml::Debugger::SetContext(context);
+//#endif // DEBUG
 }
 void WindowBase::Dispose() {
 	Rml::RemoveContext(windowName);
@@ -73,6 +73,19 @@ void WindowBase::initGLFWwindow() {
 	glfwSetInputMode(glfwWindow, GLFW_LOCK_KEY_MODS, GLFW_TRUE);
 	// Setup the input and window event callback functions.
 	setupCallbacks();
+
+
+	context = Rml::CreateContext(windowName, Rml::Vector2i(width, height), renderInterface);
+	if (context == nullptr) {
+		spdlog::error("Rml::CreateContext mainÊ§°Ü");
+		return;
+	}
+	Rml::Vector2i window_size;
+	float dp_ratio = 1.f;
+	glfwGetFramebufferSize(glfwWindow, &window_size.x, &window_size.y);
+	glfwGetWindowContentScale(glfwWindow, &dp_ratio, nullptr);
+	context->SetDimensions(window_size);
+	context->SetDensityIndependentPixelRatio(dp_ratio);
 }
 void WindowBase::framelessWindow() {
 	static auto borderlessStyle = WS_POPUP | WS_THICKFRAME | WS_CAPTION | WS_SYSMENU | WS_VISIBLE;
@@ -102,8 +115,8 @@ LRESULT CALLBACK WindowBase::winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
 				SystemParametersInfo(SPI_GETWORKAREA, 0, &WorkAreaRect, 0);
 				szr->rgrc[0] = WorkAreaRect;
 			}
-			else if (wp.showCmd == SW_SHOWNORMAL && !contextDimensionsDirty) {
-				WindowShowNormal();
+			else if (wp.showCmd == SW_SHOWNORMAL) {
+				//WindowShowNormal();
 			}
 			return 0;
 		}
@@ -236,33 +249,6 @@ void WindowBase::setupCallbacks(){
 		auto self = findWindowByGlfwWindow(window);
 		RmlGLFW::ProcessContentScaleCallback(self->context, xscale); 
 	});
-}
-
-void WindowBase::ProcessEvents()
-{
-	if (contextDimensionsDirty) {
-		contextDimensionsDirty = false;
-		Rml::Vector2i window_size;
-		float dp_ratio = 1.f;
-		glfwGetFramebufferSize(glfwWindow, &window_size.x, &window_size.y);
-		glfwGetWindowContentScale(glfwWindow, &dp_ratio, nullptr);
-		context->SetDimensions(window_size);
-		context->SetDensityIndependentPixelRatio(dp_ratio);
-	}
-	glfwPollEvents();
-	const bool result = glfwWindowShouldClose(glfwWindow);
-	if (result) {		
-		App::get()->closeWindow(this);
-	}
-	else {
-		glfwMakeContextCurrent(glfwWindow);
-		context->Update();
-		renderInterface->BeginFrame();
-		renderInterface->Clear();
-		context->Render();
-		renderInterface->EndFrame();
-		glfwSwapBuffers(glfwWindow);
-	}
 }
 
 bool WindowBase::ProcessKeyDownShortcuts(Rml::Context* context, Rml::Input::KeyIdentifier key, int key_modifier, float native_dp_ratio, bool priority)

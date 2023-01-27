@@ -1,16 +1,18 @@
 #include "WindowToDo.h"
 #include <RmlUi/Debugger.h>
+
+
+static int winToDoCount = 0;
+
 WindowToDo::WindowToDo(int width, int height)
-	: WindowBase(width, height, "windowToDo") {
-#ifdef DEBUG
-	Rml::Debugger::SetContext(context);
-#endif // DEBUG
+	: WindowBase(width, height, "windowToDo"+std::to_string(++winToDoCount)) 
+{
 	SetWindowText(hwnd, L"ÎÞÓÇÈÕ³Ì");
 	initDocument();
 }
 void WindowToDo::initDocument() {
 	document = context->LoadDocument("ui/windowToDo.rml");
-	document->SetId("windowToDo");
+	document->SetId("windowToDo" + std::to_string(winToDoCount));
 	document->Show();
 }
 bool WindowToDo::IsMouseInCaptionArea(int x, int y) {

@@ -453,11 +453,9 @@ void RenderInterface_GL3::RenderCompiledGeometry(Rml::CompiledGeometryHandle han
 void RenderInterface_GL3::ReleaseCompiledGeometry(Rml::CompiledGeometryHandle handle)
 {
 	Gfx::CompiledGeometryData* geometry = (Gfx::CompiledGeometryData*)handle;
-
 	glDeleteVertexArrays(1, &geometry->vao);
 	glDeleteBuffers(1, &geometry->vbo);
 	glDeleteBuffers(1, &geometry->ibo);
-
 	delete geometry;
 }
 

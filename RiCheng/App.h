@@ -18,6 +18,7 @@ public:
 	SystemInterface_GLFW* systemInterface;
 	ShellFileInterface* fileInterface;
 	std::vector<WindowBase*> windows;
+	void newWindow(WindowBase* window);
 private:
 	App();
 	void initGlfw();

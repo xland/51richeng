@@ -8,10 +8,8 @@
 using namespace std::chrono;
 
 WindowMain::WindowMain(int width, int height)
-	: WindowBase(width,height, "windowMain") {
-#ifdef DEBUG
-	Rml::Debugger::Initialise(context);
-#endif // DEBUG
+	: WindowBase(width,height, "windowMain") 
+{
 	SetWindowText(hwnd, L"无忧日程");
 	initDocument();
 	setBtn();

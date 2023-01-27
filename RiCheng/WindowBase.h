@@ -12,7 +12,6 @@ class WindowBase :public Rml::EventListener
 public:
 	WindowBase(int width, int height,const std::string& windowName);
 	void Dispose();
-	void ProcessEvents();
 	virtual bool IsMouseInCaptionArea(int x,int y) = 0;
 	virtual void WindowShowNormal() = 0;
 	LRESULT CALLBACK winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -25,6 +24,7 @@ public:
 	GLFWwindow* glfwWindow;
 	RenderInterface_GL3* renderInterface;
 	HWND hwnd;
+	bool contextDimensionsDirty = true;
 private:
 	void initGLFWwindow();
 	void framelessWindow();
@@ -33,5 +33,4 @@ private:
 	bool ProcessKeyDownShortcuts(Rml::Context* context, Rml::Input::KeyIdentifier key, int key_modifier, float native_dp_ratio, bool priority);
 	WNDPROC oldWindowProc;
 	int glfwActiveModifiers = 0;
-	bool contextDimensionsDirty = true;
 };

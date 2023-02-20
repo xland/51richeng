@@ -46,12 +46,12 @@ WindowBase::WindowBase(int width, int height,const std::string& windowName)
 		spdlog::error("Rml::CreateContext mainÊ§°Ü");
 	}
 
-	Rml::Vector2i window_size;
-	float dp_ratio = 1.f;
-	glfwGetFramebufferSize(glfwWindow, &window_size.x, &window_size.y);
-	glfwGetWindowContentScale(glfwWindow, &dp_ratio, nullptr);
-	context->SetDimensions(window_size);
-	context->SetDensityIndependentPixelRatio(dp_ratio);
+	Rml::Vector2i windowSize;
+	float dpRatio = 1.f;
+	glfwGetFramebufferSize(glfwWindow, &windowSize.x, &windowSize.y);
+	glfwGetWindowContentScale(glfwWindow, &dpRatio, nullptr);
+	context->SetDimensions(windowSize);
+	context->SetDensityIndependentPixelRatio(dpRatio);
 }
 
 void WindowBase::initGLFWwindow() {

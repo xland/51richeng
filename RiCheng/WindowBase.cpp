@@ -39,19 +39,18 @@ namespace {
 WindowBase::WindowBase(int width, int height,const std::string& windowName)
 	:width{ width }, height{height} , windowName{ windowName }
 {
-	App::Get()->windows.push_back(this);
 	initGLFWwindow();
 	context = Rml::CreateContext(windowName, Rml::Vector2i(width, height),renderInterface);
 	if (context == nullptr) {
 		spdlog::error("Rml::CreateContext mainÊ§°Ü");
 	}
-
 	Rml::Vector2i windowSize;
 	float dpRatio = 1.f;
 	glfwGetFramebufferSize(glfwWindow, &windowSize.x, &windowSize.y);
 	glfwGetWindowContentScale(glfwWindow, &dpRatio, nullptr);
 	context->SetDimensions(windowSize);
 	context->SetDensityIndependentPixelRatio(dpRatio);
+	App::Get()->windows.push_back(this);
 }
 
 void WindowBase::initGLFWwindow() {
@@ -141,7 +140,6 @@ LRESULT CALLBACK WindowBase::winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
 }
 void WindowBase::Close() {
 	glfwSetWindowShouldClose(glfwWindow, true);
-	App::Get()->RemoveWindow(this);
 }
 LRESULT WindowBase::hitTest(HWND hwnd, LPARAM lParam) {
 	POINT absoluteCursor = POINT{ GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
@@ -219,13 +217,17 @@ void WindowBase::setupCallbacks(){
 	// Mouse input
 	glfwSetCursorPosCallback(glfwWindow, [](GLFWwindow* window, double xpos, double ypos) {
 		auto self = findWindowByGlfwWindow(window);
-		RmlGLFW::ProcessCursorPosCallback(self->context, xpos, ypos, self->glfwActiveModifiers);
+		if (self && self->context) {
+			RmlGLFW::ProcessCursorPosCallback(self->context, xpos, ypos, self->glfwActiveModifiers);
+		}
 	});
 
 	glfwSetMouseButtonCallback(glfwWindow, [](GLFWwindow* window, int button, int action, int mods) {
 		auto self = findWindowByGlfwWindow(window);
-		self->glfwActiveModifiers = mods;
-		RmlGLFW::ProcessMouseButtonCallback(self->context, button, action, mods);
+		if (self && self->context) {
+			self->glfwActiveModifiers = mods;
+			RmlGLFW::ProcessMouseButtonCallback(self->context, button, action, mods);
+		}
 	});
 
 	glfwSetScrollCallback(glfwWindow, [](GLFWwindow* window, double /*xoffset*/, double yoffset) {
@@ -248,16 +250,13 @@ void WindowBase::setupCallbacks(){
 
 void WindowBase::ProcessEvents()
 {
-	glfwPollEvents();
-	const bool result = glfwWindowShouldClose(glfwWindow);
-	if (!result) {
-		context->Update();
-		renderInterface->BeginFrame();
-		renderInterface->Clear();
-		context->Render();
-		renderInterface->EndFrame();
-		glfwSwapBuffers(glfwWindow);
-	}
+	glfwMakeContextCurrent(glfwWindow);
+	context->Update();
+	renderInterface->BeginFrame();
+	renderInterface->Clear();
+	context->Render();
+	renderInterface->EndFrame();
+	glfwSwapBuffers(glfwWindow);
 }
 bool WindowBase::ProcessKeyDownShortcuts(Rml::Context* context, Rml::Input::KeyIdentifier key, int key_modifier, float native_dp_ratio, bool priority)
 {

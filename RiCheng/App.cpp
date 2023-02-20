@@ -56,16 +56,22 @@ void App::initFont() {
 }
 
 void App::Start() {
-	//int flag = 0;
-	while (instance->windows.size()>0)
+	while (instance->windows.size() > 0)
 	{
-		for (auto& win: instance->windows)
-		{
-			win->ProcessEvents();
+		for (int i = 0; i < instance->windows.size();i++) {
+			auto item = instance->windows.at(i);
+			glfwPollEvents();
+			bool result = glfwWindowShouldClose(item->glfwWindow);
+			if (result) {
+				glfwDestroyWindow(item->glfwWindow);
+				instance->windows.erase(instance->windows.begin()+i);
+			}
+			else
+			{
+				item->ProcessEvents();
+			}
 		}
-		//flag += 1;
 	}
-	//std::this_thread::sleep_for(std::chrono::seconds(99999999999));
 }
 
 void App::Dispose() {
@@ -75,13 +81,4 @@ void App::Dispose() {
 	delete instance->fileInterface;
 	delete instance->systemInterface;
 	delete instance;
-}
-
-void App::RemoveWindow(WindowBase* window) {
-	for (auto it = windows.begin(); it != windows.end();) {
-		if (*it == window) {
-			it = windows.erase(it);
-			break;
-		}
-	}
 }

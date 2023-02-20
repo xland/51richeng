@@ -30,6 +30,10 @@ std::vector<ToDo> DB::getTodo(std::chrono::year_month_day& day) {
 DB* DB::get() {
     return instance;
 }
+/// <summary>
+/// 初始化客户端数据库处理对象
+/// </summary>
+/// <param name="db"></param>
 void DB::init(sqlite3* db) {
     instance = new DB(db);
 }

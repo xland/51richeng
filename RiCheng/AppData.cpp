@@ -20,6 +20,9 @@ AppData::AppData() {
     initLogger();
     initDB();
 }
+/// <summary>
+/// 初始化数据目录：C:\Users\liuxiaolun\AppData\Roaming\51RiCheng
+/// </summary>
 void AppData::initDataPath() {
     TCHAR szPath[MAX_PATH];
     if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, szPath)))
@@ -31,7 +34,9 @@ void AppData::initDataPath() {
         std::filesystem::create_directories(dataPath);
     }
 }
-
+/// <summary>
+/// 初始化日志文件
+/// </summary>
 void AppData::initLogger() {
     std::string logPath = dataPath.string() + "\\log.txt";
     auto logger = spdlog::basic_logger_mt("logger", logPath.c_str(), true);
@@ -44,6 +49,9 @@ void AppData::initLogger() {
     spdlog::flush_on(spdlog::level::trace);
 #endif
 }
+/// <summary>
+/// 初始化客户端数据库
+/// </summary>
 void AppData::initDB() {
     std::wstring dbPath = dataPath.wstring() + L"\\db.db";
     if (std::filesystem::exists(dbPath)) {
@@ -74,6 +82,9 @@ void AppData::initDB() {
     }
     openDB();
 }
+/// <summary>
+/// 建立客户端数据库连接，并初始化数据库处理对象
+/// </summary>
 void AppData::openDB() {
     std::string dbPath2 = dataPath.string() + "\\db.db";
     sqlite3* db;

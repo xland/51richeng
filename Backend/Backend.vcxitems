@@ -14,7 +14,6 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)RmlUi_Backend.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RmlUi_Include_GL3.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RmlUi_Include_Windows.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RmlUi_Platform_GLFW.h" />
@@ -22,7 +21,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RmlUi_Renderer_GL3.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(MSBuildThisFileDirectory)RmlUi_Backend_GLFW_GL3.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RmlUi_Platform_GLFW.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RmlUi_Platform_Win32.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RmlUi_Renderer_GL3.cpp" />

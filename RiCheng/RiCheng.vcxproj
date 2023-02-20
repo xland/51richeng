@@ -113,6 +113,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>D:\sdk\RmlUi5\build\$(Configuration)\RmlCore.lib;D:\sdk\RmlUi5\build\$(Configuration)\RmlDebugger.lib;D:\sdk\spdlog\build\$(Configuration)\spdlogd.lib;D:\sdk\RmlUi5\Dependencies\lib\freetype.lib;D:\sdk\glfw-3.3.8\install\lib\glfw3.lib;dwmapi.lib;shlwapi.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -132,6 +135,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>D:\sdk\RmlUi5\build\$(Configuration)\RmlCore.lib;D:\sdk\RmlUi5\build\$(Configuration)\RmlDebugger.lib;D:\sdk\spdlog\build\$(Configuration)\spdlog.lib;D:\sdk\RmlUi5\Dependencies\lib\freetype.lib;D:\sdk\glfw-3.3.8\install\lib\glfw3.lib;dwmapi.lib;shlwapi.lib;opengl32.lib;glu32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Manifest>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />

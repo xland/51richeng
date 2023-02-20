@@ -71,7 +71,7 @@ bool WindowMain::windowToolBtnEventProcess(std::string& eleId,Rml::Element* ele)
 	}
 	else if (eleId == "closeBtn")
 	{
-		PostMessage(::GetForegroundWindow(), WM_CLOSE, 0, 0);
+		Close();
 		return true;
 	}
 	else if (eleId == "maximizeBtn")

@@ -2,19 +2,18 @@
 #include "AppData.h"
 #include "spdlog/spdlog.h"
 #include "RmlUi_Renderer_GL3.h"
-#include <mutex>
 
-std::mutex locker;
-
-App* App::get() {
+App* App::Get() {
     return instance;
 }
-void App::init() {
+
+void App::Init() {
     instance = new App();
 }
+
 App::App() {
 	AppData::init();
-	initGlfw();
+	initGLFW();
     fileInterface = new ShellFileInterface();
     Rml::SetFileInterface(fileInterface);    
     systemInterface = new SystemInterface_GLFW();
@@ -22,10 +21,8 @@ App::App() {
     Rml::Initialise();	
 	initFont();
 }
-App::~App() {
 
-}
-void App::initGlfw() {
+void App::initGLFW() {
 	glfwSetErrorCallback([](int error, const char* description) {
 		spdlog::error("GLFW ´íÎó code:{0},info:{1}", error, description);
 	});
@@ -57,31 +54,21 @@ void App::initFont() {
 	systemFontPath.append(L"Fonts\\msyh.ttc");  //Î¢ÈíÑÅºÚ
 	Rml::LoadFontFace(systemFontPath.string());
 }
-void App::start() {
-	size_t size = instance->windows.size();
-	while (size > 0)
-	{		
-		for (int i = 0; i < size; i++) {
-			auto win = instance->windows.at(i);
-			glfwPollEvents();
-			bool result = glfwWindowShouldClose(win->glfwWindow);
-			if (result) {
-				instance->closeWindow(win);
-			}
-			else {
-				glfwMakeContextCurrent(win->glfwWindow);
-				win->context->Update();
-				win->renderInterface->BeginFrame();
-				win->renderInterface->Clear();
-				win->context->Render();
-				win->renderInterface->EndFrame();
-				glfwSwapBuffers(win->glfwWindow);
-			}
+
+void App::Start() {
+	//int flag = 0;
+	while (instance->windows.size()>0)
+	{
+		for (auto& win: instance->windows)
+		{
+			win->ProcessEvents();
 		}
-		size = instance->windows.size();
+		//flag += 1;
 	}
+	//std::this_thread::sleep_for(std::chrono::seconds(99999999999));
 }
-void App::dispose() {
+
+void App::Dispose() {
 	Rml::Shutdown();
 	RmlGL3::Shutdown();
 	glfwTerminate();
@@ -89,18 +76,12 @@ void App::dispose() {
 	delete instance->systemInterface;
 	delete instance;
 }
-void App::closeWindow(WindowBase* window) {
+
+void App::RemoveWindow(WindowBase* window) {
 	for (auto it = windows.begin(); it != windows.end();) {
 		if (*it == window) {
 			it = windows.erase(it);
 			break;
 		}
 	}
-	window->Dispose();
-	auto size = windows.size();
-	delete window;
-}
-
-void App::newWindow(WindowBase* window) {
-	windows.push_back(window);
 }

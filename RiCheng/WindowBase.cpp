@@ -10,9 +10,8 @@
 
 
 namespace {	
-	
 	WindowBase* findWindowByGlfwWindow(GLFWwindow* window) {
-		for (auto& win : App::get()->windows)
+		for (auto& win : App::Get()->windows)
 		{
 			if (win->glfwWindow == window) {
 				return win;
@@ -36,31 +35,37 @@ namespace {
 		return win->winProc(hwnd, msg, wParam, lParam);	
 	}	
 }
+
 WindowBase::WindowBase(int width, int height,const std::string& windowName)
 	:width{ width }, height{height} , windowName{ windowName }
 {
-	initGLFWwindow();		
-	App::get()->newWindow(this);	
-//#ifdef DEBUG
-//	Rml::Debugger::SetContext(context);
-//#endif // DEBUG
+	App::Get()->windows.push_back(this);
+	initGLFWwindow();
+	context = Rml::CreateContext(windowName, Rml::Vector2i(width, height),renderInterface);
+	if (context == nullptr) {
+		spdlog::error("Rml::CreateContext main失败");
+	}
+
+	Rml::Vector2i window_size;
+	float dp_ratio = 1.f;
+	glfwGetFramebufferSize(glfwWindow, &window_size.x, &window_size.y);
+	glfwGetWindowContentScale(glfwWindow, &dp_ratio, nullptr);
+	context->SetDimensions(window_size);
+	context->SetDensityIndependentPixelRatio(dp_ratio);
 }
-void WindowBase::Dispose() {
-	Rml::RemoveContext(windowName);
-	Rml::ReleaseTextures(renderInterface);
-	delete renderInterface;
-	glfwDestroyWindow(glfwWindow);
-}
+
 void WindowBase::initGLFWwindow() {
-	glfwWindow = glfwCreateWindow(width, height, "", nullptr, nullptr);
+	glfwWindow = glfwCreateWindow(width, height, "", nullptr, nullptr);	
 	if (!glfwWindow) {
 		spdlog::error("glfwCreateWindow失败");
 	}	
-	hwnd = glfwGetWin32Window((GLFWwindow*)glfwWindow);	
+	hwnd = glfwGetWin32Window((GLFWwindow*)glfwWindow);	//todo 1558,1208
 	framelessWindow();
+	//必须重新设置窗口大小，前面设置的都是错的
+	//glfw issue https://github.com/glfw/glfw/issues/414
+	glfwSetWindowSize(glfwWindow, width, height);
 	glfwMakeContextCurrent(glfwWindow);
 	glfwSwapInterval(1);
-	// Load the OpenGL functions.
 	Rml::String renderer_message;
 	if (!RmlGL3::Initialize(&renderer_message)) {
 		spdlog::error("RmlGL3::Initialize失败");
@@ -73,34 +78,19 @@ void WindowBase::initGLFWwindow() {
 	glfwSetInputMode(glfwWindow, GLFW_LOCK_KEY_MODS, GLFW_TRUE);
 	// Setup the input and window event callback functions.
 	setupCallbacks();
-
-
-	context = Rml::CreateContext(windowName, Rml::Vector2i(width, height), renderInterface);
-	if (context == nullptr) {
-		spdlog::error("Rml::CreateContext main失败");
-		return;
-	}
-	Rml::Vector2i window_size;
-	float dp_ratio = 1.f;
-	glfwGetFramebufferSize(glfwWindow, &window_size.x, &window_size.y);
-	glfwGetWindowContentScale(glfwWindow, &dp_ratio, nullptr);
-	context->SetDimensions(window_size);
-	context->SetDensityIndependentPixelRatio(dp_ratio);
 }
 void WindowBase::framelessWindow() {
+	static RECT screenRect; //3840  2111
+	static const MARGINS shadowState{ 1,1,1,1 };
 	static auto borderlessStyle = WS_POPUP | WS_THICKFRAME | WS_CAPTION | WS_SYSMENU | WS_VISIBLE;
+	SystemParametersInfo(SPI_GETWORKAREA, 0, &screenRect, 0);
+	auto left = (screenRect.right - width) / 2; //1408
+	auto top = (screenRect.bottom - height) / 2; //666
 	SetWindowLongPtr(hwnd, GWL_STYLE, borderlessStyle);
 	SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)this);
-	static const MARGINS shadow_state{ 1,1,1,1 };
-	DwmExtendFrameIntoClientArea(hwnd, &shadow_state);
-	SetWindowPos(hwnd, nullptr, 110, 110, 0, 0, SWP_FRAMECHANGED | SWP_NOSIZE);
+	DwmExtendFrameIntoClientArea(hwnd, &shadowState);
 	oldWindowProc = (WNDPROC)SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG_PTR)newWindowProc);
-	RECT screenRect, winRect;
-	SystemParametersInfo(SPI_GETWORKAREA, 0, &screenRect, 0);
-	GetWindowRect(hwnd, &winRect);
-	auto left = (screenRect.right - winRect.right) / 2;
-	auto top = (screenRect.bottom - winRect.bottom) / 2;
-	SetWindowPos(hwnd, HWND_TOP, left, top, winRect.right, winRect.bottom, SWP_FRAMECHANGED | SWP_NOSIZE);
+	SetWindowPos(hwnd, HWND_TOP, left, top, width, height, SWP_FRAMECHANGED | SWP_NOSIZE);	
 }
 LRESULT CALLBACK WindowBase::winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 	switch (msg) {
@@ -115,8 +105,8 @@ LRESULT CALLBACK WindowBase::winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
 				SystemParametersInfo(SPI_GETWORKAREA, 0, &WorkAreaRect, 0);
 				szr->rgrc[0] = WorkAreaRect;
 			}
-			else if (wp.showCmd == SW_SHOWNORMAL) {
-				//WindowShowNormal();
+			else if (wp.showCmd == SW_SHOWNORMAL && context) {
+				WindowShowNormal();
 			}
 			return 0;
 		}
@@ -126,8 +116,8 @@ LRESULT CALLBACK WindowBase::winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
 		case WM_GETMINMAXINFO: {
 			MINMAXINFO* mminfo;
 			mminfo = (PMINMAXINFO)lParam;
-			mminfo->ptMinTrackSize.x = 898;
-			mminfo->ptMinTrackSize.y = 542;
+			mminfo->ptMinTrackSize.x = 1024;
+			mminfo->ptMinTrackSize.y = 768;
 			mminfo->ptMaxPosition.x = 0;
 			mminfo->ptMaxPosition.y = 0;
 			break;
@@ -149,10 +139,14 @@ LRESULT CALLBACK WindowBase::winProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM 
 	}
 	return CallWindowProc(oldWindowProc, hwnd, msg, wParam, lParam); //窗口消息处理权力交给原有的窗口处理逻辑
 }
+void WindowBase::Close() {
+	glfwSetWindowShouldClose(glfwWindow, true);
+	App::Get()->RemoveWindow(this);
+}
 LRESULT WindowBase::hitTest(HWND hwnd, LPARAM lParam) {
 	POINT absoluteCursor = POINT{ GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam) };
 	RECT winRect;
-	::GetWindowRect(hwnd, &winRect);
+	GetWindowRect(hwnd, &winRect);
 	if (absoluteCursor.x > winRect.left && absoluteCursor.y > winRect.top && absoluteCursor.x < winRect.right && absoluteCursor.y < winRect.bottom) {
 		int borderWidth = 6;
 		//Rml::Log::Message(Rml::Log::LT_ERROR, "%d < %d,%d < 50", absoluteCursor.x, winRect.right - 260, absoluteCursor.y);
@@ -175,6 +169,7 @@ LRESULT WindowBase::hitTest(HWND hwnd, LPARAM lParam) {
 		return HTNOWHERE;
 	}
 }
+
 void WindowBase::setupCallbacks(){	
 	// Key input
 	glfwSetKeyCallback(glfwWindow, [](GLFWwindow* window, int glfw_key, int /*scancode*/, int glfw_action, int glfw_mods) {
@@ -251,6 +246,19 @@ void WindowBase::setupCallbacks(){
 	});
 }
 
+void WindowBase::ProcessEvents()
+{
+	glfwPollEvents();
+	const bool result = glfwWindowShouldClose(glfwWindow);
+	if (!result) {
+		context->Update();
+		renderInterface->BeginFrame();
+		renderInterface->Clear();
+		context->Render();
+		renderInterface->EndFrame();
+		glfwSwapBuffers(glfwWindow);
+	}
+}
 bool WindowBase::ProcessKeyDownShortcuts(Rml::Context* context, Rml::Input::KeyIdentifier key, int key_modifier, float native_dp_ratio, bool priority)
 {
 	if (!context) return true;

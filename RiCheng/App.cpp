@@ -58,7 +58,8 @@ void App::initFont() {
 void App::Start() {
 	while (instance->windows.size() > 0)
 	{
-		for (int i = 0; i < instance->windows.size();i++) {
+		//循环过程中可能会添加新的元素和删除来的元素
+		for (int i = 0; i < instance->windows.size();i++) {  
 			auto item = instance->windows.at(i);
 			glfwPollEvents();
 			bool result = glfwWindowShouldClose(item->glfwWindow);

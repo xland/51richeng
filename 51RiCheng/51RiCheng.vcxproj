@@ -141,12 +141,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="WindowBase.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Res\iconfont.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="WindowBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="51RiCheng.rc" />

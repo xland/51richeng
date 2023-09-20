@@ -1,7 +1,9 @@
 #include "WindowBase.h"
 #include <format>
 #include <windowsx.h>
+#include <dwmapi.h>
 #include "resource.h"
+#include "Util.h"
 
 
 void WindowBase::InitWindow(const int& x, const int& y, const long& w, const long& h, const std::wstring& title)
@@ -12,7 +14,7 @@ void WindowBase::InitWindow(const int& x, const int& y, const long& w, const lon
     this->h = h;
     this->title = title;
     static int num = 0;
-    std::wstring className = std::format(L"Install_{}", num++);
+    std::wstring className = std::format(L"Calender_{}", num++);
     auto hinstance = GetModuleHandle(NULL);
     WNDCLASSEX wcx{};
     wcx.cbSize = sizeof(wcx);
@@ -29,21 +31,12 @@ void WindowBase::InitWindow(const int& x, const int& y, const long& w, const lon
         MessageBox(NULL, L"注册窗口类失败", L"系统提示", NULL);
         return;
     }
-    hwnd = CreateWindowEx(WS_EX_LAYERED, wcx.lpszClassName, title.c_str(),
-        WS_CLIPCHILDREN | WS_CLIPSIBLINGS | WS_POPUP, x, y, w, h, NULL, NULL, hinstance, static_cast<LPVOID>(this));
+    hwnd = CreateWindowEx(NULL, wcx.lpszClassName, title.c_str(),
+        WS_OVERLAPPEDWINDOW, x, y, w, h, NULL, NULL, hinstance, static_cast<LPVOID>(this));
     SetWindowPos(hwnd, nullptr, 0, 0, 0, 0, SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED);
-
-    //hwnd = CreateWindowEx(NULL, wcx.lpszClassName, title.c_str(),
-    //    WS_OVERLAPPEDWINDOW, x, y, w, h, NULL, NULL, hinstance, static_cast<LPVOID>(this));
-    //SetWindowPos(hwnd, nullptr, 0, 0, 0, 0, SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_NOMOVE | SWP_NOSIZE | SWP_FRAMECHANGED);
-    //const MARGINS shadowState{ 1,1,1,1 };
-    //DwmExtendFrameIntoClientArea(hwnd, &shadowState);
-
+    const MARGINS shadowState{ 1,1,1,1 };
+    DwmExtendFrameIntoClientArea(hwnd, &shadowState);
     InitCanvas();
-    Buttons.push_back(ButtonIcon::CreateCloseBtn(this));
-    Buttons.push_back(ButtonIcon::CreateMinimizeBtn(this));
-    InitBtn();
-    InitProcessVal();
     ChangeCursor(IDC_ARROW);
 }
 void WindowBase::Show() {
